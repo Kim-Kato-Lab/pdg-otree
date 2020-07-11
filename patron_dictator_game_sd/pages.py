@@ -21,8 +21,7 @@ class Allocation(Page):
     
     def vars_for_template(self):
         return dict(
-            receive_amount = self.group.send,
-            maximum_send = 2 * self.group.send
+            receive_amount = self.group.send
         )
 
 class WaitForPatron(WaitPage):
@@ -41,9 +40,9 @@ class Results(Page):
     def vars_for_template(self):
         return dict(
             patron_investment = self.group.send,
-            dictator_investment = self.group.allocation,
-            diff = self.group.allocation - self.group.send,
-            abs_diff = abs(self.group.allocation - self.group.send)
+            dictator_investment = (self.group.allocation/100) * self.group.send,
+            diff = (self.group.allocation/100) * self.group.send - self.group.send,
+            abs_diff = abs((self.group.allocation/100) * self.group.send - self.group.send)
         )
 
 

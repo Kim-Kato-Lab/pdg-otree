@@ -18,11 +18,12 @@ Your app description
 
 
 class Constants(BaseConstants):
-    name_in_url = 'patron_dictator_game'
+    name_in_url = 'patron_dictator_game_sd'
     players_per_group = 3
     num_rounds = 1
 
     endowment = c(100)
+    maximum_multiply = c(200)
 
 
 class Subsession(BaseSubsession):
@@ -34,20 +35,17 @@ class Group(BaseGroup):
         min = 0, max = Constants.endowment
     )
 
-    allocation = models.CurrencyField(
-        min = 0
+    allocation = models.IntegerField(
+        min = 0, max = Constants.maximum_multiply
     )
-
-    def allocation_max(self):
-        return 2*self.send
 
     def set_payoffs(self):
         patron = self.get_player_by_role('patron')
         dictator = self.get_player_by_role('dictator')
         receiver = self.get_player_by_role('receiver')
         patron.payoff = Constants.endowment - self.send
-        dictator.payoff = Constants.endowment - (self.allocation - self.send)
-        receiver.payoff = self.allocation
+        dictator.payoff = Constants.endowment - (self.allocation/100 - 1) * self.send
+        receiver.payoff = (self.allocation/100) * self.send
 
 
 class Player(BasePlayer):
