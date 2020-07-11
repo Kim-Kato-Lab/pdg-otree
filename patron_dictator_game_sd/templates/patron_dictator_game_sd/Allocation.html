@@ -7,34 +7,72 @@
 
 {% block content %}
 
-<p>
+<div id="paragraph1">
     あなたは<b>参加者２</b>です。
     あなたが持っているポイントは<b>{{ Constants.endowment }}</b>です。
-</p>
+</div>
 
-<p>
+<br>
+
+<div id="paragraph2">
     同じグループの参加者１から<b>{{ receive_amount }}</b>を受け取りました。
     あなたは参加者１から受け取ったポイントのうち何％を参加者３に渡しますか。
-    ０から２００の間の<b>整数</b>で選択してください。
-</p>
+    0から200の間の<b>整数</b>で選択してください。
+</div>
 
-<p>
+<br>
+
+<div id="paragraph3">
     なお、あなたが１００％より低い数字を選択したら、
     参加者１から受け取ったポイントの一部はあなたのものになります。
-    したがって、あなたが最終的に受け取るポイントは
-    <b>{{ Constants.endowment }}と参加者１から受け取ったポイントの一部の合計</b>となります。
-</p>
-
-<p>
     また、あなたが１００％より大きい数字を選択したら、
     参加者１から受け取ったポイントのすべてを参加者３に渡し、
-    足りないポイントはあなたが持っているものから補います。
-    したがって、あなたが最終的に受け取るポイントは
-    <b>{{ Constants.endowment }}から参加者３に渡したあなたのポイントを引いたもの</b>となります。
-</p>
+    足りないポイントはあなたがもともと持っている{{ Constants.endowment }}から補います。
+</div>
+
+<br>
+
+<div id="calculator">
+    以下の空欄に数字を打ち込むことで、あなたの最終的なポイントを計算することができます。
+    <ul>
+        <li>
+            参加者１が渡した{{ receive_amount }}の
+            <input maxlength="3" style="width: 50px;" type="text" id="multiply">％を渡す
+            <input type="button" value="計算する" onclick="pi()">
+        </li>
+        <li>
+            あなたの最終的なポイント：<span id="payoff">100</span>ポイント
+        </li>
+    </ul>
+</div>
+
 
 {% formfields %}
 
 {% next_button %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+
+    function pi() {
+        let receive = js_vars.x;
+        var multiply = parseInt(document.getElementById("multiply").value);
+        var calculation = 100 - (multiply / 100 - 1) * receive;
+        var calculation = Math.round(calculation);
+
+        var payoff = document.getElementById("payoff");
+
+        if (calculation > 0) {
+            payoff.innerText = calculation;
+        } else {
+            payoff.innerText = "";
+        }
+
+    }
+
+</script>
 
 {% endblock %}

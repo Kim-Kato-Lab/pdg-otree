@@ -19,6 +19,11 @@ class Allocation(Page):
     def is_displayed(self):
         return self.player.id_in_group == 2
     
+    def js_vars(self):
+        return dict(
+            x = self.group.send
+        )
+    
     def vars_for_template(self):
         return dict(
             receive_amount = self.group.send
