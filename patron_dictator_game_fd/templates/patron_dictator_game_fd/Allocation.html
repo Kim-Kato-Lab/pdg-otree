@@ -30,15 +30,21 @@
 <br>
 
 <div id="calculator">
-    以下の空欄に数字を打ち込むことで、あなたの最終的なポイントを計算することができます。
+    以下の空欄に数字を打ち込むことで、あなたと他２人の最終的なポイントを計算することができます。
     <ul>
         <li>
-            参加者１が渡した<input maxlength="3" style="width: 50px;" type="text" id="receive">ポイントの
-            <input maxlength="3" style="width: 50px;" type="text" id="multiply">％を渡す
+            参加者１が渡した<input maxlength="3" style="width: 50px;" type="text" id="receive">ポイントのうち、
+            あなたが<input maxlength="3" style="width: 50px;" type="text" id="multiply">％を参加者３に渡す
             <input type="button" value="計算する" onclick="pi()">
         </li>
         <li>
-            あなたの最終的なポイント：<span id="payoff">100</span>ポイント
+            あなたの最終的なポイント：<span id="piD">100</span>ポイント
+        </li>
+        <li>
+            参加者１の最終的なポイント：<span id="piP">100</span>ポイント
+        </li>
+        <li>
+            参加者３の最終的なポイント：<span id="piR">0</span>ポイント
         </li>
     </ul>
 </div>
@@ -55,14 +61,23 @@
 <script type="text/javascript">
 
     function pi() {
-        let receive = parseInt(document.getElementById("receive").value);
+        var receive = parseInt(document.getElementById("receive").value);
         var multiply = parseInt(document.getElementById("multiply").value);
-        var calculation = 100 - (multiply / 100 - 1) * receive;
-        var calculation = Math.round(calculation);
 
-        var payoff = document.getElementById("payoff");
-        payoff.innerText = calculation;
+        var piP = document.getElementById("piP");
+        var cal_piP = 100 - receive;
+        var cal_piP = Math.round(cal_piP);
+        piP.innerText = cal_piP;
 
+        var piD = document.getElementById("piD");
+        var cal_piD = 100 - (multiply / 100 - 1) * receive;
+        var cal_piD = Math.round(cal_piD);
+        piD.innerText = cal_piD;
+
+        var piR = document.getElementById("piR");
+        var cal_piR = receive * multiply/100;
+        var cal_piR = Math.round(cal_piR);
+        piR.innerText = cal_piR;
     }
 
 </script>

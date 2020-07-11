@@ -15,6 +15,11 @@ class Investment(Page):
         return dict(
             dictator_rule = self.group.allocation
         )
+    
+    def js_vars(self):
+        return dict(
+            x = self.group.allocation
+        )
 
 class Allocation(Page):
     
