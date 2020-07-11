@@ -1,0 +1,38 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    結果
+{% endblock %}
+
+{% block content %}
+
+<p>
+    <b>あなたの利得は {{ player.payoff }} でした。</b>
+</p>
+
+<p>
+    同じグループの参加者２が {{ dictator_investment }} を参加者３に渡しました。
+</p>
+
+{% if diff < 0 %}
+    <p>
+        参加者１が {{ patron_investment }} を参加者２に渡したので、
+        余った {{ abs_diff }} は参加者２のポイントになりました。
+    </p>
+{% elif diff > 0 %}
+    <p>
+        参加者１が {{ patron_investment }} を参加者２に渡したので、
+        足りない {{ abs_diff }} は参加者２のポイントから補いました。
+    </p>
+{% else %}
+    <p>
+        また、参加者１が {{ patron_investment }} を参加者２に渡しました。
+    </p>
+{% endif %}
+
+{% next_button %}
+
+{% endblock %}
+
+
