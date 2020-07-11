@@ -23,7 +23,6 @@ class Constants(BaseConstants):
     num_rounds = 1
 
     endowment = c(100)
-    maximum_allocate = c(2)
 
 
 class Subsession(BaseSubsession):
@@ -32,28 +31,26 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     send = models.CurrencyField(
-        label = "Send money to Dictator",
         min = 0, max = Constants.endowment
     )
 
-    allocation = models.FloatField(
-        label = "Allocation rule determined by Dictator",
-        min = 0, max = Constants.maximum_allocate
+    allocation = models.CurrencyField(
+        min = 0
     )
+
+    def allocation_max(self):
+        return 2*self.send
 
     def set_payoffs(self):
         patron = self.get_player_by_role('patron')
         dictator = self.get_player_by_role('dictator')
         receiver = self.get_player_by_role('receiver')
         patron.payoff = Constants.endowment - self.send
-        dictator.payoff = Constants.endowment - (1 - self.allocation) * self.send
-        receiver.payoff = self.send * self.allocation
+        dictator.payoff = Constants.endowment - (self.allocation - self.send)
+        receiver.payoff = self.allocation
 
 
 class Player(BasePlayer):
-
-    send = models.CurrencyField()
-    allocation = models.FloatField()
     
     def role(self):
         if self.id_in_group == 1:

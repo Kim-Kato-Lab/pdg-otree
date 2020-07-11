@@ -1,0 +1,31 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    あなたの選択
+{% endblock %}
+
+{% block content %}
+
+<p>
+    あなたは<b>参加者２</b>です。
+</p>
+
+<p>
+    同じグループの参加者１から {{ receive_amount }} を受け取りました。
+    したがって、あなたは同じグループの参加者３に最大 {{ maximum_send }} を渡すことができます。
+    あなたはいくらを参加者３に渡しますか。
+</p>
+
+<p>
+    なお、参加者１から受け取ったポイントより大きいポイントを参加者３に渡すとき、
+    足りない額はあなたの持っている {{ Constants.endowment }} から補います。
+    また、参加者１から受け取ったポイントより少ないポイントを参加者３に渡すとき、
+    余った額はあなたのポイントになります。
+</p>
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}
