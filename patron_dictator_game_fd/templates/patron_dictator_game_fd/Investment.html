@@ -1,0 +1,33 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    あなたの選択
+{% endblock %}
+
+{% block content %}
+
+<p>
+    あなたは<b>参加者１</b>です。
+</p>
+
+<p>
+    あなたが持っている {{ Constants.endowment }} からいくらを<b>参加者２</b>に渡すかを決めてください。
+    また、参加者２はあなたから受け取ったポイントのうち{{ dictator_rule }}％を<b>参加者３</b>に渡します。
+</p>
+
+{% if dictator_rule < 100 %}
+    <p>
+        <b>したがって、あなたが渡したポイントのうち一部は参加者２のポイントになります。</b>
+    </p>
+{% elif dictator_rule > 100 %}
+    <p>    
+        <b>したがって、あなたが渡したポイントの加えて、参加者２が自身のポイントを使って参加者３に渡します。</b>
+    </p>
+{% endif %}
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}
