@@ -1,0 +1,18 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    あなたの選択
+{% endblock %}
+
+{% block content %}
+<p>
+    あなたは<b>参加者１</b>です。
+    あなたが持っている {{ Constants.endowment }} ポイントからいくらを<b>参加者２</b>に渡すかを決めてください。
+</p>
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}

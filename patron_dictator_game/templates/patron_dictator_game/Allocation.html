@@ -1,0 +1,23 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    あなたの選択
+{% endblock %}
+
+{% block content %}
+
+<p>
+    あなたは<b>参加者２</b>です。
+    同じグループの参加者１から {{ send_amount }} ポイントを受け取りました。
+    このポイントを何倍にして参加者３に渡しますか。
+    なお、1倍より高い数字を選んだ場合、足りないポイントは
+    あなたがもともと持っている {{ Constants.endowment }} ポイント
+    で補います。
+</p>
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}
