@@ -20,7 +20,7 @@ Your app description
 class Constants(BaseConstants):
     name_in_url = 'patron_dictator_game_fd'
     players_per_group = 3
-    num_rounds = 1
+    num_rounds = 2
 
     endowment = c(100)
     maximum_multiply = c(200)
@@ -29,15 +29,12 @@ class Constants(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
+def creating_session(subsession):
+    subsession.group_randomly()
 
 class Group(BaseGroup):
-    send = models.CurrencyField(
-        min = 0, max = Constants.endowment
-    )
-
-    allocation = models.IntegerField(
-        min = 0, max = Constants.maximum_multiply
-    )
+    send = models.CurrencyField(min = 0, max = Constants.endowment)
+    allocation = models.IntegerField(min = 0, max = Constants.maximum_multiply)
 
     def set_payoffs(self):
         patron = self.get_player_by_role('patron')

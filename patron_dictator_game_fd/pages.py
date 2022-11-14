@@ -29,6 +29,14 @@ class Allocation(Page):
     def is_displayed(self):
         return self.player.id_in_group == 2
 
+class ShuffleWaitPage(WaitPage):
+    
+    wait_for_all_groups = True
+
+    @staticmethod
+    def after_all_players_arrive(subsession):
+        subsession.group_randomly()
+
 class WaitForPatron(WaitPage):
     pass
 
@@ -57,5 +65,6 @@ page_sequence = [
     WaitForDictator,
     Investment,
     ResultsWaitPage, 
-    Results
+    Results,
+    ShuffleWaitPage
 ]
