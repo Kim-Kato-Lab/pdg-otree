@@ -13,11 +13,16 @@ class C(BaseConstants):
     NUM_ROUNDS = 1
     ENDOWMENT = cu(100)
     MAXIMUM_MULTIPLY = cu(200)
+    PATRON_ROLE = "Patron"
+    DICTATOR_ROLE = "Dictator"
+    RECEIVER_ROLE = "Receiver"
 
 
 class Subsession(BaseSubsession):
     pass
 
+def creating_session(subsession: Subsession):
+    subsession.group_randomly()
 
 class Group(BaseGroup):
     send = models.CurrencyField(min=0, max=C.ENDOWMENT)
@@ -30,22 +35,12 @@ class Player(BasePlayer):
 
 # FUNCTIONS
 def set_payoffs(group: Group):
-    patron = group.get_player_by_role('patron')
-    dictator = group.get_player_by_role('dictator')
-    receiver = group.get_player_by_role('receiver')
+    patron = group.get_player_by_role(C.PATRON_ROLE)
+    dictator = group.get_player_by_role(C.DICTATOR_ROLE)
+    receiver = group.get_player_by_role(C.RECEIVER_ROLE)
     patron.payoff = C.ENDOWMENT - group.send
     dictator.payoff = C.ENDOWMENT - (group.allocation / 100 - 1) * group.send
     receiver.payoff = (group.allocation / 100) * group.send
-
-
-def role(player: Player):
-    if player.id_in_group == 1:
-        return "patron"
-    if player.id_in_group == 2:
-        return "dictator"
-    if player.id_in_group == 3:
-        return "receiver"
-
 
 # PAGES
 class Investment(Page):
@@ -54,7 +49,7 @@ class Investment(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.id_in_group == 1
+        return player.role == C.PATRON_ROLE
 
 
 class Allocation(Page):
@@ -63,7 +58,7 @@ class Allocation(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.id_in_group == 2
+        return player.role == C.DICTATOR_ROLE
 
     @staticmethod
     def js_vars(player: Player):
@@ -90,11 +85,24 @@ class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
-            patron_investment=player.group.send,
-            dictator_investment=(player.group.allocation / 100) * player.group.send,
-            diff=(player.group.allocation / 100) * player.group.send - player.group.send,
-            abs_diff=abs((player.group.allocation / 100) * player.group.send - player.group.send),
+            patron_investment = player.group.send,
+            dictator_investment = (player.group.allocation / 100) * player.group.send,
+            diff = (player.group.allocation / 100) * player.group.send - player.group.send,
+            abs_diff = abs((player.group.allocation / 100) * player.group.send - player.group.send),
         )
 
+class ShuffleWaitPage(WaitPage):
+    wait_for_all_groups = True
 
-page_sequence = [WaitForDictator, Investment, WaitForPatron, Allocation, ResultsWaitPage, Results]
+    @staticmethod
+    def after_all_players_arrive(subsession: Subsession):
+        subsession.group_randomly()
+
+page_sequence = [
+  WaitForDictator,
+  Investment,
+  WaitForPatron,
+  Allocation,
+  ResultsWaitPage,
+  Results
+]

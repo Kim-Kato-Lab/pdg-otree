@@ -13,6 +13,9 @@ class C(BaseConstants):
     NUM_ROUNDS = 2
     ENDOWMENT = cu(100)
     MAXIMUM_MULTIPLY = cu(200)
+    PATRON_ROLE = "Patron"
+    DICTATOR_ROLE = "Dictator"
+    RECEIVER_ROLE = "Receiver"
 
 
 class Subsession(BaseSubsession):
@@ -34,22 +37,12 @@ class Player(BasePlayer):
 
 # FUNCTIONS
 def set_payoffs(group: Group):
-    patron = group.get_player_by_role('patron')
-    dictator = group.get_player_by_role('dictator')
-    receiver = group.get_player_by_role('receiver')
+    patron = group.get_player_by_role(C.PATRON_ROLE)
+    dictator = group.get_player_by_role(C.DICTATOR_ROLE)
+    receiver = group.get_player_by_role(C.RECEIVER_ROLE)
     patron.payoff = C.ENDOWMENT - group.send
     dictator.payoff = C.ENDOWMENT - (group.allocation / 100 - 1) * group.send
     receiver.payoff = (group.allocation / 100) * group.send
-
-
-def role(player: Player):
-    if player.id_in_group == 1:
-        return "patron"
-    if player.id_in_group == 2:
-        return "dictator"
-    if player.id_in_group == 3:
-        return "receiver"
-
 
 # PAGES
 class Investment(Page):
@@ -58,15 +51,15 @@ class Investment(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.id_in_group == 1
+        return player.role == C.PATRON_ROLE
 
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(dictator_rule=player.group.allocation)
+        return dict(dictator_rule = player.group.allocation)
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(x=player.group.allocation)
+        return dict(x = player.group.allocation)
 
 
 class Allocation(Page):
@@ -75,16 +68,7 @@ class Allocation(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.id_in_group == 2
-
-
-class ShuffleWaitPage(WaitPage):
-    wait_for_all_groups = True
-
-    @staticmethod
-    @staticmethod
-    def after_all_players_arrive(subsession: Subsession):
-        subsession.group_randomly()
+        return player.role == C.DICTATOR_ROLE
 
 
 class WaitForPatron(WaitPage):
@@ -103,11 +87,18 @@ class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
-            patron_investment=player.group.send,
-            dictator_investment=(player.group.allocation / 100) * player.group.send,
-            diff=(player.group.allocation / 100) * player.group.send - player.group.send,
-            abs_diff=abs((player.group.allocation / 100) * player.group.send - player.group.send),
+            patron_investment = player.group.send,
+            dictator_investment = (player.group.allocation / 100) * player.group.send,
+            diff = (player.group.allocation / 100) * player.group.send - player.group.send,
+            abs_diff = abs((player.group.allocation / 100) * player.group.send - player.group.send),
         )
+
+class ShuffleWaitPage(WaitPage):
+    wait_for_all_groups = True
+
+    @staticmethod
+    def after_all_players_arrive(subsession: Subsession):
+        subsession.group_randomly()
 
 
 page_sequence = [
