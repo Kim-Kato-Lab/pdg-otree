@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    Bid
+{% endblock %}
+
+{% block content %}
+
+    <p>
+        The value of the item is estimated to be {{ player.item_value_estimate }}.
+        This estimate may deviate from the actual value by at most {{ C.ESTIMATE_ERROR_MARGIN }}.
+    </p>
+
+    <p>
+        Please make your bid now. The amount can be between {{ C.MIN_ALLOWABLE_BID }} and {{ C.MAX_ALLOWABLE_BID }}, inclusive.
+    </p>
+
+    {% formfield player.bid_amount label="Bid amount" %}
+
+    {% next_button %}
+
+    {% include C.INSTRUCTIONS_TEMPLATE %}
+
+{% endblock %}

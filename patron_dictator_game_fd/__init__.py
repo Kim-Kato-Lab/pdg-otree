@@ -1,0 +1,121 @@
+from otree.api import *
+
+
+author = 'Your name here'
+doc = """
+Your app description
+"""
+
+
+class C(BaseConstants):
+    NAME_IN_URL = 'patron_dictator_game_fd'
+    PLAYERS_PER_GROUP = 3
+    NUM_ROUNDS = 2
+    ENDOWMENT = cu(100)
+    MAXIMUM_MULTIPLY = cu(200)
+
+
+class Subsession(BaseSubsession):
+    pass
+
+
+def creating_session(subsession: Subsession):
+    subsession.group_randomly()
+
+
+class Group(BaseGroup):
+    send = models.CurrencyField(min=0, max=C.ENDOWMENT)
+    allocation = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
+
+
+class Player(BasePlayer):
+    pass
+
+
+# FUNCTIONS
+def set_payoffs(group: Group):
+    patron = group.get_player_by_role('patron')
+    dictator = group.get_player_by_role('dictator')
+    receiver = group.get_player_by_role('receiver')
+    patron.payoff = C.ENDOWMENT - group.send
+    dictator.payoff = C.ENDOWMENT - (group.allocation / 100 - 1) * group.send
+    receiver.payoff = (group.allocation / 100) * group.send
+
+
+def role(player: Player):
+    if player.id_in_group == 1:
+        return "patron"
+    if player.id_in_group == 2:
+        return "dictator"
+    if player.id_in_group == 3:
+        return "receiver"
+
+
+# PAGES
+class Investment(Page):
+    form_model = 'group'
+    form_fields = ['send']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.id_in_group == 1
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(dictator_rule=player.group.allocation)
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(x=player.group.allocation)
+
+
+class Allocation(Page):
+    form_model = 'group'
+    form_fields = ['allocation']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.id_in_group == 2
+
+
+class ShuffleWaitPage(WaitPage):
+    wait_for_all_groups = True
+
+    @staticmethod
+    @staticmethod
+    def after_all_players_arrive(subsession: Subsession):
+        subsession.group_randomly()
+
+
+class WaitForPatron(WaitPage):
+    pass
+
+
+class WaitForDictator(WaitPage):
+    pass
+
+
+class ResultsWaitPage(WaitPage):
+    after_all_players_arrive = 'set_payoffs'
+
+
+class Results(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(
+            patron_investment=player.group.send,
+            dictator_investment=(player.group.allocation / 100) * player.group.send,
+            diff=(player.group.allocation / 100) * player.group.send - player.group.send,
+            abs_diff=abs((player.group.allocation / 100) * player.group.send - player.group.send),
+        )
+
+
+page_sequence = [
+    WaitForPatron,
+    Allocation,
+    WaitForDictator,
+    Investment,
+    ResultsWaitPage,
+    Results,
+    ShuffleWaitPage,
+]

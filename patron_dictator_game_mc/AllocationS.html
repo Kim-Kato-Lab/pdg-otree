@@ -1,0 +1,88 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    あなたの選択
+{% endblock %}
+
+{% block content %}
+
+<div id="paragraph1">
+    あなたは<b>参加者２</b>です。
+    あなたが持っているポイントは<b>{{ C.ENDOWMENT }}</b>です。
+</div>
+
+<br>
+
+<div id="paragraph2">
+    同じグループの参加者１から<b>{{ receive_amount }}</b>を受け取りました。
+    あなたは参加者１から受け取ったポイントのうち何％を参加者３に渡しますか。
+    0から200の間の<b>整数</b>で選択してください。
+</div>
+
+<br>
+
+<div id="paragraph3">
+    なお、あなたが１００％より低い数字を選択したら、
+    参加者１から受け取ったポイントの一部はあなたのものになります。
+    また、あなたが１００％より大きい数字を選択したら、
+    参加者１から受け取ったポイントのすべてを参加者３に渡し、
+    足りないポイントはあなたがもともと持っている{{ C.ENDOWMENT }}から補います。
+</div>
+
+<br>
+
+<div id="calculator">
+    以下の空欄に数字を打ち込むことで、あなたと他２人の最終的なポイントを計算することができます。
+    <ul>
+        <li>
+            参加者１が渡した{{ receive_amount }}のうち、
+            あなたが<input maxlength="3" style="width: 50px;" type="text" id="multiply">％を参加者３に渡す
+            <input type="button" value="計算する" onclick="pi()">
+        </li>
+        <li>
+            あなたの最終的なポイント：<span id="piD">100</span>ポイント
+        </li>
+        <li>
+            参加者１の最終的なポイント：<span id="piP">100</span>ポイント
+        </li>
+        <li>
+            参加者３の最終的なポイント：<span id="piR">0</span>ポイント
+        </li>
+    </ul>
+</div>
+
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+
+    function pi() {
+        let receive = js_vars.x;
+        var multiply = parseInt(document.getElementById("multiply").value);
+
+        var piP = document.getElementById("piP");
+        var cal_piP = 100 - receive;
+        var cal_piP = Math.round(cal_piP);
+        piP.innerText = cal_piP;
+
+        var piD = document.getElementById("piD");
+        var cal_piD = 100 - (multiply / 100 - 1) * receive;
+        var cal_piD = Math.round(cal_piD);        
+        piD.innerText = cal_piD;
+
+        var piR = document.getElementById("piR");
+        var cal_piR = receive * multiply/100;
+        var cal_piR = Math.round(cal_piR);
+        piR.innerText = cal_piR;
+    }
+
+</script>
+
+{% endblock %}

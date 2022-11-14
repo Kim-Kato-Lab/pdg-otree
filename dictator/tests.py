@@ -1,16 +1,16 @@
-from otree.api import Currency as c, currency_range, expect
-from . import pages
-from ._builtin import Bot
-from .models import Constants
+from otree.api import Currency as cu, currency_range, expect
+from . import *
+from otree.api import Bot
+
 
 
 class PlayerBot(Bot):
     def play_round(self):
-        yield pages.Introduction
+        yield Introduction
 
         if self.player.id_in_group == 1:
-            yield pages.Offer, dict(kept=c(99))
-            expect(self.player.payoff, c(99))
+            yield Offer, dict(kept=cu(99))
+            expect(self.player.payoff, cu(99))
         else:
-            expect(self.player.payoff, c(1))
-        yield pages.Results
+            expect(self.player.payoff, cu(1))
+        yield Results

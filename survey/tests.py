@@ -1,17 +1,17 @@
-from otree.api import Currency as c, currency_range, expect
+from otree.api import Currency as cu, currency_range, expect
 
-from . import pages
-from ._builtin import Bot
-from .models import Constants
+from . import *
+from otree.api import Bot
+
 
 
 class PlayerBot(Bot):
     def play_round(self):
 
-        yield pages.Demographics, dict(age=24, gender='Male')
+        yield Demographics, dict(age=24, gender='Male')
 
         yield (
-            pages.CognitiveReflectionTest,
+            CognitiveReflectionTest,
             dict(crt_bat=10, crt_widget=5, crt_lake=48),
         )
 

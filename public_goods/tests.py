@@ -1,7 +1,7 @@
-from otree.api import Currency as c, currency_range, SubmissionMustFail, Submission, expect
-from . import pages
-from ._builtin import Bot
-from .models import Constants
+from otree.api import Currency as cu, currency_range, SubmissionMustFail, Submission, expect
+from . import *
+from otree.api import Bot
+
 
 
 class PlayerBot(Bot):
@@ -10,20 +10,20 @@ class PlayerBot(Bot):
 
     def play_round(self):
         case = self.case
-        yield pages.Introduction
+        yield Introduction
 
         if case == 'basic':
             if self.player.id_in_group == 1:
                 for invalid_contribution in [-1, 101]:
                     yield SubmissionMustFail(
-                        pages.Contribute, dict(contribution=invalid_contribution)
+                        Contribute, dict(contribution=invalid_contribution)
                     )
 
         contribution = dict(min=0, max=100, basic=50)[case]
 
-        yield pages.Contribute, dict(contribution=contribution)
+        yield Contribute, dict(contribution=contribution)
 
-        yield pages.Results
+        yield Results
 
         if self.player.id_in_group == 1:
 

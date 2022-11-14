@@ -1,0 +1,82 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    あなたの選択
+{% endblock %}
+
+{% block content %}
+
+<div id="paragraph1">
+    あなたは<b>参加者１</b>です。
+</div>
+
+<br>
+
+<div id="paragraph2">
+    あなたが持っている {{ C.ENDOWMENT }} からいくらを<b>参加者２</b>に渡すかを決めてください。
+</div>
+
+<br>
+
+<div id="paragraph3">
+    このあと、参加者２があなたが渡したポイントを参加者２と参加者３にどのようにわけるかを決めます。
+    あなたのポイントの一部が参加者２のポイントになる可能性があります。
+    また、参加者２が自身のポイントを使って、あなたが渡した以上のポイントを参加者３に渡る可能性もあります。
+</div>
+
+<br>
+
+<div id="calculator">
+    以下の空欄に数字を打ち込むことで、あなたと他２人の最終的なポイントを計算することができます。
+    <ul>
+        <li>
+            あなたが渡した<input maxlength="3" style="width: 50px;" type="text" id="receive">ポイントのうち、
+            参加者２が<input maxlength="3" style="width: 50px;" type="text" id="multiply">％を参加者３に渡す
+            <input type="button" value="計算する" onclick="pi()">
+        </li>
+        <li>
+            あなたの最終的なポイント：<span id="piP">100</span>ポイント
+        </li>
+        <li>
+            参加者２の最終的なポイント：<span id="piD">100</span>ポイント
+        </li>
+        <li>
+            参加者３の最終的なポイント：<span id="piR">0</span>ポイント
+        </li>
+    </ul>
+</div>
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+
+    function pi() {
+        var receive = parseInt(document.getElementById("receive").value);
+        var multiply = parseInt(document.getElementById("multiply").value);
+
+        var piP = document.getElementById("piP");
+        var cal_piP = 100 - receive;
+        var cal_piP = Math.round(cal_piP);
+        piP.innerText = cal_piP;
+
+        var piD = document.getElementById("piD");
+        var cal_piD = 100 - (multiply / 100 - 1) * receive;
+        var cal_piD = Math.round(cal_piD);
+        piD.innerText = cal_piD;
+
+        var piR = document.getElementById("piR");
+        var cal_piR = receive * multiply/100;
+        var cal_piR = Math.round(cal_piR);
+        piR.innerText = cal_piR;
+    }
+
+</script>
+
+{% endblock %}

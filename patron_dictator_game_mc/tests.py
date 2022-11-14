@@ -1,7 +1,7 @@
-from otree.api import Currency as c, currency_range
-from . import pages
-from ._builtin import Bot
-from .models import Constants
+from otree.api import Currency as cu, currency_range
+from . import *
+from otree.api import Bot
+
 
 
 class PlayerBot(Bot):
