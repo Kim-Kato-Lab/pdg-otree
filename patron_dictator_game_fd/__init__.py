@@ -103,7 +103,7 @@ page_sequence = [
     WaitForPatron,
     Allocation,
     WaitForDictator,
-    Investment,
+    Send,
     ResultsWaitPage,
     Results,
     ShuffleWaitPage
