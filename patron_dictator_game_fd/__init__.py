@@ -45,7 +45,7 @@ def set_payoffs(group: Group):
     receiver.payoff = (group.allocation / 100) * group.send
 
 # PAGES
-class Investment(Page):
+class Send(Page):
     form_model = 'group'
     form_fields = ['send']
 
