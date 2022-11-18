@@ -2,54 +2,73 @@
 {% load otree static %}
 
 {% block title %}
-    あなたの選択
+    選択：あなたはメンバーPです
 {% endblock %}
 
 {% block content %}
 
-<div id="paragraph1">
-    あなたは<b>参加者１</b>です。
+<div id="current situation">
+  現在、あなたは{{ C.ENDOWMENT }}を保有しています。
+  <br>
+  あなたは{{ C.ENDOWMENT }}のうち何ポイントを同じグループのメンバーDに渡すか決めてください。
 </div>
-
 <br>
-
-<div id="paragraph2">
-    あなたが持っている {{ C.ENDOWMENT }} からいくらを<b>参加者２</b>に渡すかを決めてください。
+<div id="about dictator">
+  ただし、メンバーDも{{ C.ENDOWMENT }}を保有しています。
+  <br>
+  また、メンバーDはあなたから受け取ったポイントを0～200％にしてメンバーRに渡します。
+  <br>
+  <ul>
+    <li>
+      100％より低い場合、メンバーDはあなたから受け取ったポイントの一部をメンバーRに渡します。残ったポイントはメンバーDのものになります。
+    </li>
+    <li>
+      100％より大きい場合、あなたから受け取ったポイントとメンバーDのポイントの一部をメンバーRに渡します。
+    </li>
+  </ul>
 </div>
-
 <br>
-
-<div id="paragraph3">
-    このあと、参加者２があなたが渡したポイントを参加者２と参加者３にどのようにわけるかを決めます。
-    あなたのポイントの一部が参加者２のポイントになる可能性があります。
-    また、参加者２が自身のポイントを使って、あなたが渡した以上のポイントを参加者３に渡る可能性もあります。
+<div id="form message">
+  0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
 </div>
-
 <br>
-
-<div id="calculator">
-    以下の空欄に数字を打ち込むことで、あなたと他２人の最終的なポイントを計算することができます。
-    <ul>
-        <li>
-            あなたが渡した<input maxlength="3" style="width: 50px;" type="text" id="receive">ポイントのうち、
-            参加者２が<input maxlength="3" style="width: 50px;" type="text" id="multiply">％を参加者３に渡す
-            <input type="button" value="計算する" onclick="pi()">
-        </li>
-        <li>
-            あなたの最終的なポイント：<span id="piP">100</span>ポイント
-        </li>
-        <li>
-            参加者２の最終的なポイント：<span id="piD">100</span>ポイント
-        </li>
-        <li>
-            参加者３の最終的なポイント：<span id="piR">0</span>ポイント
-        </li>
-    </ul>
-</div>
 
 {% formfields %}
-
 {% next_button %}
+
+<hr>
+<div id="calculator">
+    <b>計算機</b>
+    <br>
+    あなたの選択を以下の入力し、「計算する」ボタンを押すと、
+    あなたと他２人の最終的なポイントの予測を確認できます。
+    <br>
+    <br>
+    あなたの選択：
+    <input maxlength="3" style="width: 50px;" type="text" id="send">
+    ポイント（半角数字）をメンバーDに渡す
+    <input type="button" value="計算する" onclick="pi()">
+    <br>
+    <br>
+    <table border="1" style="border-collapse: collapse" width="500">
+      <tr>
+        <th>グループメンバー</th>
+        <th>ポイント</th>
+      </tr>
+      <tr>
+        <td>メンバーP（<b>あなた</b>）</td>
+        <th><span id="piP">？？</span></th>
+      </tr>
+      <tr>
+        <td>メンバーD</td>
+        <th><span id="piD">？？</span></th>
+      </tr>
+      <tr>
+        <td>メンバーR</td>
+        <th><span id="piR">？？</span></th>
+      </tr>
+    </table>
+</div>
 
 {% endblock %}
 
@@ -58,23 +77,42 @@
 <script type="text/javascript">
 
     function pi() {
-        var receive = parseInt(document.getElementById("receive").value);
-        var multiply = parseInt(document.getElementById("multiply").value);
+        var min_multiply = 0;
+        var max_multiply = 200;
+        var send = parseInt(document.getElementById("send").value);
 
         var piP = document.getElementById("piP");
-        var cal_piP = 100 - receive;
+        var cal_piP = 100 - send;
         var cal_piP = Math.round(cal_piP);
         piP.innerText = cal_piP;
 
         var piD = document.getElementById("piD");
-        var cal_piD = 100 - (multiply / 100 - 1) * receive;
-        var cal_piD = Math.round(cal_piD);
-        piD.innerText = cal_piD;
+        var cal_minD = 100 - (min_multiply / 100 - 1) * send;
+        var cal_minD = Math.round(cal_minD);
+        var cal_maxD = 100 - (max_multiply / 100 - 1) * send;
+        var cal_maxD = Math.round(cal_maxD);
+        
+        if (cal_minD == cal_maxD) {
+          piD.innerText = cal_minD
+        } else if (cal_minD > cal_maxD) {
+          piD.innerText = cal_maxD + '～' + cal_minD + '（メンバーDの選択で変化します）';
+        } else {
+          piD.innerText = cal_minD + '～' + cal_maxD + '（メンバーDの選択で変化します）';
+        }
 
         var piR = document.getElementById("piR");
-        var cal_piR = receive * multiply/100;
-        var cal_piR = Math.round(cal_piR);
-        piR.innerText = cal_piR;
+        var cal_minR = send * min_multiply / 100;
+        var cal_minR = Math.round(cal_minR);
+        var cal_maxR = send * max_multiply/100;
+        var cal_maxR = Math.round(cal_maxR);
+        
+        if (cal_minR == cal_maxR) {
+          piR.innerText = cal_minR
+        } else if (cal_minR > cal_maxR) {
+          piR.innerText = cal_maxR + '～' + cal_minR + '（メンバーDの選択で変化します）';
+        } else {
+          piR.innerText = cal_minR + '～' + cal_maxR + '（メンバーDの選択で変化します）';
+        }
     }
 
 </script>
