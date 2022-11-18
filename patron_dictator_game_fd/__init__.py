@@ -45,7 +45,7 @@ def set_payoffs(group: Group):
     receiver.payoff = (group.allocation / 100) * group.send
 
 # PAGES
-class Investment(Page):
+class Send(Page):
     form_model = 'group'
     form_fields = ['send']
 
@@ -69,7 +69,6 @@ class Allocation(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.role == C.DICTATOR_ROLE
-
 
 class WaitForPatron(WaitPage):
     pass
@@ -100,13 +99,12 @@ class ShuffleWaitPage(WaitPage):
     def after_all_players_arrive(subsession: Subsession):
         subsession.group_randomly()
 
-
 page_sequence = [
     WaitForPatron,
     Allocation,
     WaitForDictator,
-    Investment,
+    Send,
     ResultsWaitPage,
     Results,
-    ShuffleWaitPage,
+    ShuffleWaitPage
 ]

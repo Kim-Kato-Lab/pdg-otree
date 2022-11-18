@@ -10,7 +10,7 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game_sd'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 1
+    NUM_ROUNDS = 2
     ENDOWMENT = cu(100)
     MAXIMUM_MULTIPLY = cu(200)
     PATRON_ROLE = "Patron"
@@ -43,7 +43,7 @@ def set_payoffs(group: Group):
     receiver.payoff = (group.allocation / 100) * group.send
 
 # PAGES
-class Investment(Page):
+class Send(Page):
     form_model = 'group'
     form_fields = ['send']
 
