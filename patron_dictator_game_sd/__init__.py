@@ -100,7 +100,7 @@ class ShuffleWaitPage(WaitPage):
 
 page_sequence = [
   WaitForDictator,
-  Investment,
+  Send,
   WaitForPatron,
   Allocation,
   ResultsWaitPage,
