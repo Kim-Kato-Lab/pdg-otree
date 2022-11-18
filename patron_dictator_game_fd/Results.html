@@ -2,34 +2,43 @@
 {% load otree static %}
 
 {% block title %}
-    結果
+    最終的な結果
 {% endblock %}
 
 {% block content %}
-
-<p>
-    <b>あなたの利得は {{ player.payoff }} でした。</b>
-</p>
-
-<p>
-    同じグループの参加者２が {{ dictator_investment }} を参加者３に渡しました。
-</p>
-
-{% if diff < 0 %}
-    <p>
-        参加者１が {{ patron_investment }} を参加者２に渡したので、
-        余った {{ abs_diff }} は参加者２のポイントになりました。
-    </p>
-{% elif diff > 0 %}
-    <p>
-        参加者１が {{ patron_investment }} を参加者２に渡したので、
-        足りない {{ abs_diff }} は参加者２のポイントから補いました。
-    </p>
+{% if player.role == "Patron" %}
+<div id="choice-summary-patron">
+  このグループでは、
+  <br>
+  あなた（メンバーP）が <b>{{ player.group.send }}</b> をメンバーDに送り、
+  <br>
+  メンバーDがそれを <b>{{ player.group.allocation }}％</b>にして、メンバーRに送りました。
+</div>
+{% elif player.role == "Dictator" %}
+<div id="choice-summary-dictator">
+  このグループでは、
+  <br>
+  メンバーPが <b>{{ player.group.send }}</b> をあなた（メンバーD）に送り、
+  <br>
+  あなた（メンバーD）がそれを <b>{{ player.group.allocation }}％</b>にして、メンバーRに送りました。
+</div>
 {% else %}
-    <p>
-        また、参加者１が {{ patron_investment }} を参加者２に渡しました。
-    </p>
+<div id="choice-summary-receiver">
+  このグループでは、
+  <br>
+  メンバーPが <b>{{ player.group.send }}</b> をメンバーDに送り、
+  <br>
+  メンバーDがそれを <b>{{ player.group.allocation }}％</b>にして、あなた（メンバーR）に送りました。
+</div>
 {% endif %}
+
+<br>
+
+<div id="your-payment">
+    <b>したがって、あなたの最終的なポイントは {{ player.payoff }} でした。</b>
+</div>
+
+<br>
 
 {% next_button %}
 

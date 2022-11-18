@@ -85,7 +85,7 @@
         var multiply = parseInt(document.getElementById("multiply").value);
 
         var piP = document.getElementById("piP");
-        piP.innerText = min_send + '～' + max_send;
+        piP.innerText = min_send + '～' + max_send + '（メンバーPの選択で変化します）';
 
         var piD = document.getElementById("piD");
         var cal_minD = 100 - (multiply / 100 - 1) * min_send;
@@ -96,9 +96,9 @@
         if (cal_minD == cal_maxD) {
           piD.innerText = cal_minD
         } else if (cal_minD > cal_maxD) {
-          piD.innerText = cal_maxD + '～' + cal_minD;
+          piD.innerText = cal_maxD + '～' + cal_minD + '（メンバーPの選択で変化します）';
         } else {
-          piD.innerText = cal_minD + '～' + cal_maxD;
+          piD.innerText = cal_minD + '～' + cal_maxD + '（メンバーPの選択で変化します）';
         }
 
         var piR = document.getElementById("piR");
@@ -110,9 +110,9 @@
         if (cal_minR == cal_maxR) {
           piR.innerText = cal_minR
         } else if (cal_minR > cal_maxR) {
-          piR.innerText = cal_maxR + '～' + cal_minR;
+          piR.innerText = cal_maxR + '～' + cal_minR + '（メンバーPの選択で変化します）';
         } else {
-          piR.innerText = cal_minR + '～' + cal_maxR;
+          piR.innerText = cal_minR + '～' + cal_maxR + '（メンバーPの選択で変化します）';
         }
     }
 

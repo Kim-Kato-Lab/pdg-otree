@@ -1,9 +1,10 @@
 from otree.api import *
 
 
-author = 'Your name here'
+author = 'Hiroki Kato'
 doc = """
-Your app description
+Strategic Relationship between Donors and Charities: Patron-Dictator Game (PDG in short).
+This game is the PDG with first-moving dictator treatment.
 """
 
 
@@ -27,7 +28,7 @@ def creating_session(subsession: Subsession):
 
 
 class Group(BaseGroup):
-    send = models.CurrencyField(min=0, max=C.ENDOWMENT)
+    send = models.IntegerField(min=0, max=C.ENDOWMENT)
     allocation = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
 
 
@@ -45,6 +46,15 @@ def set_payoffs(group: Group):
     receiver.payoff = (group.allocation / 100) * group.send
 
 # PAGES
+class Role(Page):
+    pass
+
+class WaitRoleCheck(WaitPage):
+    body_text = """
+    あなたのグループのメンバーが役割を確認しています。
+    しばらくお待ちください。
+    """
+
 class Send(Page):
     form_model = 'group'
     form_fields = ['send']
@@ -71,11 +81,17 @@ class Allocation(Page):
         return player.role == C.DICTATOR_ROLE
 
 class WaitForPatron(WaitPage):
-    pass
+    body_text = """
+    あなたのグループのメンバーPが選択をしています。
+    しばらくお待ちください。
+    """
 
 
 class WaitForDictator(WaitPage):
-    pass
+    body_text = """
+    あなたのグループのメンバーDが選択をしています。
+    しばらくお待ちください。
+    """
 
 
 class ResultsWaitPage(WaitPage):
@@ -83,16 +99,14 @@ class ResultsWaitPage(WaitPage):
 
 
 class Results(Page):
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(
-            patron_investment = player.group.send,
-            dictator_investment = (player.group.allocation / 100) * player.group.send,
-            diff = (player.group.allocation / 100) * player.group.send - player.group.send,
-            abs_diff = abs((player.group.allocation / 100) * player.group.send - player.group.send),
-        )
+    pass
 
 class ShuffleWaitPage(WaitPage):
+    body_text = """
+    他のグループのゲームの終了を待っています。
+    しばらくお待ちください。
+    """
+
     wait_for_all_groups = True
 
     @staticmethod
@@ -100,10 +114,12 @@ class ShuffleWaitPage(WaitPage):
         subsession.group_randomly()
 
 page_sequence = [
-    WaitForPatron,
+    Role,
+    WaitRoleCheck,
     Allocation,
     WaitForDictator,
     Send,
+    WaitForPatron,
     ResultsWaitPage,
     Results,
     ShuffleWaitPage
