@@ -1,0 +1,87 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    このグループでのあなたの役割
+{% endblock %}
+
+{% block content %}
+
+<br>
+{% if participant.first_dictator %}
+{% if player.role == "Patron" %}
+<div id="your-role-first-patron">
+  このグループでは、あなたは <b>メンバーP</b> です。
+  <br>
+  <br>
+  最初に、同じグループのメンバーDがあなたから受け取ったポイントの何％をメンバーRに渡すかを決めます。
+  <br>
+  その後に、あなたが同じグループのメンバーDに渡すポイントを決めます。
+</div>
+{% elif player.role == "Dictator" %}
+<div id="your-role-first-dictator">
+  このグループでは、あなたは <b>メンバーD</b> です。
+  <br>
+  <br>
+  最初に、あなたが同じグループのメンバーPから受け取ったポイントの何％をメンバーRに渡すかを決めます。
+  <br>
+  その後に、同じグループのメンバーPがあなたに渡すポイントを決めます。
+</div>
+{% else %}
+<div id="your-role-first-receiver">
+  このグループでは、あなたは <b>メンバーR</b> です。
+  <br>
+  <br>
+  最初に、同じグループのメンバーDが同じグループのメンバーPから受け取ったポイントの何％をあなたに渡すかを決めます。
+  <br>
+  その後に、同じグループのメンバーPがメンバーDに渡すポイントを決めます。
+  <br>
+  <br>
+  メンバーDとメンバーPの役割を持った参加者の選択が終わるまで、しばらくお待ちください。
+</div>
+{% endif %}
+{% else %}
+{% if player.role == "Patron" %}
+<div id="your-role-second-patron">
+  このグループでは、あなたは <b>メンバーP</b> です。
+  <br>
+  <br>
+  最初に、あなたが同じグループのメンバーDに渡すポイントを決めます。
+  <br>
+  その後に、同じグループのメンバーDがあなたから受け取ったポイントの何％をメンバーRに渡すかを決めます。
+</div>
+{% elif player.role == "Dictator" %}
+<div id="your-role-second-dictator">
+  このグループでは、あなたは <b>メンバーD</b> です。
+  <br>
+  <br>
+  最初に、同じグループのメンバーPがあなたに渡すポイントを決めます。
+  <br>
+  その後に、あなたが同じグループのメンバーPから受け取ったポイントの何％をメンバーRに渡すかを決めます。
+</div>
+{% else %}
+<div id="your-role-second-receiver">
+  このグループでは、あなたは <b>メンバーR</b> です。
+  <br>
+  <br>
+  最初に、同じグループのメンバーPがメンバーDに渡すポイントを決めます。
+  <br>
+  その後に、同じグループのメンバーDが同じグループのメンバーPから受け取ったポイントの何％をあなたに渡すかを決めます。
+  <br>
+  <br>
+  メンバーDとメンバーPの役割を持った参加者の選択が終わるまで、しばらくお待ちください。
+</div>
+{% endif %}
+{% endif %}
+
+<br>
+
+<div id="confirm">
+  <b>あなたの役割を確認したら、下のボタンを押してください。</b>
+</div>
+
+<br>
+
+{% next_button %}
+
+{% endblock %}

@@ -1,0 +1,231 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    選択：あなたは{{ role }}です
+{% endblock %}
+
+{% block content %}
+
+<br>
+
+{% if participant.first_dictator %}
+<div id="first-your-situation">
+  現在、あなたは{{ C.ENDOWMENT }}を持っています。
+  <br>
+  あなたはメンバーPから受け取ったポイントのうち何％をメンバーRに渡すかを決めてください。
+  <ul>
+    <li>
+      100％より低い数字を選択したら、メンバーPから受け取ったポイントの一部をメンバーRに渡します。残ったポイントはあなたのものになります。
+    </li>
+    <li>
+      100％より大きい数字を選択したら、メンバーPから受け取ったポイントとあなたのポイントの一部をメンバーRに渡します。
+    </li>
+  </ul>
+</div>
+<br>
+<div id="first-about-patron">
+    同じグループのメンバーPも{{ C.ENDOWMENT }}を保有しています。
+    <br>
+    あなたの選択の後に、メンバーPはいくらあなたに自身のポイントを渡すか決めます。
+    <br>
+    このとき、<b>メンバーPはあなたがこの画面でどのような選択をしたのかを知っていること</b>に注意してください。
+</div>
+<br>
+<div id="first-form-message">
+  0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+</div>
+{% else %}
+<div id="second-your-situation">
+  現在、あなたは{{ C.ENDOWMENT }}を保有しています。
+  <br>
+  あなたは{{ C.ENDOWMENT }}のうち何ポイントを同じグループのメンバーDに渡すか決めてください。
+</div>
+<br>
+<div id="second-about-dictator">
+  ただし、メンバーDも{{ C.ENDOWMENT }}を保有しています。
+  <br>
+  また、メンバーDはあなたから受け取ったポイントを0～200％にしてメンバーRに渡します。
+  <br>
+  <ul>
+    <li>
+      100％より低い場合、メンバーDはあなたから受け取ったポイントの一部をメンバーRに渡します。残ったポイントはメンバーDのものになります。
+    </li>
+    <li>
+      100％より大きい場合、あなたから受け取ったポイントとメンバーDのポイントの一部をメンバーRに渡します。
+    </li>
+  </ul>
+</div>
+<br>
+<div id="second-form-message">
+  0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+</div>
+<br>
+{% endif %}
+
+<br>
+
+{% formfields %}
+{% next_button %}
+
+<hr>
+
+{% if participant.first_dictator %}
+<div id="first-dictator-calculator">
+    <b>計算機</b>
+    <br>
+    あなたの選択を以下の入力し、「計算する」ボタンを押すと、
+    あなたと他２人の最終的なポイントの予測を確認できます。
+    <br>
+    <br>
+    あなたの選択：メンバーPから受け取ったポイントのうち
+    <input maxlength="3" style="width: 50px;" type="text" id="multiply">
+    ％（半角数字）をメンバーRに渡す
+    <input type="button" value="計算する" onclick="pi()">
+    <br>
+    <br>
+    <table border="1" style="border-collapse: collapse" width="500">
+      <tr>
+        <th>グループメンバー</th>
+        <th>ポイント</th>
+      </tr>
+      <tr>
+        <td>メンバーP</td>
+        <th><span id="piP">？？</span></th>
+      </tr>
+      <tr>
+        <td>メンバーD（<b>あなた</b>）</td>
+        <th><span id="piD">？？</span></th>
+      </tr>
+      <tr>
+        <td>メンバーR</td>
+        <th><span id="piR">？？</span></th>
+      </tr>
+    </table>
+</div>
+{% else %}
+<div id="first-patron-calculator">
+  <b>計算機</b>
+  <br>
+  あなたの選択を以下の入力し、「計算する」ボタンを押すと、
+  あなたと他２人の最終的なポイントの予測を確認できます。
+  <br>
+  <br>
+  あなたの選択：
+  <input maxlength="3" style="width: 50px;" type="text" id="send">
+  ポイント（半角数字）をメンバーDに渡す
+  <input type="button" value="計算する" onclick="pi()">
+  <br>
+  <br>
+  <table border="1" style="border-collapse: collapse" width="500">
+    <tr>
+      <th>グループメンバー</th>
+      <th>ポイント</th>
+    </tr>
+    <tr>
+      <td>メンバーP（<b>あなた</b>）</td>
+      <th><span id="piP">？？</span></th>
+    </tr>
+    <tr>
+      <td>メンバーD</td>
+      <th><span id="piD">？？</span></th>
+    </tr>
+    <tr>
+      <td>メンバーR</td>
+      <th><span id="piR">？？</span></th>
+    </tr>
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+
+{% if participant.first_dictator %}
+<script type="text/javascript">
+
+    function pi() {
+        var min_send = 0;
+        var max_send = 100;
+        var multiply = parseInt(document.getElementById("multiply").value);
+
+        var piP = document.getElementById("piP");
+        piP.innerText = min_send + '～' + max_send + '（メンバーPの選択で変化します）';
+
+        var piD = document.getElementById("piD");
+        var cal_minD = 100 - (multiply / 100 - 1) * min_send;
+        var cal_minD = Math.round(cal_minD);
+        var cal_maxD = 100 - (multiply / 100 - 1) * max_send;
+        var cal_maxD = Math.round(cal_maxD);
+
+        if (cal_minD == cal_maxD) {
+          piD.innerText = cal_minD
+        } else if (cal_minD > cal_maxD) {
+          piD.innerText = cal_maxD + '～' + cal_minD + '（メンバーPの選択で変化します）';
+        } else {
+          piD.innerText = cal_minD + '～' + cal_maxD + '（メンバーPの選択で変化します）';
+        }
+
+        var piR = document.getElementById("piR");
+        var cal_minR = min_send * multiply/100;
+        var cal_minR = Math.round(cal_minR);
+        var cal_maxR = max_send * multiply / 100;
+        var cal_maxR = Math.round(cal_maxR);
+        
+        if (cal_minR == cal_maxR) {
+          piR.innerText = cal_minR
+        } else if (cal_minR > cal_maxR) {
+          piR.innerText = cal_maxR + '～' + cal_minR + '（メンバーPの選択で変化します）';
+        } else {
+          piR.innerText = cal_minR + '～' + cal_maxR + '（メンバーPの選択で変化します）';
+        }
+    }
+
+</script>
+{% else %}
+<script type="text/javascript">
+
+  function pi() {
+    var min_multiply = 0;
+    var max_multiply = 200;
+    var send = parseInt(document.getElementById("send").value);
+
+    var piP = document.getElementById("piP");
+    var cal_piP = 100 - send;
+    var cal_piP = Math.round(cal_piP);
+    piP.innerText = cal_piP;
+
+    var piD = document.getElementById("piD");
+    var cal_minD = 100 - (min_multiply / 100 - 1) * send;
+    var cal_minD = Math.round(cal_minD);
+    var cal_maxD = 100 - (max_multiply / 100 - 1) * send;
+    var cal_maxD = Math.round(cal_maxD);
+
+    if (cal_minD == cal_maxD) {
+      piD.innerText = cal_minD
+    } else if (cal_minD > cal_maxD) {
+      piD.innerText = cal_maxD + '～' + cal_minD + '（メンバーDの選択で変化します）';
+    } else {
+      piD.innerText = cal_minD + '～' + cal_maxD + '（メンバーDの選択で変化します）';
+    }
+
+    var piR = document.getElementById("piR");
+    var cal_minR = send * min_multiply / 100;
+    var cal_minR = Math.round(cal_minR);
+    var cal_maxR = send * max_multiply / 100;
+    var cal_maxR = Math.round(cal_maxR);
+
+    if (cal_minR == cal_maxR) {
+      piR.innerText = cal_minR
+    } else if (cal_minR > cal_maxR) {
+      piR.innerText = cal_maxR + '～' + cal_minR + '（メンバーDの選択で変化します）';
+    } else {
+      piR.innerText = cal_minR + '～' + cal_maxR + '（メンバーDの選択で変化します）';
+    }
+  }
+
+</script>
+{% endif %}
+
+{% endblock %}
