@@ -2,7 +2,7 @@ from otree.api import *
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'survey'
+    NAME_IN_URL = 'quiz'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
@@ -16,44 +16,32 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    age = models.IntegerField(label='What is your age?', min=13, max=125)
-    gender = models.StringField(
-        choices=[['Male', 'Male'], ['Female', 'Female']],
-        label='What is your gender?',
-        widget=widgets.RadioSelect,
+    quiz1_patron = models.IntegerField(
+      label = '''
+      メンバーPの最終的な獲得ポイントはいくらですか？
+      0～200の整数（半角数字）で解答してください。''',
+      min = 0, max = 200
     )
-    crt_bat = models.IntegerField(
-        label='''
-        A bat and a ball cost 22 dollars in total.
-        The bat costs 20 dollars more than the ball.
-        How many dollars does the ball cost?'''
+    quiz1_dictator = models.IntegerField(
+      label = '''
+      メンバーDの最終的な獲得ポイントはいくらですか？
+      0～200の整数（半角数字）で解答してください。''',
+      min = 0, max = 200
     )
-    crt_widget = models.IntegerField(
-        label='''
-        "If it takes 5 machines 5 minutes to make 5 widgets,
-        how many minutes would it take 100 machines to make 100 widgets?"
-        '''
-    )
-    crt_lake = models.IntegerField(
-        label='''
-        In a lake, there is a patch of lily pads.
-        Every day, the patch doubles in size.
-        If it takes 48 days for the patch to cover the entire lake,
-        how many days would it take for the patch to cover half of the lake?
-        '''
+    quiz1_receiver = models.IntegerField(
+      label = '''
+      メンバーRの最終的な獲得ポイントはいくらですか？
+      0～200の整数（半角数字）で解答してください。''',
+      min = 0, max = 200
     )
 
 
 # FUNCTIONS
 # PAGES
-class Demographics(Page):
+class Quiz1(Page):
     form_model = 'player'
-    form_fields = ['age', 'gender']
+    form_fields = ['quiz1_patron', 'quiz1_dictator', 'quiz1_receiver']
 
-
-class CognitiveReflectionTest(Page):
-    form_model = 'player'
-    form_fields = ['crt_bat', 'crt_widget', 'crt_lake']
-
-
-page_sequence = [Demographics, CognitiveReflectionTest]
+page_sequence = [
+  Quiz1
+]
