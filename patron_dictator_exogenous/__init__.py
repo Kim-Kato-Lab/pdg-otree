@@ -163,7 +163,22 @@ class ResultsWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
 
 class Results(Page):
-    pass
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        import random
+        participant = player.participant
+        
+        if player.round_number == C.NUM_ROUNDS:
+            selected_round = []
+            while len(selected_round) < 2:
+                n = random.randint(1, C.NUM_ROUNDS)
+                if not n in selected_round:
+                    selected_round.append(n)
+            participant.selected_round = selected_round
+            each_realized_payoff = [float(player.in_round(n).payoff) for n in selected_round]
+            realized_payoff = sum(each_realized_payoff)
+            participant.payoff = realized_payoff
 
 class ShuffleWaitPage(WaitPage):
     body_text = """

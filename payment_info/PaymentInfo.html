@@ -2,35 +2,39 @@
 {% load otree %}
 
 {% block title %}
-    Thank you
+    実験のご協力ありがとうございます
 {% endblock %}
 
 {% block content %}
 
-    <p>
-        <em>Below are examples of messages that could be displayed for different experimental settings.</em>
-    </p>
-
-    <div class="panel panel-default" style="margin-bottom:10px">
-        <div class="panel-body">
-            <p><strong>Laboratory:</strong></p>
-            <p>Please remain seated until your number is called. Then take your number card, and proceed to the cashier.</p>
-            <p><em>Note: For the cashier in the laboratory, oTree can print a list of payments for all participants as a PDF.</em></p>
-        </div>
-    </div>
-
-    <div class="panel panel-default" style="margin-bottom:10px">
-        <div class="panel-body">
-            <p><strong>Classroom:</strong></p>
-            <p><em>If you want to keep track of how students did, the easiest thing is to assign the starting links to students by name.
-                It is even possible to give each student a single permanent link for a whole semester using Rooms;
-                so no need to waste time in each lecture with handing out new links and keeping track of which student uses which link.
-                Alternatively, you may just give
-                students anonymous links or secret nicknames.</em>
-            </p>
-        </div>
-    </div>
-
+<div id="payment-information">
+  これで実験は終了となります。
+  報酬は<b>参加費</b>と<b>成果報酬</b>の合計です。
+  <ul>
+    <li>
+      参加費：{{ participation_fee }}
+    </li>
+    <li>
+      成果報酬：10ラウンドの実験のうち、ランダムに2つのラウンドを選びます。
+      各ラウンドで獲得したあなたのポイントを合計し、それを成果報酬とします。
+      1ポイント＝5円で成果報酬が円に換算されます。
+    </li>
+  </ul>
+</div>
+<br>
+<div id="realized-payment">
+  あなたの報酬は以下の通りです。
+  <ul>
+    <li>参加費：{{ participation_fee }}</li>
+    <li>成果報酬：{{ realized_payoff }}（{{ p4p }}）</li>
+    <li>最終的な実験報酬：<b>{{ get_money }}</b></li>
+  </ul>
+</div>
+<br>
+<div id="please-wait">
+  このあと、お一人ずつ呼んで、実験報酬をお支払いします。
+  今しばらくお待ちください。
+</div>
 
 {% endblock %}
 
