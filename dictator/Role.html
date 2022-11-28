@@ -1,0 +1,38 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    このグループでのあなたの役割
+{% endblock %}
+
+{% block content %}
+
+<br>
+
+{% if player.role == "Patron" %}
+<div id="your-role-first-patron">
+  このグループでは、あなたは <b>送り手</b> です。
+  <br>
+  あなたが同じグループの受け手に渡すポイントを決めます。
+</div>
+{% else %}
+<div id="your-role-first-receiver">
+  このグループでは、あなたは <b>受け手</b> です。
+  <br>
+  同じグループの送り手があなたに渡すポイントを決めます。
+  <br>
+  送り手の役割を持った参加者の選択が終わるまで、しばらくお待ちください。
+</div>
+{% endif %}
+
+<br>
+
+<div id="confirm">
+  <b>あなたの役割を確認したら、下のボタンを押してください。</b>
+</div>
+
+<br>
+
+{% next_button %}
+
+{% endblock %}

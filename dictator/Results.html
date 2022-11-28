@@ -1,21 +1,33 @@
 {% extends "global/Page.html" %}
-{% load otree %}
+{% load otree static %}
 
 {% block title %}
-    Results
+    最終的な結果
 {% endblock %}
 
 {% block content %}
-    <p>
+{% if player.role == "Patron" %}
+<div id="choice-summary-patron">
+  このグループでは、
+  <br>
+  あなた（送り手）が <b>{{ player.group.send }}ポイント</b> を受け手に送りました。
+</div>
+{% else %}
+<div id="choice-summary-receiver">
+  このグループでは、
+  <br>
+  送り手が <b>{{ player.group.send }}ポイント</b> をあなた（受け手）に送りました。
+</div>
+{% endif %}
 
-        {% if player.id_in_group == 1 %}
-            You decided to keep <strong>{{ group.kept }}</strong> for yourself.
-        {% else %}
-            Participant 1 decided to keep <strong>{{ group.kept }}</strong>, so
-            you got <strong>{{ offer }}</strong>.
-        {% endif %}
+<br>
 
-        {% next_button %}
-    </p>
-    {% include C.INSTRUCTIONS_TEMPLATE %}
+<div id="your-payment">
+    <b>したがって、あなたの最終的なポイントは {{ player.payoff }} でした。</b>
+</div>
+
+<br>
+
+{% next_button %}
+
 {% endblock %}

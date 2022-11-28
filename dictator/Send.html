@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    選択：あなたは送り手です
+{% endblock %}
+
+{% block content %}
+
+<div id="current-situation">
+    現在、あなたは{{ C.ENDOWMENT }}を保有しています。
+    <br>
+    あなたは{{ C.ENDOWMENT }}のうち何ポイントを同じグループの受け手に渡すか決めてください。
+</div>
+<br>
+<div id="form message">
+  0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+</div>
+
+<br>
+{% formfields %}
+{% next_button %}
+
+{% endblock %}
