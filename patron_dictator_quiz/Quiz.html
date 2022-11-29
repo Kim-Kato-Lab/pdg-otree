@@ -1,0 +1,37 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+{% block title %}
+確認問題 ({{ num }}/5)
+{% endblock %}
+
+{% block content %}
+<style>
+  .situation{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+</style>
+
+<p>以下の状況を想像してください。</p>
+
+<div class="situation">
+  <p>
+    メンバーPが初めに保有しているポイントは <b>100</b> ポイントです。
+    メンバーDが初めに保有しているポイントは <b>100</b> ポイントです。
+    メンバーRが初めに保有しているポイントは <b>0</b> ポイントです。
+  </p>
+  <p>
+    ここで、メンバーPは自身のポイントのうち <b>{{ send }}</b> ポイントをメンバーDに渡し、
+    メンバーDは受け取ったポイントを <b>{{ allocation }}％</b> にしてメンバーRに渡しました。
+  </p>
+</div>
+
+<p>以下の設問について解答してください。</p>
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}
