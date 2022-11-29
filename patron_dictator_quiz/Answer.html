@@ -12,6 +12,13 @@
     border-radius: 10px;
     border: 1px solid black;
   }
+  .oneline img{
+    vertical-align: middle;
+    display: inline-block;
+  }
+  .oneline span{
+    display: inline-block;
+  }
 </style>
 
 <p>以下の状況を想像してください。</p>
@@ -31,7 +38,12 @@
 <p>以下の設問について解答してください。</p>
 
 <div class="your answer 1">
-  <p>メンバーPの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</p>
+  <p class="oneline">
+    {% if error_patron %}
+    <img src="{{ static 'patron_dictator_quiz/incorrection.png' }}" width="20"/>
+    {% endif %}
+    <span>メンバーPの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
+  </p>
   <ul>
     <li>あなたの解答：{{ answer_patron }}ポイント</li>
     <li>正解：{{ correct_patron }}ポイント</li>
@@ -39,7 +51,12 @@
 </div>
 
 <div class="your answer 2">
-  <p>メンバーDの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</p>
+  <p class="oneline">
+    {% if error_dictator %}
+    <img src="{{ static 'patron_dictator_quiz/incorrection.png' }}" width="20"/>
+    {% endif %}
+    <span>メンバーDの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
+  </p>
   <ul>
     <li>あなたの解答：{{ answer_dictator }}ポイント</li>
     <li>正解：{{ correct_dictator }}ポイント</li>
@@ -47,7 +64,12 @@
 </div>
 
 <div class="your answer 3">
-  <p>メンバーRの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</p>
+  <p class="oneline">
+    {% if error_receiver %}
+    <img src="{{ static 'patron_dictator_quiz/incorrection.png' }}" width="20"/>
+    {% endif %}
+    <span>メンバーRの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
+  </p>
   <ul>
     <li>あなたの解答：{{ answer_receiver }}ポイント</li>
     <li>正解：{{ correct_receiver }}ポイント</li>

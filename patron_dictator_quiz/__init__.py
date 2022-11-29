@@ -39,104 +39,53 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    # Quiz1
-    quiz1_patron = models.IntegerField(
-        label = '''
-        メンバーPの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-    quiz1_dictator = models.IntegerField(
-        label = '''
-        メンバーDの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-    quiz1_receiver = models.IntegerField(
-        label = '''
-        メンバーRの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
+    pass
 
-    # Quiz2
-    quiz2_patron = models.IntegerField(
-        label = '''
-        メンバーPの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
+for i in range(5):
+    setattr(
+        Player,
+        'quiz' + str(i + 1) +'_patron',
+        models.IntegerField(
+            label = '''
+            メンバーPの最終的な獲得ポイントはいくらですか？
+            0～200の整数（半角数字）で解答してください。''',
+            min = 0, max = 200
+        )
     )
-    quiz2_dictator = models.IntegerField(
-        label = '''
-        メンバーDの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
+    setattr(
+        Player,
+        'quiz' + str(i + 1) +'_dictator',
+        models.IntegerField(
+            label = '''
+            メンバーDの最終的な獲得ポイントはいくらですか？
+            0～200の整数（半角数字）で解答してください。''',
+            min = 0, max = 200
+        )
     )
-    quiz2_receiver = models.IntegerField(
-        label = '''
-        メンバーRの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
+    setattr(
+        Player,
+        'quiz' + str(i + 1) +'_receiver',
+        models.IntegerField(
+            label = '''
+            メンバーRの最終的な獲得ポイントはいくらですか？
+            0～200の整数（半角数字）で解答してください。''',
+            min = 0, max = 200
+        )
     )
-
-    # Quiz3
-    quiz3_patron = models.IntegerField(
-        label = '''
-        メンバーPの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
+    setattr(
+        Player,
+        'correct' + str(i + 1) + '_patron',
+        models.IntegerField()
     )
-    quiz3_dictator = models.IntegerField(
-        label = '''
-        メンバーDの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
+    setattr(
+        Player,
+        'correct' + str(i + 1) + '_dictator',
+        models.IntegerField()
     )
-    quiz3_receiver = models.IntegerField(
-        label = '''
-        メンバーRの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-
-    # Quiz4
-    quiz4_patron = models.IntegerField(
-        label = '''
-        メンバーPの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-    quiz4_dictator = models.IntegerField(
-        label = '''
-        メンバーDの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-    quiz4_receiver = models.IntegerField(
-        label = '''
-        メンバーRの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-
-    # Quiz5
-    quiz5_patron = models.IntegerField(
-        label = '''
-        メンバーPの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-    quiz5_dictator = models.IntegerField(
-        label = '''
-        メンバーDの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
-    )
-    quiz5_receiver = models.IntegerField(
-        label = '''
-        メンバーRの最終的な獲得ポイントはいくらですか？
-        0～200の整数（半角数字）で解答してください。''',
-        min = 0, max = 200
+    setattr(
+        Player,
+        'correct' + str(i + 1) + '_receiver',
+        models.IntegerField()
     )
 
 
@@ -155,6 +104,13 @@ class Quiz1(Page):
             send = C.Q1_SEND,
             allocation = C.Q1_ALLOCATION
         )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        player.correct1_patron = round(C.ENDOWMENT - C.Q1_SEND)
+        player.correct1_dictator = round(C.ENDOWMENT - (C.Q1_ALLOCATION / 100 - 1) * C.Q1_SEND)
+        player.correct1_receiver = round((C.Q1_ALLOCATION / 100) * C.Q1_SEND)
+
 
 class Quiz2(Page):
     template_name = 'patron_dictator_quiz/Quiz.html'
@@ -169,6 +125,12 @@ class Quiz2(Page):
             send = C.Q2_SEND,
             allocation = C.Q2_ALLOCATION
         )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        player.correct2_patron = round(C.ENDOWMENT - C.Q2_SEND)
+        player.correct2_dictator = round(C.ENDOWMENT - (C.Q2_ALLOCATION / 100 - 1) * C.Q2_SEND)
+        player.correct2_receiver = round((C.Q2_ALLOCATION / 100) * C.Q2_SEND)
 
 class Quiz3(Page):
     template_name = 'patron_dictator_quiz/Quiz.html'
@@ -183,6 +145,12 @@ class Quiz3(Page):
             send = C.Q3_SEND,
             allocation = C.Q3_ALLOCATION
         )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        player.correct3_patron = round(C.ENDOWMENT - C.Q3_SEND)
+        player.correct3_dictator = round(C.ENDOWMENT - (C.Q3_ALLOCATION / 100 - 1) * C.Q3_SEND)
+        player.correct3_receiver = round((C.Q3_ALLOCATION / 100) * C.Q3_SEND)
 
 class Quiz4(Page):
     template_name = 'patron_dictator_quiz/Quiz.html'
@@ -197,6 +165,12 @@ class Quiz4(Page):
             send = C.Q4_SEND,
             allocation = C.Q4_ALLOCATION
         )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        player.correct4_patron = round(C.ENDOWMENT - C.Q4_SEND)
+        player.correct4_dictator = round(C.ENDOWMENT - (C.Q4_ALLOCATION / 100 - 1) * C.Q4_SEND)
+        player.correct4_receiver = round((C.Q4_ALLOCATION / 100) * C.Q4_SEND)
 
 class Quiz5(Page):
     template_name = 'patron_dictator_quiz/Quiz.html'
@@ -211,16 +185,18 @@ class Quiz5(Page):
             send = C.Q5_SEND,
             allocation = C.Q5_ALLOCATION
         )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        player.correct5_patron = round(C.ENDOWMENT - C.Q5_SEND)
+        player.correct5_dictator = round(C.ENDOWMENT - (C.Q5_ALLOCATION / 100 - 1) * C.Q5_SEND)
+        player.correct5_receiver = round((C.Q5_ALLOCATION / 100) * C.Q5_SEND)
 
 class Answer1(Page):
     template_name = 'patron_dictator_quiz/Answer.html'
 
     @staticmethod
     def vars_for_template(player: Player):
-        cal_patron = round(C.ENDOWMENT - C.Q1_SEND)
-        cal_dictator = round(C.ENDOWMENT - (C.Q1_ALLOCATION / 100 - 1) * C.Q1_SEND)
-        cal_receiver = round((C.Q1_ALLOCATION / 100) * C.Q1_SEND)
-
         return dict(
             num = 1,
             send = C.Q1_SEND,
@@ -228,24 +204,27 @@ class Answer1(Page):
             answer_patron = player.quiz1_patron,
             answer_dictator = player.quiz1_dictator,
             answer_receiver = player.quiz1_receiver,
-            correct_patron = cal_patron,
-            correct_dictator = cal_dictator,
-            correct_receiver = cal_receiver,
+            correct_patron = player.correct1_patron,
+            correct_dictator = player.correct1_dictator,
+            correct_receiver = player.correct1_receiver,
+            error_patron = player.quiz1_patron != player.correct1_patron,
+            error_dictator = player.quiz1_dictator != player.correct1_dictator,
+            error_receiver = player.quiz1_receiver != player.correct1_receiver,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
                 + str(C.Q1_SEND)
                 + 'ポイントを渡すので、自身のポイントは'
-                + str(cal_patron)
+                + str(player.correct1_patron)
                 + 'ポイントとなります。メンバーDは受け取った'
                 + str(C.Q1_SEND)
                 + 'ポイントを'
                 + str(C.Q1_ALLOCATION)
                 + '％にしてメンバーRに渡します。すなわち、メンバーDは'
-                + str(cal_receiver)
+                + str(player.correct1_receiver)
                 + 'ポイントをメンバーRに渡します。したがって、メンバーRに渡すポイントはメンバーPから受け取ったポイントで足りるので、メンバーDの最終的なポイントは'
-                + str(cal_dictator)
+                + str(player.correct1_dictator)
                 + 'ポイントのままです。また、メンバーRの最終的なポイントは'
-                + str(cal_receiver)
+                + str(player.correct1_receiver)
                 + 'ポイントです。'
             )
         )
@@ -255,10 +234,6 @@ class Answer2(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        cal_patron = round(C.ENDOWMENT - C.Q2_SEND)
-        cal_dictator = round(C.ENDOWMENT - (C.Q2_ALLOCATION / 100 - 1) * C.Q2_SEND)
-        cal_receiver = round((C.Q2_ALLOCATION / 100) * C.Q2_SEND)
-
         return dict(
             num = 2,
             send = C.Q2_SEND,
@@ -266,24 +241,27 @@ class Answer2(Page):
             answer_patron = player.quiz2_patron,
             answer_dictator = player.quiz2_dictator,
             answer_receiver = player.quiz2_receiver,
-            correct_patron = cal_patron,
-            correct_dictator = cal_dictator,
-            correct_receiver = cal_receiver,
+            correct_patron = player.correct2_patron,
+            correct_dictator = player.correct2_dictator,
+            correct_receiver = player.correct2_receiver,
+            error_patron = player.quiz2_patron != player.correct2_patron,
+            error_dictator = player.quiz2_dictator != player.correct2_dictator,
+            error_receiver = player.quiz2_receiver != player.correct2_receiver,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
                 + str(C.Q2_SEND)
                 + 'ポイントを渡すので、自身のポイントは'
-                + str(cal_patron)
+                + str(player.correct2_patron)
                 + 'ポイントとなります。メンバーDは受け取った'
                 + str(C.Q2_SEND)
                 + 'ポイントを'
                 + str(C.Q2_ALLOCATION)
                 + '％にしてメンバーRに渡します。すなわち、メンバーDは'
-                + str(cal_receiver)
+                + str(player.correct2_receiver)
                 + 'ポイントをメンバーRに渡します。メンバーRに渡すポイントはメンバーPから受け取ったポイントで足りないので、メンバーDは不足分を自身が保有するポイントで補います。したがって、メンバーDの最終的なポイントは'
-                + str(cal_dictator)
+                + str(player.correct2_dictator)
                 + 'ポイントです。また、メンバーRの最終的なポイントは'
-                + str(cal_receiver)
+                + str(player.correct2_receiver)
                 + 'ポイントです。'
             )
         )
@@ -293,10 +271,6 @@ class Answer3(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        cal_patron = round(C.ENDOWMENT - C.Q3_SEND)
-        cal_dictator = round(C.ENDOWMENT - (C.Q3_ALLOCATION / 100 - 1) * C.Q3_SEND)
-        cal_receiver = round((C.Q3_ALLOCATION / 100) * C.Q3_SEND)
-
         return dict(
             num = 3,
             send = C.Q3_SEND,
@@ -304,24 +278,27 @@ class Answer3(Page):
             answer_patron = player.quiz3_patron,
             answer_dictator = player.quiz3_dictator,
             answer_receiver = player.quiz3_receiver,
-            correct_patron = cal_patron,
-            correct_dictator = cal_dictator,
-            correct_receiver = cal_receiver,
+            correct_patron = player.correct3_patron,
+            correct_dictator = player.correct3_dictator,
+            correct_receiver = player.correct3_receiver,
+            error_patron = player.quiz3_patron != player.correct3_patron,
+            error_dictator = player.quiz3_dictator != player.correct3_dictator,
+            error_receiver = player.quiz3_receiver != player.correct3_receiver,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
                 + str(C.Q3_SEND)
                 + 'ポイントを渡すので、自身のポイントは'
-                + str(cal_patron)
+                + str(player.correct3_patron)
                 + 'ポイントとなります。メンバーDは受け取った'
                 + str(C.Q3_SEND)
                 + 'ポイントを'
                 + str(C.Q3_ALLOCATION)
                 + '％にしてメンバーRに渡します。すなわち、メンバーDは'
-                + str(cal_receiver)
+                + str(player.correct3_receiver)
                 + 'ポイントをメンバーRに渡します。メンバーDがメンバーPから受け取ったポイントをメンバーRに渡しても、メンバーPから受け取ったポイントに余りが生じるので、余ったポイントはメンバーDのポイントになります。したがって、メンバーDの最終的なポイントは'
-                + str(cal_dictator)
+                + str(player.correct3_dictator)
                 + 'ポイントです。また、メンバーRの最終的なポイントは'
-                + str(cal_receiver)
+                + str(player.correct3_receiver)
                 + 'ポイントです。'
             )
         )
@@ -331,10 +308,6 @@ class Answer4(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        cal_patron = round(C.ENDOWMENT - C.Q4_SEND)
-        cal_dictator = round(C.ENDOWMENT - (C.Q4_ALLOCATION / 100 - 1) * C.Q4_SEND)
-        cal_receiver = round((C.Q4_ALLOCATION / 100) * C.Q4_SEND)
-
         return dict(
             num = 4,
             send = C.Q4_SEND,
@@ -342,16 +315,19 @@ class Answer4(Page):
             answer_patron = player.quiz4_patron,
             answer_dictator = player.quiz4_dictator,
             answer_receiver = player.quiz4_receiver,
-            correct_patron = cal_patron,
-            correct_dictator = cal_dictator,
-            correct_receiver = cal_receiver,
+            correct_patron = player.correct4_patron,
+            correct_dictator = player.correct4_dictator,
+            correct_receiver = player.correct4_receiver,
+            error_patron = player.quiz4_patron != player.correct4_patron,
+            error_dictator = player.quiz4_dictator != player.correct4_dictator,
+            error_receiver = player.quiz4_receiver != player.correct4_receiver,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、自身のポイントをメンバーDに渡さないので、自身のポイントは'
-                + str(cal_patron)
+                + str(player.correct4_patron)
                 + 'ポイントとなります。また、メンバーPはメンバーDにポイントを渡さないので、メンバーDとメンバーRの保有ポイントは変化しません。したがって、メンバーDの最終的なポイントは'
-                + str(cal_dictator)
+                + str(player.correct4_dictator)
                 + 'ポイントです。また、メンバーRの最終的なポイントは'
-                + str(cal_receiver)
+                + str(player.correct4_receiver)
                 + 'ポイントです。'
             )
         )
@@ -361,10 +337,6 @@ class Answer5(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        cal_patron = round(C.ENDOWMENT - C.Q5_SEND)
-        cal_dictator = round(C.ENDOWMENT - (C.Q5_ALLOCATION / 100 - 1) * C.Q5_SEND)
-        cal_receiver = round((C.Q5_ALLOCATION / 100) * C.Q5_SEND)
-
         return dict(
             num = 5,
             send = C.Q5_SEND,
@@ -372,24 +344,27 @@ class Answer5(Page):
             answer_patron = player.quiz5_patron,
             answer_dictator = player.quiz5_dictator,
             answer_receiver = player.quiz5_receiver,
-            correct_patron = cal_patron,
-            correct_dictator = cal_dictator,
-            correct_receiver = cal_receiver,
+            correct_patron = player.correct5_patron,
+            correct_dictator = player.correct5_dictator,
+            correct_receiver = player.correct5_receiver,
+            error_patron = player.quiz5_patron != player.correct5_patron,
+            error_dictator = player.quiz5_dictator != player.correct5_dictator,
+            error_receiver = player.quiz5_receiver != player.correct5_receiver,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
                 + str(C.Q5_SEND)
                 + 'ポイントを渡すので、自身のポイントは'
-                + str(cal_patron)
+                + str(player.correct5_patron)
                 + 'ポイントとなります。メンバーDは受け取った'
                 + str(C.Q5_SEND)
                 + 'ポイントを'
                 + str(C.Q5_ALLOCATION)
                 + '％にしてメンバーRに渡します。すなわち、メンバーDは'
-                + str(cal_receiver)
+                + str(player.correct5_receiver)
                 + 'ポイントをメンバーRに渡します。メンバーDは受け取ったポイントをメンバーRに渡さないので、メンバーPから受け取ったポイントはすべてメンバーDのポイントになります。したがって、メンバーDの最終的なポイントは'
-                + str(cal_dictator)
+                + str(player.correct5_dictator)
                 + 'ポイントです。また、メンバーRの最終的なポイントは'
-                + str(cal_receiver)
+                + str(player.correct5_receiver)
                 + 'ポイントです。'
             )
         )
