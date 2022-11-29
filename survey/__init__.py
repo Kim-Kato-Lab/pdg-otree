@@ -6,8 +6,8 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    ## Socio-economic items
-    SOCIOECON_STR = {
+    ## Questionnaire items
+    STRING_CHOICE = {
         "field": models.StringField,
         "items": {
             "academic_field": {
@@ -20,15 +20,27 @@ class C(BaseConstants):
             }
         }
     }
-    SOCIOECON_INT = {
+    INT_RANGE = {
         "field": models.IntegerField,
         "items": {
             "age": {
-                "question": 'あなたの年齢をお答えください。'
+                "question": 'あなたの年齢をお答えください。',
+                "min": 0,
+                "max": None
+            },
+            "donation": {
+                "question": '''
+                あなたは今500円を持っている状況を想像してください。
+                手持ちの500円からいくらまでならその慈善団体に寄付してもよいですか。
+                <br>
+                寄付する金額を1円刻みで考えて、入力してください。
+                寄付したくない場合は0円を入力してください。''',
+                "min": 0,
+                "max": 500
             }
         }
     }
-    SOCIOECON_INT_CHOICE = {
+    INT_CHOICE = {
         "field": models.IntegerField,
         "items": {
             "experience": {
@@ -70,7 +82,7 @@ class C(BaseConstants):
                     [1, 'はい（経済学部）']
                 ]
             },
-            "donation": {
+            "past_donation": {
                 "question": '''
                 あなたは、この1年間に、<b>金銭による寄付</b>を何円くらいしましたか。
                 <br>
@@ -89,7 +101,7 @@ class C(BaseConstants):
                     [9, '50,000円以上']
                 ]
             },
-            "volunteer": {
+            "past_volunteer": {
                 "question": '''
                 あなたは、この1年間に、<b>ボランティア活動</b>をどのくらいしましたか。
                 <br>
@@ -107,7 +119,72 @@ class C(BaseConstants):
                     [7, '週に数回'],
                     [8, 'ほとんど毎日']
                 ]
+            },
+            "matching_donation": {
+                "question": '''
+                前問と同じ状況で、ある財団の協力を得て、マッチングギフトの仕組みが導入されることになりました。
+                <br>
+                この仕組みは「<b>あなたの選択する寄付額と同じ額を、その財団が上乗せして、2倍の額が寄付先に届けられる</b>」というものです。
+                <br>
+                <b>この仕組みが導入されたとき</b>、あなたは前問で回答した寄付額を変えますか。
+                最も近いものを一つ選んでください。''',
+                "choice": [
+                    [1, '減らす'],
+                    [2, '変えない'],
+                    [3, '増やす']
+                ]
             }
+        }
+    }
+    LIKERT = {
+        "field": models.IntegerField,
+        "choice": [
+            [5, 'ぴったり当てはまる'],
+            [4, 'どちらかというと当てはまる'],
+            [3, 'どちらともいえない'],
+            [2, 'どちらかというと当てはまらない'],
+            [1, '全く当てはまらない']
+        ],
+        "question": {
+            "trust": '一般的に言って、人はだいたい信頼できる',
+            "altruistic": '他の人のためになること（公園のゴミ拾いなど）をすると自分もうれしい',
+            "conformity": '周りの人と同じような行動をとっていると安心だ',
+            "norm": '列で並んでいるところに割り込むことは絶対にしない',
+            "positive_reciprocity": '以前親切にしてくれた人には苦労をいとわず手助けをする',
+            "negative_reciprocity": '誰かが私の機嫌を損ねたら、私もやり返す'
+        }
+    }
+    INEQUALITY = {
+        "field": models.IntegerField,
+        "choice": [
+            [0, '配分パターンA'],
+            [1, '配分パターンB']
+        ],
+        "question": {
+            "inequality1": '''
+            ケース1
+            <br>
+            配分パターンA：あなたは10,000円、他人は10,000円もらう
+            <br>
+            配分パターンB：あなたは10,000円、他人は6,000円もらう''',
+            "inequality2": '''
+            ケース2
+            <br>
+            配分パターンA：あなたは10,000円、他人は10,000円もらう
+            <br>
+            配分パターンB：あなたは16,000円、他人は4,000円もらう''',
+            "inequality3": '''
+            ケース3
+            <br>
+            配分パターンA：あなたは10,000円、他人は10,000円もらう
+            <br>
+            配分パターンB：あなたは10,000円、他人は18,000円もらう''',
+            "inequality4": '''
+            ケース4
+            <br>
+            配分パターンA：あなたは10,000円、他人は10,000円もらう
+            <br>
+            配分パターンB：あなたは11,000円、他人は19,000円もらう'''
         }
     }
 
@@ -122,25 +199,39 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     pass
 
-for k, v in C.SOCIOECON_STR["items"].items():
+for k, v in C.STRING_CHOICE["items"].items():
     setattr(
         Player,
         k,
-        C.SOCIOECON_STR["field"](label = v["question"], choices = v["choice"])
+        C.STRING_CHOICE["field"](label = v["question"], choices = v["choice"])
     )
 
-for k, v in C.SOCIOECON_INT["items"].items():
+for k, v in C.INT_RANGE["items"].items():
     setattr(
         Player,
         k,
-        C.SOCIOECON_INT["field"](label = v["question"])
+        C.INT_RANGE["field"](label = v["question"], min = v["min"], max = v["max"])
     )
 
-for k, v in C.SOCIOECON_INT_CHOICE["items"].items():
+for k, v in C.INT_CHOICE["items"].items():
     setattr(
         Player,
         k,
-        C.SOCIOECON_INT_CHOICE["field"](label = v["question"], choices = v["choice"])
+        C.INT_CHOICE["field"](label = v["question"], choices = v["choice"])
+    )
+
+for k, v in C.LIKERT["question"].items():
+    setattr(
+        Player,
+        k,
+        C.LIKERT["field"](label = v, choices = C.LIKERT["choice"])
+    )
+
+for k, v in C.INEQUALITY["question"].items():
+    setattr(
+        Player,
+        k,
+        C.INEQUALITY["field"](label = v, choices = C.INEQUALITY["choice"])
     )
 
 # FUNCTIONS
@@ -178,10 +269,31 @@ class Altruist(Page):
     template_name = 'survey/SimpleForm.html'
 
     form_model = 'player'
-    form_fields = ['donation', 'volunteer']
+    form_fields = [
+        'past_donation',
+        'past_volunteer'
+    ]
+
+class Likert(Page):
+    form_model = 'player'
+    form_fields = C.LIKERT["question"].keys()
+
+class MatchingDonation(Page):
+    form_model = 'player'
+    form_fields = [
+        'donation',
+        'matching_donation'
+    ]
+
+class Allocation(Page):
+    form_model = 'player'
+    form_fields = C.INEQUALITY["question"].keys()
 
 page_sequence = [
     Demographic,
     Economist,
-    Altruist
+    Altruist,
+    Likert,
+    MatchingDonation,
+    Allocation
 ]
