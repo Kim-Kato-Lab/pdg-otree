@@ -6,6 +6,9 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
+    # initial endowment
+    ENDOWMENT = 100
+
     # Situation of Quiz1
     Q1_SEND = 50
     Q1_ALLOCATION = 100
@@ -209,10 +212,197 @@ class Quiz5(Page):
             allocation = C.Q5_ALLOCATION
         )
 
+class Answer1(Page):
+    template_name = 'patron_dictator_quiz/Answer.html'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        cal_patron = round(C.ENDOWMENT - C.Q1_SEND)
+        cal_dictator = round(C.ENDOWMENT - (C.Q1_ALLOCATION / 100 - 1) * C.Q1_SEND)
+        cal_receiver = round((C.Q1_ALLOCATION / 100) * C.Q1_SEND)
+
+        return dict(
+            num = 1,
+            send = C.Q1_SEND,
+            allocation = C.Q1_ALLOCATION,
+            answer_patron = player.quiz1_patron,
+            answer_dictator = player.quiz1_dictator,
+            answer_receiver = player.quiz1_receiver,
+            correct_patron = cal_patron,
+            correct_dictator = cal_dictator,
+            correct_receiver = cal_receiver,
+            commentary = (
+                'メンバーPはメンバーDの選択に関わらず、メンバーDに'
+                + str(C.Q1_SEND)
+                + 'ポイントを渡すので、自身のポイントは'
+                + str(cal_patron)
+                + 'ポイントとなります。メンバーDは受け取った'
+                + str(C.Q1_SEND)
+                + 'ポイントを'
+                + str(C.Q1_ALLOCATION)
+                + '％にしてメンバーRに渡します。すなわち、メンバーDは'
+                + str(cal_receiver)
+                + 'ポイントをメンバーRに渡します。したがって、メンバーRに渡すポイントはメンバーPから受け取ったポイントで足りるので、メンバーDの最終的なポイントは'
+                + str(cal_dictator)
+                + 'ポイントのままです。また、メンバーRの最終的なポイントは'
+                + str(cal_receiver)
+                + 'ポイントです。'
+            )
+        )
+
+class Answer2(Page):
+    template_name = 'patron_dictator_quiz/Answer.html'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        cal_patron = round(C.ENDOWMENT - C.Q2_SEND)
+        cal_dictator = round(C.ENDOWMENT - (C.Q2_ALLOCATION / 100 - 1) * C.Q2_SEND)
+        cal_receiver = round((C.Q2_ALLOCATION / 100) * C.Q2_SEND)
+
+        return dict(
+            num = 2,
+            send = C.Q2_SEND,
+            allocation = C.Q2_ALLOCATION,
+            answer_patron = player.quiz2_patron,
+            answer_dictator = player.quiz2_dictator,
+            answer_receiver = player.quiz2_receiver,
+            correct_patron = cal_patron,
+            correct_dictator = cal_dictator,
+            correct_receiver = cal_receiver,
+            commentary = (
+                'メンバーPはメンバーDの選択に関わらず、メンバーDに'
+                + str(C.Q2_SEND)
+                + 'ポイントを渡すので、自身のポイントは'
+                + str(cal_patron)
+                + 'ポイントとなります。メンバーDは受け取った'
+                + str(C.Q2_SEND)
+                + 'ポイントを'
+                + str(C.Q2_ALLOCATION)
+                + '％にしてメンバーRに渡します。すなわち、メンバーDは'
+                + str(cal_receiver)
+                + 'ポイントをメンバーRに渡します。メンバーRに渡すポイントはメンバーPから受け取ったポイントで足りないので、メンバーDは不足分を自身が保有するポイントで補います。したがって、メンバーDの最終的なポイントは'
+                + str(cal_dictator)
+                + 'ポイントです。また、メンバーRの最終的なポイントは'
+                + str(cal_receiver)
+                + 'ポイントです。'
+            )
+        )
+
+class Answer3(Page):
+    template_name = 'patron_dictator_quiz/Answer.html'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        cal_patron = round(C.ENDOWMENT - C.Q3_SEND)
+        cal_dictator = round(C.ENDOWMENT - (C.Q3_ALLOCATION / 100 - 1) * C.Q3_SEND)
+        cal_receiver = round((C.Q3_ALLOCATION / 100) * C.Q3_SEND)
+
+        return dict(
+            num = 3,
+            send = C.Q3_SEND,
+            allocation = C.Q3_ALLOCATION,
+            answer_patron = player.quiz3_patron,
+            answer_dictator = player.quiz3_dictator,
+            answer_receiver = player.quiz3_receiver,
+            correct_patron = cal_patron,
+            correct_dictator = cal_dictator,
+            correct_receiver = cal_receiver,
+            commentary = (
+                'メンバーPはメンバーDの選択に関わらず、メンバーDに'
+                + str(C.Q3_SEND)
+                + 'ポイントを渡すので、自身のポイントは'
+                + str(cal_patron)
+                + 'ポイントとなります。メンバーDは受け取った'
+                + str(C.Q3_SEND)
+                + 'ポイントを'
+                + str(C.Q3_ALLOCATION)
+                + '％にしてメンバーRに渡します。すなわち、メンバーDは'
+                + str(cal_receiver)
+                + 'ポイントをメンバーRに渡します。メンバーDがメンバーPから受け取ったポイントをメンバーRに渡しても、メンバーPから受け取ったポイントに余りが生じるので、余ったポイントはメンバーDのポイントになります。したがって、メンバーDの最終的なポイントは'
+                + str(cal_dictator)
+                + 'ポイントです。また、メンバーRの最終的なポイントは'
+                + str(cal_receiver)
+                + 'ポイントです。'
+            )
+        )
+
+class Answer4(Page):
+    template_name = 'patron_dictator_quiz/Answer.html'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        cal_patron = round(C.ENDOWMENT - C.Q4_SEND)
+        cal_dictator = round(C.ENDOWMENT - (C.Q4_ALLOCATION / 100 - 1) * C.Q4_SEND)
+        cal_receiver = round((C.Q4_ALLOCATION / 100) * C.Q4_SEND)
+
+        return dict(
+            num = 4,
+            send = C.Q4_SEND,
+            allocation = C.Q4_ALLOCATION,
+            answer_patron = player.quiz4_patron,
+            answer_dictator = player.quiz4_dictator,
+            answer_receiver = player.quiz4_receiver,
+            correct_patron = cal_patron,
+            correct_dictator = cal_dictator,
+            correct_receiver = cal_receiver,
+            commentary = (
+                'メンバーPはメンバーDの選択に関わらず、自身のポイントをメンバーDに渡さないので、自身のポイントは'
+                + str(cal_patron)
+                + 'ポイントとなります。また、メンバーPはメンバーDにポイントを渡さないので、メンバーDとメンバーRの保有ポイントは変化しません。したがって、メンバーDの最終的なポイントは'
+                + str(cal_dictator)
+                + 'ポイントです。また、メンバーRの最終的なポイントは'
+                + str(cal_receiver)
+                + 'ポイントです。'
+            )
+        )
+
+class Answer5(Page):
+    template_name = 'patron_dictator_quiz/Answer.html'
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        cal_patron = round(C.ENDOWMENT - C.Q5_SEND)
+        cal_dictator = round(C.ENDOWMENT - (C.Q5_ALLOCATION / 100 - 1) * C.Q5_SEND)
+        cal_receiver = round((C.Q5_ALLOCATION / 100) * C.Q5_SEND)
+
+        return dict(
+            num = 5,
+            send = C.Q5_SEND,
+            allocation = C.Q5_ALLOCATION,
+            answer_patron = player.quiz5_patron,
+            answer_dictator = player.quiz5_dictator,
+            answer_receiver = player.quiz5_receiver,
+            correct_patron = cal_patron,
+            correct_dictator = cal_dictator,
+            correct_receiver = cal_receiver,
+            commentary = (
+                'メンバーPはメンバーDの選択に関わらず、メンバーDに'
+                + str(C.Q5_SEND)
+                + 'ポイントを渡すので、自身のポイントは'
+                + str(cal_patron)
+                + 'ポイントとなります。メンバーDは受け取った'
+                + str(C.Q5_SEND)
+                + 'ポイントを'
+                + str(C.Q5_ALLOCATION)
+                + '％にしてメンバーRに渡します。すなわち、メンバーDは'
+                + str(cal_receiver)
+                + 'ポイントをメンバーRに渡します。メンバーDは受け取ったポイントをメンバーRに渡さないので、メンバーPから受け取ったポイントはすべてメンバーDのポイントになります。したがって、メンバーDの最終的なポイントは'
+                + str(cal_dictator)
+                + 'ポイントです。また、メンバーRの最終的なポイントは'
+                + str(cal_receiver)
+                + 'ポイントです。'
+            )
+        )
+
 page_sequence = [
     Quiz1,
     Quiz2,
     Quiz3,
     Quiz4,
-    Quiz5
+    Quiz5,
+    Answer1,
+    Answer2,
+    Answer3,
+    Answer4,
+    Answer5
 ]
