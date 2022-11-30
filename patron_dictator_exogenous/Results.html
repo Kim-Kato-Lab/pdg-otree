@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% block content %}
+<div class="progress" style="height: 20px">
+  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+</div>
+<br>
 {% if player.role == "Patron" %}
 <div id="choice-summary-patron">
   このグループでは、
@@ -44,4 +48,6 @@
 
 {% endblock %}
 
-
+{% block scripts %}
+<script type="text/javascript" src="{{ static 'global/js/round-progress.js' }}"></script>
+{% endblock %}

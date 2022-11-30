@@ -52,7 +52,12 @@ def set_payoffs(group: Group):
 
 # PAGES
 class Role(Page):
-    pass
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
 
 class WaitRoleCheck(WaitPage):
     body_text = """
@@ -87,6 +92,13 @@ class FirstMover(Page):
             return dict(role = 'メンバーD')
         else:
             return dict(role = 'メンバーP')
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
 
 class WaitFirstMover(WaitPage):
     template_name = 'patron_dictator_exogenous/ChoiceWait.html'
@@ -140,9 +152,17 @@ class SecondMover(Page):
     def js_vars(player: Player):
         participant = player.participant
         if participant.first_dictator == True:
-            return dict(x = player.group.allocation)
+            return dict(
+                x = player.group.allocation,
+                current = player.round_number,
+                max = C.NUM_ROUNDS
+            )
         else:
-            return dict(x = player.group.send)
+            return dict(
+                x = player.group.send,
+                current = player.round_number,
+                max = C.NUM_ROUNDS
+            )
 
 class WaitSecondMover(WaitPage):
     template_name = 'patron_dictator_exogenous/ChoiceWait.html'
@@ -163,6 +183,13 @@ class ResultsWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
 
 class Results(Page):
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
