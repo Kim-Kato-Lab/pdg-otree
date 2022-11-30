@@ -1,0 +1,6 @@
+*.cpython-37.pyc
+*.cpython-310.pyc
+*.sqlite3
+
+_REMOVE_SELF_BACKUP/
+__pychace__/
