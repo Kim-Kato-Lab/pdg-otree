@@ -60,7 +60,7 @@
 <hr>
 
 {% if participant.first_dictator %}
-<div id="first-patron-calculator">
+<div id="second-patron-calculator">
     <b>計算機</b>
     <br>
     あなたの選択を以下の入力し、「計算する」ボタンを押すと、
@@ -131,53 +131,9 @@
 {% block scripts %}
 <script type="text/javascript" src="{{ static 'global/js/round-progress.js' }}"></script>
 {% if participant.first_dictator %}
-<script type="text/javascript">
-
-    function pi() {
-        var multiply = js_vars.x;
-        var send = parseInt(document.getElementById("send").value);
-
-        var piP = document.getElementById("piP");
-        var cal_piP = 100 - send;
-        var cal_piP = Math.round(cal_piP);
-        piP.innerText = cal_piP;
-
-        var piD = document.getElementById("piD");
-        var cal_piD = 100 - (multiply / 100 - 1) * send;
-        var cal_piD = Math.round(cal_piD);
-        piD.innerText = cal_piD;
-
-        var piR = document.getElementById("piR");
-        var cal_piR = send * multiply/100;
-        var cal_piR = Math.round(cal_piR);
-        piR.innerText = cal_piR;
-    }
-
-</script>
+<script type="text/javascript" src="{{ static 'global/js/second-patron-calculator.js' }}"></script>
 {% else %}
-<script type="text/javascript">
-
-  function pi() {
-    let send = js_vars.x;
-    var multiply = parseInt(document.getElementById("multiply").value);
-
-    var piP = document.getElementById("piP");
-    var cal_piP = 100 - send;
-    var cal_piP = Math.round(cal_piP);
-    piP.innerText = cal_piP;
-
-    var piD = document.getElementById("piD");
-    var cal_piD = 100 - (multiply / 100 - 1) * send;
-    var cal_piD = Math.round(cal_piD);
-    piD.innerText = cal_piD;
-
-    var piR = document.getElementById("piR");
-    var cal_piR = send * multiply / 100;
-    var cal_piR = Math.round(cal_piR);
-    piR.innerText = cal_piR;
-  }
-
-</script>
+<script type="text/javascript" src="{{ static 'global/js/second-dictator-calculator.js' }}"></script>
 {% endif %}
 
 {% endblock %}
