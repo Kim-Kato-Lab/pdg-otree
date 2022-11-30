@@ -1,4 +1,4 @@
-{% extends "global/Page.html" %}
+{% extends "global/Experiment.html" %}
 {% load otree static %}
 
 {% block title %}
@@ -146,7 +146,6 @@
 
 {% block scripts %}
 
-<script type="text/javascript" src="{{ static 'global/js/round-progress.js' }}"></script>
 {% if participant.first_dictator %}
 <script type="text/javascript" src="{{ static 'global/js/first-dictator-calculator.js' }}"></script>
 {% else %}
