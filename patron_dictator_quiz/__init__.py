@@ -110,6 +110,10 @@ class Quiz1(Page):
         player.correct1_patron = round(C.ENDOWMENT - C.Q1_SEND)
         player.correct1_dictator = round(C.ENDOWMENT - (C.Q1_ALLOCATION / 100 - 1) * C.Q1_SEND)
         player.correct1_receiver = round((C.Q1_ALLOCATION / 100) * C.Q1_SEND)
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 1)
 
 
 class Quiz2(Page):
@@ -131,6 +135,10 @@ class Quiz2(Page):
         player.correct2_patron = round(C.ENDOWMENT - C.Q2_SEND)
         player.correct2_dictator = round(C.ENDOWMENT - (C.Q2_ALLOCATION / 100 - 1) * C.Q2_SEND)
         player.correct2_receiver = round((C.Q2_ALLOCATION / 100) * C.Q2_SEND)
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 2)
 
 class Quiz3(Page):
     template_name = 'patron_dictator_quiz/Quiz.html'
@@ -151,6 +159,10 @@ class Quiz3(Page):
         player.correct3_patron = round(C.ENDOWMENT - C.Q3_SEND)
         player.correct3_dictator = round(C.ENDOWMENT - (C.Q3_ALLOCATION / 100 - 1) * C.Q3_SEND)
         player.correct3_receiver = round((C.Q3_ALLOCATION / 100) * C.Q3_SEND)
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 3)
 
 class Quiz4(Page):
     template_name = 'patron_dictator_quiz/Quiz.html'
@@ -171,6 +183,10 @@ class Quiz4(Page):
         player.correct4_patron = round(C.ENDOWMENT - C.Q4_SEND)
         player.correct4_dictator = round(C.ENDOWMENT - (C.Q4_ALLOCATION / 100 - 1) * C.Q4_SEND)
         player.correct4_receiver = round((C.Q4_ALLOCATION / 100) * C.Q4_SEND)
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 4)
 
 class Quiz5(Page):
     template_name = 'patron_dictator_quiz/Quiz.html'
@@ -191,6 +207,10 @@ class Quiz5(Page):
         player.correct5_patron = round(C.ENDOWMENT - C.Q5_SEND)
         player.correct5_dictator = round(C.ENDOWMENT - (C.Q5_ALLOCATION / 100 - 1) * C.Q5_SEND)
         player.correct5_receiver = round((C.Q5_ALLOCATION / 100) * C.Q5_SEND)
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 5)
 
 class Answer1(Page):
     template_name = 'patron_dictator_quiz/Answer.html'
@@ -228,6 +248,10 @@ class Answer1(Page):
                 + 'ポイントです。'
             )
         )
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 1)
 
 class Answer2(Page):
     template_name = 'patron_dictator_quiz/Answer.html'
@@ -265,6 +289,10 @@ class Answer2(Page):
                 + 'ポイントです。'
             )
         )
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 2)
 
 class Answer3(Page):
     template_name = 'patron_dictator_quiz/Answer.html'
@@ -302,6 +330,10 @@ class Answer3(Page):
                 + 'ポイントです。'
             )
         )
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 3)
 
 class Answer4(Page):
     template_name = 'patron_dictator_quiz/Answer.html'
@@ -331,6 +363,10 @@ class Answer4(Page):
                 + 'ポイントです。'
             )
         )
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 4)
 
 class Answer5(Page):
     template_name = 'patron_dictator_quiz/Answer.html'
@@ -368,6 +404,10 @@ class Answer5(Page):
                 + 'ポイントです。'
             )
         )
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 5)
 
 page_sequence = [
     Quiz1,
