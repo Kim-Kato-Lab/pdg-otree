@@ -43,7 +43,12 @@ def set_payoffs(group: Group):
 
 # PAGES
 class Role(Page):
-    pass
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
 
 class WaitRoleCheck(WaitPage):
     body_text = """
@@ -57,12 +62,27 @@ class Send(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.role == C.PATRON_ROLE
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
 
 class Results(Page):
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
+
+    @staticmethod
     def before_next_page(player: Player, timeout_happened):
         import random
         participant = player.participant
