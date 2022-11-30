@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block content %}
+<div class="progress">
+  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="9" id="progressbar"></div>
+</div>
 
 <div>
   <p><b>以下の各項目は、あなた自身にどのくらい当てはまりますか。各項目について当てはまるものを一つ選んでください。</b></p>
@@ -14,4 +17,8 @@
 
 {% next_button %}
 
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ static 'global/js/setProgress.js' }}"></script>
 {% endblock %}

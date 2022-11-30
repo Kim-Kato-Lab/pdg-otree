@@ -268,6 +268,10 @@ class Demographic(Page):
     def before_next_page(player: Player, timeout_happened):
         if player.academic_field != "social":
             player.economist = 0
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 1)
 
 class Economist(Page):
     template_name = 'survey/SimpleForm.html'
@@ -278,6 +282,10 @@ class Economist(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.academic_field == "social"
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 2)
 
 class Altruist(Page):
     template_name = 'survey/SimpleForm.html'
@@ -288,29 +296,57 @@ class Altruist(Page):
         'past_volunteer'
     ]
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 3)
+
 class Likert(Page):
     form_model = 'player'
     form_fields = C.LIKERT["question"].keys()
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 4)
 
 class MatchingDonation1(Page):
     form_model = 'player'
     form_fields = ['donation']
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 5)
+
 class MatchingDonation2(Page):
     form_model = 'player'
     form_fields = ['matching_donation']
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 6)
 
 class Overhead1(Page):
     form_model = 'player'
     form_fields = ['which_charity1']
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 7)
+
 class Overhead2(Page):
     form_model = 'player'
     form_fields = ['which_charity2']
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 8)
+
 class Allocation(Page):
     form_model = 'player'
     form_fields = C.INEQUALITY["question"].keys()
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 9)
 
 page_sequence = [
     Demographic,

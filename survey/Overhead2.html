@@ -14,6 +14,10 @@
   }
 </style>
 
+<div class="progress">
+  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="9" id="progressbar"></div>
+</div>
+
 <div class="situation">
   <b>
     あなたは以下の二つの有名な慈善団体について知ったとします。
@@ -35,4 +39,8 @@
 
 {% next_button %}
 
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ static 'global/js/setProgress.js' }}"></script>
 {% endblock %}

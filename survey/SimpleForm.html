@@ -5,9 +5,16 @@
 {% endblock %}
 
 {% block content %}
+<div class="progress">
+  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="9" id="progressbar"></div>
+</div>
 
 {% formfields %}
 
 {% next_button %}
 
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ static 'global/js/setProgress.js' }}"></script>
 {% endblock %}
