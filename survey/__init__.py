@@ -133,6 +133,20 @@ class C(BaseConstants):
                     [2, '変えない'],
                     [3, '増やす']
                 ]
+            },
+            "which_charity1": {
+                "question": 'あなたは慈善団体Aと慈善団体Bのどちらに寄付をしたいと思いますか。',
+                "choice": [
+                    [0, '慈善団体A'],
+                    [1, '慈善団体B']
+                ]
+            },
+            "which_charity2": {
+                "question": 'あなたは慈善団体Aと慈善団体Cのどちらに寄付をしたいと思いますか。',
+                "choice": [
+                    [0, '慈善団体A'],
+                    [1, '慈善団体C']
+                ]
             }
         }
     }
@@ -286,6 +300,14 @@ class MatchingDonation2(Page):
     form_model = 'player'
     form_fields = ['matching_donation']
 
+class Overhead1(Page):
+    form_model = 'player'
+    form_fields = ['which_charity1']
+
+class Overhead2(Page):
+    form_model = 'player'
+    form_fields = ['which_charity2']
+
 class Allocation(Page):
     form_model = 'player'
     form_fields = C.INEQUALITY["question"].keys()
@@ -297,5 +319,7 @@ page_sequence = [
     Likert,
     MatchingDonation1,
     MatchingDonation2,
+    Overhead1,
+    Overhead2,
     Allocation
 ]

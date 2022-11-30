@@ -1,0 +1,38 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+{% block title %}
+事後調査
+{% endblock %}
+
+{% block content %}
+<style>
+  .situation{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+</style>
+
+<div class="situation">
+  <b>
+    あなたは以下の二つの有名な慈善団体について知ったとします。
+    <ul>
+      <li>
+        慈善団体A：若者にボランティア活動をさせて、リーダーシップや市民としての責任について教える非営利団体です。
+        この寄付には資金調達費などの諸経費がかからないので、あなたの寄付の全額がこの慈善団体の活動に充てられます。
+      </li>
+      <li>
+        慈善団体B：発展途上国の人々に清潔で安全な飲料水を提供する非営利団体です。
+        この寄付には資金調達費などの諸経費がかからないので、あなたの寄付の全額がこの慈善団体の活動に充てられます。
+      </li>
+    </ul>
+    あなたは今500円を持っていて、どちらかの慈善団体に寄付をしようとしている状況を想像してください。
+  </b>
+</div>
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}
