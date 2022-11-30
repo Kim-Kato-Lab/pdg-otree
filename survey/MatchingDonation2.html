@@ -1,0 +1,32 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+{% block title %}
+事後調査
+{% endblock %}
+
+{% block content %}
+<style>
+  .situation{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+</style>
+
+<div class="situation">
+  <b>
+    あなたは、「充分に食べられるにも関わらず様々な理由で消費されない食品を受け取り、
+    児童養護施設や生活困窮家庭などの食品支援を必要とする施設・団体・家庭（個人）に提供する」
+    有名な慈善団体を知ったとします。
+  </b>
+</div>
+<div>
+  前問で、あなたは手持ちの500円のうち{{ player.donation }}円をこの慈善団体に寄付してもよいと回答しました。
+</div>
+
+{% formfields %}
+
+{% next_button %}
+
+{% endblock %}

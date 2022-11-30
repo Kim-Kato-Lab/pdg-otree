@@ -122,7 +122,7 @@ class C(BaseConstants):
             },
             "matching_donation": {
                 "question": '''
-                前問と同じ状況で、ある財団の協力を得て、マッチングギフトの仕組みが導入されることになりました。
+                ここで、ある財団の協力を得て、マッチングギフトの仕組みが導入されることになりました。
                 <br>
                 この仕組みは「<b>あなたの選択する寄付額と同じ額を、その財団が上乗せして、2倍の額が寄付先に届けられる</b>」というものです。
                 <br>
@@ -278,12 +278,13 @@ class Likert(Page):
     form_model = 'player'
     form_fields = C.LIKERT["question"].keys()
 
-class MatchingDonation(Page):
+class MatchingDonation1(Page):
     form_model = 'player'
-    form_fields = [
-        'donation',
-        'matching_donation'
-    ]
+    form_fields = ['donation']
+
+class MatchingDonation2(Page):
+    form_model = 'player'
+    form_fields = ['matching_donation']
 
 class Allocation(Page):
     form_model = 'player'
@@ -294,6 +295,7 @@ page_sequence = [
     Economist,
     Altruist,
     Likert,
-    MatchingDonation,
+    MatchingDonation1,
+    MatchingDonation2,
     Allocation
 ]
