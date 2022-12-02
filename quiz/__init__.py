@@ -92,7 +92,7 @@ for i in range(5):
 # FUNCTIONS
 # PAGES
 class Quiz1(Page):
-    template_name = 'patron_dictator_quiz/Quiz.html'
+    template_name = 'quiz/Quiz.html'
 
     form_model = 'player'
     form_fields = ['quiz1_patron', 'quiz1_dictator', 'quiz1_receiver']
@@ -117,7 +117,7 @@ class Quiz1(Page):
 
 
 class Quiz2(Page):
-    template_name = 'patron_dictator_quiz/Quiz.html'
+    template_name = 'quiz/Quiz.html'
     
     form_model = 'player'
     form_fields = ['quiz2_patron', 'quiz2_dictator', 'quiz2_receiver']
@@ -141,7 +141,7 @@ class Quiz2(Page):
         return dict(page = 2)
 
 class Quiz3(Page):
-    template_name = 'patron_dictator_quiz/Quiz.html'
+    template_name = 'quiz/Quiz.html'
 
     form_model = 'player'
     form_fields = ['quiz3_patron', 'quiz3_dictator', 'quiz3_receiver']
@@ -165,7 +165,7 @@ class Quiz3(Page):
         return dict(page = 3)
 
 class Quiz4(Page):
-    template_name = 'patron_dictator_quiz/Quiz.html'
+    template_name = 'quiz/Quiz.html'
 
     form_model = 'player'
     form_fields = ['quiz4_patron', 'quiz4_dictator', 'quiz4_receiver']
@@ -189,7 +189,7 @@ class Quiz4(Page):
         return dict(page = 4)
 
 class Quiz5(Page):
-    template_name = 'patron_dictator_quiz/Quiz.html'
+    template_name = 'quiz/Quiz.html'
 
     form_model = 'player'
     form_fields = ['quiz5_patron', 'quiz5_dictator', 'quiz5_receiver']
@@ -213,7 +213,7 @@ class Quiz5(Page):
         return dict(page = 5)
 
 class Answer1(Page):
-    template_name = 'patron_dictator_quiz/Answer.html'
+    template_name = 'quiz/Answer.html'
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -254,7 +254,7 @@ class Answer1(Page):
         return dict(page = 1)
 
 class Answer2(Page):
-    template_name = 'patron_dictator_quiz/Answer.html'
+    template_name = 'quiz/Answer.html'
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -295,7 +295,7 @@ class Answer2(Page):
         return dict(page = 2)
 
 class Answer3(Page):
-    template_name = 'patron_dictator_quiz/Answer.html'
+    template_name = 'quiz/Answer.html'
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -336,7 +336,7 @@ class Answer3(Page):
         return dict(page = 3)
 
 class Answer4(Page):
-    template_name = 'patron_dictator_quiz/Answer.html'
+    template_name = 'quiz/Answer.html'
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -369,7 +369,7 @@ class Answer4(Page):
         return dict(page = 4)
 
 class Answer5(Page):
-    template_name = 'patron_dictator_quiz/Answer.html'
+    template_name = 'quiz/Answer.html'
 
     @staticmethod
     def vars_for_template(player: Player):
