@@ -101,7 +101,7 @@ class FirstMover(Page):
         )
 
 class WaitFirstMover(WaitPage):
-    template_name = 'exogenous/ChoiceWait.html'
+    template_name = 'move_exogenous/ChoiceWait.html'
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -165,7 +165,7 @@ class SecondMover(Page):
             )
 
 class WaitSecondMover(WaitPage):
-    template_name = 'exogenous/ChoiceWait.html'
+    template_name = 'move_exogenous/ChoiceWait.html'
 
     @staticmethod
     def vars_for_template(player: Player):
