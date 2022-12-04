@@ -51,6 +51,9 @@ def set_payoffs(group: Group):
     receiver.payoff = (group.allocation / 100) * group.send
 
 # PAGES
+class Introduction(WaitPage):
+    wait_for_all_groups = True
+
 class Role(Page):
     @staticmethod
     def js_vars(player: Player):
@@ -220,6 +223,7 @@ class ShuffleWaitPage(WaitPage):
         subsession.group_randomly()
 
 page_sequence = [
+    Introduction,
     Role,
     WaitRoleCheck,
     FirstMover,

@@ -336,6 +336,10 @@ class Finish(Page):
             count += 1
         
         return count == C.NUMBER_Q * 3
+    
+    @staticmethod
+    def app_after_this_page(player: Player, upcoming_apps):
+        return upcoming_apps[0]
 
 
 page_sequence = [
