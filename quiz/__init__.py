@@ -6,23 +6,24 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
-    NQ = 3
-
-    # initial endowment
-    ENDOWMENT = 100
-
-    # Situation of Quiz1
-    Q1_SEND = 50
-    Q1_ALLOCATION = 100
-
-    # Situation of Quiz2
-    Q2_SEND = 50
-    Q2_ALLOCATION = 200
-
-    # Situation of Quiz3
-    Q3_SEND = 50
-    Q3_ALLOCATION = 0
-
+    NUMBER_Q = 3
+    SETUP = {
+        1: {
+            "endowment": 100,
+            "send": 50,
+            "allocation": 100
+        },
+        2: {
+            "endowment": 100,
+            "send": 50,
+            "allocation": 200
+        },
+        3: {
+            "endowment": 100,
+            "send": 50,
+            "allocation": 0
+        }
+    }
 class Subsession(BaseSubsession):
     pass
 
@@ -34,10 +35,10 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     pass
 
-for i in range(C.NQ):
+for k in C.SETUP.keys():
     setattr(
         Player,
-        'quiz' + str(i + 1) +'_patron',
+        'quiz' + str(k) +'_patron',
         models.IntegerField(
             label = '''
             メンバーPの最終的な獲得ポイントはいくらですか？
@@ -47,7 +48,7 @@ for i in range(C.NQ):
     )
     setattr(
         Player,
-        'quiz' + str(i + 1) +'_dictator',
+        'quiz' + str(k) +'_dictator',
         models.IntegerField(
             label = '''
             メンバーDの最終的な獲得ポイントはいくらですか？
@@ -57,7 +58,7 @@ for i in range(C.NQ):
     )
     setattr(
         Player,
-        'quiz' + str(i + 1) +'_receiver',
+        'quiz' + str(k) +'_receiver',
         models.IntegerField(
             label = '''
             メンバーRの最終的な獲得ポイントはいくらですか？
@@ -67,22 +68,29 @@ for i in range(C.NQ):
     )
     setattr(
         Player,
-        'correct' + str(i + 1) + '_patron',
+        'error' + str(k) + '_patron',
         models.IntegerField()
     )
     setattr(
         Player,
-        'correct' + str(i + 1) + '_dictator',
+        'error' + str(k) + '_dictator',
         models.IntegerField()
     )
     setattr(
         Player,
-        'correct' + str(i + 1) + '_receiver',
+        'error' + str(k) + '_receiver',
         models.IntegerField()
     )
 
 
 # FUNCTIONS
+def correct_cal(endowment, send, allocation):
+    return dict(
+        patron = round(endowment - send),
+        dictator = round(endowment - (allocation / 100 - 1) * send),
+        receiver = round((allocation / 100) * send)
+    )
+
 # PAGES
 class Introduction(Page):
     @staticmethod
@@ -99,15 +107,18 @@ class Quiz1(Page):
     def vars_for_template(player: Player):
         return dict(
             num = 1,
-            send = C.Q1_SEND,
-            allocation = C.Q1_ALLOCATION
+            endowment = C.SETUP[1]["endowment"],
+            send = C.SETUP[1]["send"],
+            allocation = C.SETUP[1]["allocation"]
         )
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        player.correct1_patron = round(C.ENDOWMENT - C.Q1_SEND)
-        player.correct1_dictator = round(C.ENDOWMENT - (C.Q1_ALLOCATION / 100 - 1) * C.Q1_SEND)
-        player.correct1_receiver = round((C.Q1_ALLOCATION / 100) * C.Q1_SEND)
+        setup = C.SETUP[1]
+        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
+        player.error1_patron = correct["patron"] - player.quiz1_patron
+        player.error1_dictator = correct["dictator"] - player.quiz1_dictator
+        player.error1_receiver = correct["receiver"] - player.quiz1_receiver
     
     @staticmethod
     def js_vars(player: Player):
@@ -124,15 +135,18 @@ class Quiz2(Page):
     def vars_for_template(player: Player):
         return dict(
             num = 2,
-            send = C.Q2_SEND,
-            allocation = C.Q2_ALLOCATION
+            endowment = C.SETUP[2]["endowment"],
+            send = C.SETUP[2]["send"],
+            allocation = C.SETUP[2]["allocation"]
         )
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        player.correct2_patron = round(C.ENDOWMENT - C.Q2_SEND)
-        player.correct2_dictator = round(C.ENDOWMENT - (C.Q2_ALLOCATION / 100 - 1) * C.Q2_SEND)
-        player.correct2_receiver = round((C.Q2_ALLOCATION / 100) * C.Q2_SEND)
+        setup = C.SETUP[2]
+        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
+        player.error2_patron = correct["patron"] - player.quiz2_patron
+        player.error2_dictator = correct["dictator"] - player.quiz2_dictator
+        player.error2_receiver = correct["receiver"] - player.quiz2_receiver
     
     @staticmethod
     def js_vars(player: Player):
@@ -148,15 +162,18 @@ class Quiz3(Page):
     def vars_for_template(player: Player):
         return dict(
             num = 3,
-            send = C.Q3_SEND,
-            allocation = C.Q3_ALLOCATION
+            endowment = C.SETUP[3]["endowment"],
+            send = C.SETUP[3]["send"],
+            allocation = C.SETUP[3]["allocation"]
         )
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        player.correct3_patron = round(C.ENDOWMENT - C.Q3_SEND)
-        player.correct3_dictator = round(C.ENDOWMENT - (C.Q3_ALLOCATION / 100 - 1) * C.Q3_SEND)
-        player.correct3_receiver = round((C.Q3_ALLOCATION / 100) * C.Q3_SEND)
+        setup = C.SETUP[3]
+        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
+        player.error3_patron = correct["patron"] - player.quiz3_patron
+        player.error3_dictator = correct["dictator"] - player.quiz3_dictator
+        player.error3_receiver = correct["receiver"] - player.quiz3_receiver
     
     @staticmethod
     def js_vars(player: Player):
@@ -167,34 +184,37 @@ class Answer1(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        setup = C.SETUP[1]
+        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
         return dict(
             num = 1,
-            send = C.Q1_SEND,
-            allocation = C.Q1_ALLOCATION,
+            endowment = C.SETUP[1]["endowment"],
+            send = C.SETUP[1]["send"],
+            allocation = C.SETUP[1]["allocation"],
             answer_patron = player.quiz1_patron,
             answer_dictator = player.quiz1_dictator,
             answer_receiver = player.quiz1_receiver,
-            correct_patron = player.correct1_patron,
-            correct_dictator = player.correct1_dictator,
-            correct_receiver = player.correct1_receiver,
-            error_patron = player.quiz1_patron != player.correct1_patron,
-            error_dictator = player.quiz1_dictator != player.correct1_dictator,
-            error_receiver = player.quiz1_receiver != player.correct1_receiver,
+            correct_patron = correct["patron"],
+            correct_dictator = correct["dictator"],
+            correct_receiver = correct["receiver"],
+            error_patron = player.error1_patron != 0,
+            error_dictator = player.error1_dictator != 0,
+            error_receiver = player.error1_receiver != 0,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
-                + str(C.Q1_SEND)
+                + str(C.SETUP[1]["send"])
                 + 'ポイントを渡すので、自身のポイントは'
-                + str(player.correct1_patron)
+                + str(correct["patron"])
                 + 'ポイントとなります。メンバーDは受け取った'
-                + str(C.Q1_SEND)
+                + str(C.SETUP[1]["send"])
                 + 'ポイントを'
-                + str(C.Q1_ALLOCATION)
+                + str(C.SETUP[1]["allocation"])
                 + '％にしてメンバーRに渡します。すなわち、メンバーDは'
-                + str(player.correct1_receiver)
+                + str(correct["receiver"])
                 + 'ポイントをメンバーRに渡します。したがって、メンバーRに渡すポイントはメンバーPから受け取ったポイントで足りるので、メンバーDの最終的なポイントは'
-                + str(player.correct1_dictator)
+                + str(correct["dictator"])
                 + 'ポイントのままです。また、メンバーRの最終的なポイントは'
-                + str(player.correct1_receiver)
+                + str(correct["receiver"])
                 + 'ポイントです。'
             )
         )
@@ -208,34 +228,37 @@ class Answer2(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        setup = C.SETUP[2]
+        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
         return dict(
             num = 2,
-            send = C.Q2_SEND,
-            allocation = C.Q2_ALLOCATION,
+            endowment = C.SETUP[2]["endowment"],
+            send = C.SETUP[2]["send"],
+            allocation = C.SETUP[2]["allocation"],
             answer_patron = player.quiz2_patron,
             answer_dictator = player.quiz2_dictator,
             answer_receiver = player.quiz2_receiver,
-            correct_patron = player.correct2_patron,
-            correct_dictator = player.correct2_dictator,
-            correct_receiver = player.correct2_receiver,
-            error_patron = player.quiz2_patron != player.correct2_patron,
-            error_dictator = player.quiz2_dictator != player.correct2_dictator,
-            error_receiver = player.quiz2_receiver != player.correct2_receiver,
+            correct_patron = correct["patron"],
+            correct_dictator = correct["dictator"],
+            correct_receiver = correct["receiver"],
+            error_patron = player.error2_patron != 0,
+            error_dictator = player.error2_dictator != 0,
+            error_receiver = player.error2_receiver != 0,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
-                + str(C.Q2_SEND)
+                + str(C.SETUP[2]["send"])
                 + 'ポイントを渡すので、自身のポイントは'
-                + str(player.correct2_patron)
+                + str(correct["patron"])
                 + 'ポイントとなります。メンバーDは受け取った'
-                + str(C.Q2_SEND)
+                + str(C.SETUP[2]["send"])
                 + 'ポイントを'
-                + str(C.Q2_ALLOCATION)
+                + str(C.SETUP[2]["allocation"])
                 + '％にしてメンバーRに渡します。すなわち、メンバーDは'
-                + str(player.correct2_receiver)
+                + str(correct["receiver"])
                 + 'ポイントをメンバーRに渡します。メンバーRに渡すポイントはメンバーPから受け取ったポイントで足りないので、メンバーDは不足分を自身が保有するポイントで補います。したがって、メンバーDの最終的なポイントは'
-                + str(player.correct2_dictator)
+                + str(correct["dictator"])
                 + 'ポイントです。また、メンバーRの最終的なポイントは'
-                + str(player.correct2_receiver)
+                + str(correct["receiver"])
                 + 'ポイントです。'
             )
         )
@@ -249,34 +272,37 @@ class Answer3(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        setup = C.SETUP[3]
+        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
         return dict(
             num = 3,
-            send = C.Q3_SEND,
-            allocation = C.Q3_ALLOCATION,
+            endowment = C.SETUP[3]["endowment"],
+            send = C.SETUP[3]["send"],
+            allocation = C.SETUP[3]["allocation"],
             answer_patron = player.quiz3_patron,
             answer_dictator = player.quiz3_dictator,
             answer_receiver = player.quiz3_receiver,
-            correct_patron = player.correct3_patron,
-            correct_dictator = player.correct3_dictator,
-            correct_receiver = player.correct3_receiver,
-            error_patron = player.quiz3_patron != player.correct3_patron,
-            error_dictator = player.quiz3_dictator != player.correct3_dictator,
-            error_receiver = player.quiz3_receiver != player.correct3_receiver,
+            correct_patron = correct["patron"],
+            correct_dictator = correct["dictator"],
+            correct_receiver = correct["receiver"],
+            error_patron = player.error3_patron != 0,
+            error_dictator = player.error3_dictator != 0,
+            error_receiver = player.error3_receiver != 0,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
-                + str(C.Q3_SEND)
+                + str(C.SETUP[3]["send"])
                 + 'ポイントを渡すので、自身のポイントは'
-                + str(player.correct3_patron)
+                + str(correct["patron"])
                 + 'ポイントとなります。メンバーDは受け取った'
-                + str(C.Q3_SEND)
+                + str(C.SETUP[3]["send"])
                 + 'ポイントを'
-                + str(C.Q3_ALLOCATION)
+                + str(C.SETUP[3]["allocation"])
                 + '％にしてメンバーRに渡します。すなわち、メンバーDは'
-                + str(player.correct3_receiver)
+                + str(correct["receiver"])
                 + 'ポイントをメンバーRに渡します。メンバーDがメンバーPから受け取ったポイントをメンバーRに渡しても、メンバーPから受け取ったポイントに余りが生じるので、余ったポイントはメンバーDのポイントになります。したがって、メンバーDの最終的なポイントは'
-                + str(player.correct3_dictator)
+                + str(correct["dictator"])
                 + 'ポイントです。また、メンバーRの最終的なポイントは'
-                + str(player.correct3_receiver)
+                + str(correct["receiver"])
                 + 'ポイントです。'
             )
         )
