@@ -84,6 +84,11 @@ for i in range(C.NQ):
 
 # FUNCTIONS
 # PAGES
+class Introduction(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == 1
+
 class Quiz1(Page):
     template_name = 'quiz/Quiz.html'
 
@@ -281,6 +286,7 @@ class Answer3(Page):
         return dict(page = 3)
 
 page_sequence = [
+    Introduction,
     Quiz1,
     Quiz2,
     Quiz3,
