@@ -4,7 +4,7 @@ from otree.api import *
 class C(BaseConstants):
     NAME_IN_URL = 'quiz'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 1
+    NUM_ROUNDS = 10
 
     NUMBER_Q = 3
     SETUP = {
@@ -311,6 +311,33 @@ class Answer3(Page):
     def js_vars(player: Player):
         return dict(page = 3)
 
+class Finish(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        count = 0
+
+        if player.error1_patron == 0:
+            count += 1
+        if player.error1_dictator == 0:
+            count += 1
+        if player.error1_receiver == 0:
+            count += 1
+        if player.error2_patron == 0:
+            count += 1
+        if player.error2_dictator == 0:
+            count += 1
+        if player.error2_receiver == 0:
+            count += 1
+        if player.error3_patron == 0:
+            count += 1
+        if player.error3_dictator == 0:
+            count += 1
+        if player.error3_receiver == 0:
+            count += 1
+        
+        return count == C.NUMBER_Q * 3
+
+
 page_sequence = [
     Introduction,
     Quiz1,
@@ -318,5 +345,6 @@ page_sequence = [
     Quiz3,
     Answer1,
     Answer2,
-    Answer3
+    Answer3,
+    Finish
 ]
