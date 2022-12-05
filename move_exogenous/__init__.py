@@ -11,7 +11,7 @@ This game is the PDG with first-moving dictator treatment.
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game_fd'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 2
+    NUM_ROUNDS = 3
     ENDOWMENT = cu(100)
     MAXIMUM_MULTIPLY = cu(200)
     PATRON_ROLE = "Patron"
