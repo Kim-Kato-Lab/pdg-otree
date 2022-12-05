@@ -60,10 +60,20 @@ class WaitIntroduction(WaitPage):
 
 class Introduction(Page):
     @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+    
+    @staticmethod
     def is_displayed(player: Player):
         return player.round_number == 1
 
 class Role(Page):
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+    
     @staticmethod
     def js_vars(player: Player):
         return dict(
@@ -80,6 +90,11 @@ class WaitRoleCheck(WaitPage):
 class FirstMover(Page):
     form_model = 'group'
 
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+    
     @staticmethod
     def get_form_fields(player: Player):
         participant = player.participant
@@ -111,6 +126,15 @@ class FirstMover(Page):
             current = player.round_number,
             max = C.NUM_ROUNDS
         )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if timeout_happened:
+            import random
+            if player.participant.first_dictator == True:
+                player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
+            else:
+                player.group.send = random.randint(0, C.ENDOWMENT)
 
 class WaitFirstMover(WaitPage):
     template_name = 'move_exogenous/ChoiceWait.html'
@@ -129,6 +153,11 @@ class WaitFirstMover(WaitPage):
 
 class SecondMover(Page):
     form_model = 'group'
+
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
 
     @staticmethod
     def get_form_fields(player: Player):
@@ -175,6 +204,15 @@ class SecondMover(Page):
                 current = player.round_number,
                 max = C.NUM_ROUNDS
             )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if timeout_happened:
+            import random
+            if player.participant.first_dictator == True:
+                player.group.send = random.randint(0, C.ENDOWMENT)
+            else:
+                player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
 
 class WaitSecondMover(WaitPage):
     template_name = 'move_exogenous/ChoiceWait.html'
@@ -195,6 +233,11 @@ class ResultsWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
 
 class Results(Page):
+
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
 
     @staticmethod
     def js_vars(player: Player):

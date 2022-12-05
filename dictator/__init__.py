@@ -44,6 +44,11 @@ def set_payoffs(group: Group):
 # PAGES
 class Role(Page):
     @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+
+    @staticmethod
     def js_vars(player: Player):
         return dict(
             current = player.round_number,
@@ -64,16 +69,32 @@ class Send(Page):
         return player.role == C.PATRON_ROLE
     
     @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+    
+    @staticmethod
     def js_vars(player: Player):
         return dict(
             current = player.round_number,
             max = C.NUM_ROUNDS
         )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if timeout_happened:
+            import random
+            player.group.send = random.randint(0, C.ENDOWMENT)
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
 
 class Results(Page):
+
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
 
     @staticmethod
     def js_vars(player: Player):
