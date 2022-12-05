@@ -35,6 +35,8 @@ def creating_session(subsession: Subsession):
 class Group(BaseGroup):
     send = models.IntegerField(min=0, max=C.ENDOWMENT)
     allocation = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
+    send_timeout = models.IntegerField()
+    allocation_timeout = models.IntegerField()
 
 
 class Player(BasePlayer):
@@ -129,12 +131,19 @@ class FirstMover(Page):
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        if timeout_happened:
-            import random
-            if player.participant.first_dictator == True:
+        import random
+        if player.participant.first_dictator == True:
+            if timeout_happened:
                 player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
+                player.group.allocation_timeout = 1
             else:
+                player.group.allocation_timeout = 0
+        else:
+            if timeout_happened:
                 player.group.send = random.randint(0, C.ENDOWMENT)
+                player.group.send_timeout = 1
+            else:
+                player.group.send_timeout = 0
 
 class WaitFirstMover(WaitPage):
     template_name = 'move_exogenous/ChoiceWait.html'
@@ -207,12 +216,19 @@ class SecondMover(Page):
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        if timeout_happened:
-            import random
-            if player.participant.first_dictator == True:
+        import random
+        if player.participant.first_dictator == True:
+            if timeout_happened:
                 player.group.send = random.randint(0, C.ENDOWMENT)
+                player.group.send_timeout = 1
             else:
+                player.group.send_timeout = 0
+        else:
+            if timeout_happened:
                 player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
+                player.group.allocation_timeout = 1
+            else:
+                player.group.allocation_timeout = 0
 
 class WaitSecondMover(WaitPage):
     template_name = 'move_exogenous/ChoiceWait.html'

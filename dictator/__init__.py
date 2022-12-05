@@ -27,6 +27,7 @@ def creating_session(subsession: Subsession):
 
 class Group(BaseGroup):
     send = models.IntegerField(min=0, max=C.ENDOWMENT)
+    send_timeout = models.IntegerField()
 
 
 class Player(BasePlayer):
@@ -99,9 +100,12 @@ class Send(Page):
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
+        import random
         if timeout_happened:
-            import random
             player.group.send = random.randint(0, C.ENDOWMENT)
+            player.group.send_timeout = 1
+        else:
+            player.group.send_timeout = 0
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
