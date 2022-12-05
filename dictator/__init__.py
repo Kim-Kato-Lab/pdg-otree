@@ -42,6 +42,23 @@ def set_payoffs(group: Group):
 
 
 # PAGES
+class WaitIntroduction(WaitPage):
+    wait_for_all_groups = True
+    
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == 1
+
+class Introduction(Page):
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+    
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == 1
+
 class Role(Page):
     @staticmethod
     def get_timeout_seconds(player: Player):
@@ -132,6 +149,8 @@ class ShuffleWaitPage(WaitPage):
         subsession.group_randomly()
 
 page_sequence = [
+    WaitIntroduction,
+    Introduction,
     Role,
     WaitRoleCheck,
     Send,
