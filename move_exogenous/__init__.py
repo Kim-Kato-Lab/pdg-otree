@@ -25,11 +25,11 @@ class Subsession(BaseSubsession):
 
 def creating_session(subsession: Subsession):
     subsession.group_randomly()
-    
-    for player in subsession.get_players():
-        group = player.group
-        group.dictator_first = subsession.session.config['first_moving_dictator']
-        print("First Dictator Movement", group.dictator_first)
+
+    if 'first_moving_dictator' in subsession.session.config:
+        for g in subsession.get_groups():
+            g.dictator_first = subsession.session.config['first_moving_dictator']
+            print('First-Moving Dictator: ', g.dictator_first)
 
 
 class Group(BaseGroup):
