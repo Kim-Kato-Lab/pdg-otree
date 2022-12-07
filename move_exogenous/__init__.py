@@ -286,10 +286,6 @@ class ShuffleWaitPage(WaitPage):
 
     wait_for_all_groups = True
 
-    @staticmethod
-    def after_all_players_arrive(subsession: Subsession):
-        subsession.group_randomly()
-
 page_sequence = [
     WaitIntroduction,
     Introduction,
