@@ -31,10 +31,23 @@ def creating_session(subsession: Subsession):
             g.dictator_first = subsession.session.config['first_moving_dictator']
             print('First-Moving Dictator: ', g.dictator_first)
     else:
-        import itertools as it
-        first = it.cycle([True, False])
-        for g in subsession.get_groups():
-            g.dictator_first = next(first)
+        # Case A: numbers of groups = even & numbers of rounds = even or odd
+        #   To equally random assignment, remove flow in False condition
+        #   run flow in True condition every rounds (remove if condition)
+        # Case B: numbers of groups = odd & numbers of rounds = even or odd
+        #   To equally random assignment, keep flow in False condition
+        #   If numbers of rounds = odd, not perfect equal random but best approximation
+        if subsession.round_number == 1:
+            import itertools as it
+            first = it.cycle([True, False])
+            for g in subsession.get_groups():
+                g.dictator_first = next(first)
+        else:
+            for g in subsession.get_groups():
+                previous_round = g.in_round(subsession.round_number - 1)
+                previous_first = previous_round.dictator_first
+                print(previous_first)
+                g.dictator_first = not previous_first
 
 
 
