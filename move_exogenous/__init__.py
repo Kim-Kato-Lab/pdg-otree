@@ -30,6 +30,12 @@ def creating_session(subsession: Subsession):
         for g in subsession.get_groups():
             g.dictator_first = subsession.session.config['first_moving_dictator']
             print('First-Moving Dictator: ', g.dictator_first)
+    else:
+        import itertools as it
+        first = it.cycle([True, False])
+        for g in subsession.get_groups():
+            g.dictator_first = next(first)
+
 
 
 class Group(BaseGroup):
