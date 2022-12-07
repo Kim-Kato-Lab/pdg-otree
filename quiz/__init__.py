@@ -104,6 +104,24 @@ class Quiz1(Page):
     form_fields = ['quiz1_patron', 'quiz1_dictator', 'quiz1_receiver']
 
     @staticmethod
+    def is_displayed(player: Player):
+        if player.round_number == 1:
+            return True
+        else:
+            previous = player.in_round(player.round_number - 1)
+            check = [
+                previous.field_maybe_none('error1_patron'),
+                previous.field_maybe_none('error1_dictator'),
+                previous.field_maybe_none('error1_receiver')
+            ]
+
+            count = 0
+            for x in check:
+                if x == 0 or x is None:
+                    count += 1
+            return count != 3
+
+    @staticmethod
     def vars_for_template(player: Player):
         return dict(
             num = 1,
@@ -130,6 +148,24 @@ class Quiz2(Page):
     
     form_model = 'player'
     form_fields = ['quiz2_patron', 'quiz2_dictator', 'quiz2_receiver']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        if player.round_number == 1:
+            return True
+        else:
+            previous = player.in_round(player.round_number - 1)
+            check = [
+                previous.field_maybe_none('error2_patron'),
+                previous.field_maybe_none('error2_dictator'),
+                previous.field_maybe_none('error2_receiver')
+            ]
+
+            count = 0
+            for x in check:
+                if x == 0 or x is None:
+                    count += 1
+            return count != 3
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -159,6 +195,24 @@ class Quiz3(Page):
     form_fields = ['quiz3_patron', 'quiz3_dictator', 'quiz3_receiver']
 
     @staticmethod
+    def is_displayed(player: Player):
+        if player.round_number == 1:
+            return True
+        else:
+            previous = player.in_round(player.round_number - 1)
+            check = [
+                previous.field_maybe_none('error3_patron'),
+                previous.field_maybe_none('error3_dictator'),
+                previous.field_maybe_none('error3_receiver')
+            ]
+
+            count = 0
+            for x in check:
+                if x == 0 or x is None:
+                    count += 1
+            return count != 3
+
+    @staticmethod
     def vars_for_template(player: Player):
         return dict(
             num = 3,
@@ -181,6 +235,24 @@ class Quiz3(Page):
 
 class Answer1(Page):
     template_name = 'quiz/Answer.html'
+
+    @staticmethod
+    def is_displayed(player: Player):
+        if player.round_number == 1:
+            return True
+        else:
+            previous = player.in_round(player.round_number - 1)
+            check = [
+                previous.field_maybe_none('error1_patron'),
+                previous.field_maybe_none('error1_dictator'),
+                previous.field_maybe_none('error1_receiver')
+            ]
+
+            count = 0
+            for x in check:
+                if x == 0 or x is None:
+                    count += 1
+            return count != 3
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -227,6 +299,24 @@ class Answer2(Page):
     template_name = 'quiz/Answer.html'
 
     @staticmethod
+    def is_displayed(player: Player):
+        if player.round_number == 1:
+            return True
+        else:
+            previous = player.in_round(player.round_number - 1)
+            check = [
+                previous.field_maybe_none('error2_patron'),
+                previous.field_maybe_none('error2_dictator'),
+                previous.field_maybe_none('error2_receiver')
+            ]
+
+            count = 0
+            for x in check:
+                if x == 0 or x is None:
+                    count += 1
+            return count != 3
+
+    @staticmethod
     def vars_for_template(player: Player):
         setup = C.SETUP[2]
         correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
@@ -269,6 +359,24 @@ class Answer2(Page):
 
 class Answer3(Page):
     template_name = 'quiz/Answer.html'
+
+    @staticmethod
+    def is_displayed(player: Player):
+        if player.round_number == 1:
+            return True
+        else:
+            previous = player.in_round(player.round_number - 1)
+            check = [
+                previous.field_maybe_none('error3_patron'),
+                previous.field_maybe_none('error3_dictator'),
+                previous.field_maybe_none('error3_receiver')
+            ]
+
+            count = 0
+            for x in check:
+                if x == 0 or x is None:
+                    count += 1
+            return count != 3
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -314,26 +422,22 @@ class Answer3(Page):
 class Finish(Page):
     @staticmethod
     def is_displayed(player: Player):
-        count = 0
+        check = [
+            player.field_maybe_none('error1_patron'),
+            player.field_maybe_none('error2_patron'),
+            player.field_maybe_none('error3_patron'),
+            player.field_maybe_none('error1_dictator'),
+            player.field_maybe_none('error2_dictator'),
+            player.field_maybe_none('error3_dictator'),
+            player.field_maybe_none('error1_receiver'),
+            player.field_maybe_none('error2_receiver'),
+            player.field_maybe_none('error3_receiver')
+        ]
 
-        if player.error1_patron == 0:
-            count += 1
-        if player.error1_dictator == 0:
-            count += 1
-        if player.error1_receiver == 0:
-            count += 1
-        if player.error2_patron == 0:
-            count += 1
-        if player.error2_dictator == 0:
-            count += 1
-        if player.error2_receiver == 0:
-            count += 1
-        if player.error3_patron == 0:
-            count += 1
-        if player.error3_dictator == 0:
-            count += 1
-        if player.error3_receiver == 0:
-            count += 1
+        count = 0
+        for x in check:
+            if x == 0 or x is None:
+                count += 1
         
         return count == C.NUMBER_Q * 3
     
