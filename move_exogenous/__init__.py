@@ -27,9 +27,9 @@ def creating_session(subsession: Subsession):
     subsession.group_randomly()
     
     for player in subsession.get_players():
-        participant = player.participant
-        participant.first_dictator = subsession.session.config['first_dictator']
-        print("First Dictator Movement", participant.first_dictator)
+        group = player.group
+        group.dictator_first = subsession.session.config['first_moving_dictator']
+        print("First Dictator Movement", group.dictator_first)
 
 
 class Group(BaseGroup):
@@ -37,6 +37,7 @@ class Group(BaseGroup):
     allocation = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
+    dictator_first = models.BooleanField()
 
 
 class Player(BasePlayer):
@@ -99,25 +100,24 @@ class FirstMover(Page):
     
     @staticmethod
     def get_form_fields(player: Player):
-        participant = player.participant
-
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return ['allocation']
         else:
             return ['send']
 
     @staticmethod
     def is_displayed(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return player.role == C.DICTATOR_ROLE
         else:
             return player.role == C.PATRON_ROLE
     
     @staticmethod
     def vars_for_template(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return dict(role = 'メンバーD')
         else:
             return dict(role = 'メンバーP')
@@ -132,7 +132,7 @@ class FirstMover(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         import random
-        if player.participant.first_dictator == True:
+        if player.group.dictator_first == True:
             if timeout_happened:
                 player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
                 player.group.allocation_timeout = 1
@@ -150,8 +150,8 @@ class WaitFirstMover(WaitPage):
 
     @staticmethod
     def vars_for_template(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return dict(body_text = """
             あなたのグループのメンバーDが選択をしています。しばらくお待ちください。
             """)
@@ -170,24 +170,24 @@ class SecondMover(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return ['send']
         else:
             return ['allocation']
     
     @staticmethod
     def is_displayed(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return player.role == C.PATRON_ROLE
         else:
             return player.role == C.DICTATOR_ROLE
     
     @staticmethod
     def vars_for_template(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return dict(
                 role = 'メンバーP',
                 allocation = player.group.allocation
@@ -200,8 +200,8 @@ class SecondMover(Page):
     
     @staticmethod
     def js_vars(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return dict(
                 x = player.group.allocation,
                 current = player.round_number,
@@ -217,7 +217,7 @@ class SecondMover(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         import random
-        if player.participant.first_dictator == True:
+        if player.group.dictator_first == True:
             if timeout_happened:
                 player.group.send = random.randint(0, C.ENDOWMENT)
                 player.group.send_timeout = 1
@@ -235,8 +235,8 @@ class WaitSecondMover(WaitPage):
 
     @staticmethod
     def vars_for_template(player: Player):
-        participant = player.participant
-        if participant.first_dictator == True:
+        group = player.group
+        if group.dictator_first == True:
             return dict(body_text = """
             あなたのグループのメンバーPが選択をしています。しばらくお待ちください。
             """)
