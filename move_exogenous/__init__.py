@@ -11,7 +11,7 @@ This game is the PDG with first-moving dictator treatment.
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game_fd'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 4
     ENDOWMENT = cu(100)
     MAXIMUM_MULTIPLY = cu(200)
     PATRON_ROLE = "Patron"
@@ -312,10 +312,13 @@ class Results(Page):
         
         if player.round_number == C.NUM_ROUNDS:
             selected_round = []
-            while len(selected_round) < 2:
-                n = random.randint(1, C.NUM_ROUNDS)
-                if not n in selected_round:
-                    selected_round.append(n)
+            first_half_end = C.NUM_ROUNDS // 2
+            selected_round.append(random.randint(1, first_half_end))
+            selected_round.append(random.randint(first_half_end + 1, C.NUM_ROUNDS))
+            # while len(selected_round) < 2:
+            #     n = random.randint(1, C.NUM_ROUNDS)
+            #     if not n in selected_round:
+            #         selected_round.append(n)
             participant.selected_round = selected_round
             each_realized_payoff = [float(player.in_round(n).payoff) for n in selected_round]
             realized_payoff = sum(each_realized_payoff)

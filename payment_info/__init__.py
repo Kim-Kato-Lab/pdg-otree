@@ -32,10 +32,10 @@ class PaymentInfo(Page):
     def vars_for_template(player: Player):
         participant = player.participant
         return dict(
-          participation_fee = player.session.config['participation_fee'],
-          realized_payoff = participant.payoff,
-          p4p = participant.payoff.to_real_world_currency(player.session),
-          get_money = participant.payoff_plus_participation_fee()
+            participation_fee = player.session.config['participation_fee'],
+            realized_payoff = participant.payoff,
+            p4p = participant.payoff.to_real_world_currency(player.session),
+            get_money = participant.payoff_plus_participation_fee()
         )
 
 
