@@ -13,7 +13,7 @@
 <br>
 {% if group.dictator_first %}
 {% if player.role == "Patron" %}
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-warning" role="alert">
   あなたは <b>メンバーP</b> です。
 </div>
 <p>
@@ -25,7 +25,7 @@
   ②あなたが同じグループのメンバーDに渡すトークンを決めます。
 </div>
 {% elif player.role == "Dictator" %}
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-info" role="alert">
   あなたは <b>メンバーD</b> です。
 </div>
 <p>
@@ -37,7 +37,7 @@
   ②同じグループのメンバーPがあなたに渡すトークンを決めます。
 </div>
 {% else %}
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-success" role="alert">
   あなたは <b>メンバーR</b> です。
 </div>
 <p>
@@ -54,7 +54,7 @@
 {% endif %}
 {% else %}
 {% if player.role == "Patron" %}
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-warning" role="alert">
   あなたは <b>メンバーP</b> です。
 </div>
 <p>
@@ -66,7 +66,7 @@
   ②同じグループのメンバーDがあなたから受け取ったトークンの何％をメンバーRに渡すかを決めます。
 </div>
 {% elif player.role == "Dictator" %}
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-info" role="alert">
   あなたは <b>メンバーD</b> です。
 </div>
 <p>
@@ -78,7 +78,7 @@
   ②あなたが同じグループのメンバーPから受け取ったトークンの何％をメンバーRに渡すかを決めます。
 </div>
 {% else %}
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-success" role="alert">
   あなたは <b>メンバーR</b> です。
 </div>
 <p>
