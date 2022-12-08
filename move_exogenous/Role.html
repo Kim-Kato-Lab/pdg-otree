@@ -13,77 +13,89 @@
 <br>
 {% if group.dictator_first %}
 {% if player.role == "Patron" %}
-<div id="your-role-first-patron">
-  このグループでは、あなたは <b>メンバーP</b> です。
-  <br>
-  <br>
-  最初に、同じグループのメンバーDがあなたから受け取ったポイントの何％をメンバーRに渡すかを決めます。
-  <br>
-  その後に、あなたが同じグループのメンバーDに渡すポイントを決めます。
+<div class="alert alert-danger" role="alert">
+  あなたは <b>メンバーP</b> です。
+</div>
+<p>
+  意思決定の順番は以下の通りです。
+</p>
+<div class="alert alert-secondary" role="alert">
+  ①同じグループのメンバーDがあなたから受け取ったトークンの何％をメンバーRに渡すかを事前に決めます。
+  <br><br>
+  ②あなたが同じグループのメンバーDに渡すトークンを決めます。
 </div>
 {% elif player.role == "Dictator" %}
-<div id="your-role-first-dictator">
-  このグループでは、あなたは <b>メンバーD</b> です。
-  <br>
-  <br>
-  最初に、あなたが同じグループのメンバーPから受け取ったポイントの何％をメンバーRに渡すかを決めます。
-  <br>
-  その後に、同じグループのメンバーPがあなたに渡すポイントを決めます。
+<div class="alert alert-danger" role="alert">
+  あなたは <b>メンバーD</b> です。
+</div>
+<p>
+  意思決定の順番は以下の通りです。
+</p>
+<div class="alert alert-secondary" role="alert">
+  ①あなたが同じグループのメンバーPから受け取ったトークンの何％をメンバーRに渡すかを事前に決めます。
+  <br><br>
+  ②同じグループのメンバーPがあなたに渡すトークンを決めます。
 </div>
 {% else %}
-<div id="your-role-first-receiver">
-  このグループでは、あなたは <b>メンバーR</b> です。
-  <br>
-  <br>
-  最初に、同じグループのメンバーDが同じグループのメンバーPから受け取ったポイントの何％をあなたに渡すかを決めます。
-  <br>
-  その後に、同じグループのメンバーPがメンバーDに渡すポイントを決めます。
-  <br>
-  <br>
-  メンバーDとメンバーPの役割を持った参加者の選択が終わるまで、しばらくお待ちください。
+<div class="alert alert-danger" role="alert">
+  あなたは <b>メンバーR</b> です。
 </div>
+<p>
+  意思決定の順番は以下の通りです。
+</p>
+<div class="alert alert-secondary" role="alert">
+  ①同じグループのメンバーDがメンバーPから受け取ったトークンの何％をあなたに渡すかを事前に決めます。
+  <br><br>
+  ②同じグループのメンバーPがメンバーDに渡すトークンを決めます。
+</div>
+<p>
+  メンバーDとメンバーPの役割を持った参加者の選択が終わるまで、しばらくお待ちください。
+</p>
 {% endif %}
 {% else %}
 {% if player.role == "Patron" %}
-<div id="your-role-second-patron">
-  このグループでは、あなたは <b>メンバーP</b> です。
-  <br>
-  <br>
-  最初に、あなたが同じグループのメンバーDに渡すポイントを決めます。
-  <br>
-  その後に、同じグループのメンバーDがあなたから受け取ったポイントの何％をメンバーRに渡すかを決めます。
+<div class="alert alert-danger" role="alert">
+  あなたは <b>メンバーP</b> です。
+</div>
+<p>
+  意思決定の順番は以下の通りです。
+</p>
+<div class="alert alert-secondary" role="alert">
+  ①あなたが同じグループのメンバーDに渡すトークンを決めます。
+  <br><br>
+  ②同じグループのメンバーDがあなたから受け取ったトークンの何％をメンバーRに渡すかを決めます。
 </div>
 {% elif player.role == "Dictator" %}
-<div id="your-role-second-dictator">
-  このグループでは、あなたは <b>メンバーD</b> です。
-  <br>
-  <br>
-  最初に、同じグループのメンバーPがあなたに渡すポイントを決めます。
-  <br>
-  その後に、あなたが同じグループのメンバーPから受け取ったポイントの何％をメンバーRに渡すかを決めます。
+<div class="alert alert-danger" role="alert">
+  あなたは <b>メンバーD</b> です。
+</div>
+<p>
+  意思決定の順番は以下の通りです。
+</p>
+<div class="alert alert-secondary" role="alert">
+  ①同じグループのメンバーPがあなたに渡すトークンを決めます。
+  <br><br>
+  ②あなたが同じグループのメンバーPから受け取ったトークンの何％をメンバーRに渡すかを決めます。
 </div>
 {% else %}
-<div id="your-role-second-receiver">
-  このグループでは、あなたは <b>メンバーR</b> です。
-  <br>
-  <br>
-  最初に、同じグループのメンバーPがメンバーDに渡すポイントを決めます。
-  <br>
-  その後に、同じグループのメンバーDが同じグループのメンバーPから受け取ったポイントの何％をあなたに渡すかを決めます。
-  <br>
-  <br>
+<div class="alert alert-danger" role="alert">
+  あなたは <b>メンバーR</b> です。
+</div>
+<p>
+  意思決定の順番は以下の通りです。
+</p>
+<div class="alert alert-secondary" role="alert">
+  ①同じグループのメンバーPがメンバーDに渡すトークンを決めます。
+  <br><br>
+  ②同じグループのメンバーDがメンバーPから受け取ったトークンの何％をあなたに渡すかを決めます。
+</div>
+<p>
   メンバーDとメンバーPの役割を持った参加者の選択が終わるまで、しばらくお待ちください。
-</div>
+</p>
 {% endif %}
 {% endif %}
 
-<br>
-
-<div id="confirm">
-  <b>あなたの役割を確認したら、下のボタンを押してください。</b>
-</div>
-
-<br>
+<p>あなたの役割を確認したら、下のボタンを押してください。</p>
 
 {% next_button %}
 
