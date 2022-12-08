@@ -13,7 +13,7 @@
 
 <br>
 
-{% if participant.first_dictator %}
+{% if group.dictator_first %}
 <div id="first-your-situation">
   現在、あなたは{{ C.ENDOWMENT }}を持っています。
   <br>
@@ -74,7 +74,7 @@
 
 <hr>
 
-{% if participant.first_dictator %}
+{% if group.dictator_first %}
 <div id="first-dictator-calculator">
     <b>計算機</b>
     <br>
@@ -146,7 +146,7 @@
 
 {% block scripts %}
 
-{% if participant.first_dictator %}
+{% if group.dictator_first %}
 <script type="text/javascript" src="{{ static 'global/js/first-dictator-calculator.js' }}"></script>
 {% else %}
 <script type="text/javascript" src="{{ static 'global/js/first-patron-calculator.js' }}"></script>
