@@ -14,13 +14,13 @@
 
 <div class="round">
   <p>
-    メンバーPが初めに保有しているポイントは <b>{{ endowment }}</b> ポイントです。
-    メンバーDが初めに保有しているポイントは <b>{{ endowment }}</b> ポイントです。
-    メンバーRが初めに保有しているポイントは <b>0</b> ポイントです。
+    メンバーPが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
+    メンバーDが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
+    メンバーRが初めに保有しているトークンは <b>0</b> トークンです。
   </p>
   <p>
-    ここで、メンバーPは自身のポイントのうち <b>{{ send }}</b> ポイントをメンバーDに渡し、
-    メンバーDは受け取ったポイントを <b>{{ allocation }}％</b> にしてメンバーRに渡しました。
+    ここで、メンバーPは自身のトークンのうち <b>{{ send }}</b> トークンをメンバーDに渡し、
+    メンバーDは受け取ったトークンを <b>{{ allocation }}％</b> にしてメンバーRに渡しました。
   </p>
 </div>
 
@@ -31,11 +31,11 @@
     {% if error_patron %}
     <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
     {% endif %}
-    <span>メンバーPの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
+    <span>メンバーPの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
   </p>
   <ul>
-    <li>あなたの解答：{{ answer_patron }}ポイント</li>
-    <li>正解：{{ correct_patron }}ポイント</li>
+    <li>あなたの解答：{{ answer_patron }}トークン</li>
+    <li>正解：{{ correct_patron }}トークン</li>
   </ul>
 </div>
 
@@ -44,11 +44,11 @@
     {% if error_dictator %}
     <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
     {% endif %}
-    <span>メンバーDの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
+    <span>メンバーDの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
   </p>
   <ul>
-    <li>あなたの解答：{{ answer_dictator }}ポイント</li>
-    <li>正解：{{ correct_dictator }}ポイント</li>
+    <li>あなたの解答：{{ answer_dictator }}トークン</li>
+    <li>正解：{{ correct_dictator }}トークン</li>
   </ul>
 </div>
 
@@ -57,11 +57,11 @@
     {% if error_receiver %}
     <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
     {% endif %}
-    <span>メンバーRの最終的な獲得ポイントはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
+    <span>メンバーRの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
   </p>
   <ul>
-    <li>あなたの解答：{{ answer_receiver }}ポイント</li>
-    <li>正解：{{ correct_receiver }}ポイント</li>
+    <li>あなたの解答：{{ answer_receiver }}トークン</li>
+    <li>正解：{{ correct_receiver }}トークン</li>
   </ul>
 </div>
 
