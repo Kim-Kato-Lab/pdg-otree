@@ -38,7 +38,9 @@ def creating_session(subsession: Subsession):
 
 class Group(BaseGroup):
     send = models.IntegerField(min=0, max=C.ENDOWMENT)
-    allocation = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
+    allocation = models.IntegerField(
+        choices=[[x, str(x / 100)] for x in range(0, C.MAXIMUM_MULTIPLY + 1, 10)]
+    )
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
     dictator_first = models.BooleanField()
@@ -138,7 +140,8 @@ class FirstMover(Page):
         import random
         if player.group.dictator_first == True:
             if timeout_happened:
-                player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
+                choice_set = list(range(0, C.MAXIMUM_MULTIPLY + 1, 10))
+                player.group.allocation = random.sample(choice_set, 1)
                 player.group.allocation_timeout = 1
             else:
                 player.group.allocation_timeout = 0
@@ -194,7 +197,7 @@ class SecondMover(Page):
         if group.dictator_first == True:
             return dict(
                 role = 'メンバーＰ',
-                allocation = player.group.allocation
+                allocation = player.group.allocation / 100
             )
         else:
             return dict(
@@ -229,7 +232,8 @@ class SecondMover(Page):
                 player.group.send_timeout = 0
         else:
             if timeout_happened:
-                player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
+                choice_set = list(range(0, C.MAXIMUM_MULTIPLY + 1, 10))
+                player.group.allocation = random.sample(choice_set, 1)
                 player.group.allocation_timeout = 1
             else:
                 player.group.allocation_timeout = 0
