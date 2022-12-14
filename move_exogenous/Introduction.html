@@ -1,15 +1,16 @@
 {% extends "global/Survey.html" %}
 {% load otree %}
+
 {% block title %}
-これから実験を始めます
+  これから実験を始めます
 {% endblock %}
 
 {% block content %}
+  <div id="confirm">
+    <p>
+      以下の「次へ」ボタンを押して、第1ラウンドの実験を始めてください。
+    </p>
+  </div>
 
-<p>
-  以下の「次へ」ボタンを押して、第1ラウンドの実験を始めてください。
-</p>
-
-{% next_button %}
-
+  {% next_button %}
 {% endblock %}
