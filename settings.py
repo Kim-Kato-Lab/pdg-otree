@@ -68,9 +68,19 @@ SESSION_CONFIGS = [
         display_name = '[DEMO] Patron-Dictator Game',
         num_demo_participants = 6,
         first_moving_dictator = False,
-        timeout_seconds = None,
+        timeout_seconds = 2,
         app_sequence = [
             'move_exogenous',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'demo_dictator',
+        display_name = '[DEMO] Dictator Game',
+        num_demo_participants = 4,
+        timeout_seconds = 2, # if you want to run experiments without time-out, then specify `None`
+        app_sequence = [
+            'dictator',
             'payment_info'
         ]
     )
