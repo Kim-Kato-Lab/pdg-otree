@@ -62,6 +62,17 @@ SESSION_CONFIGS = [
             'survey',
             'payment_info'
         ]
+    ),
+    dict(
+        name = 'demo_patron_dictator_game',
+        display_name = '[DEMO] Patron-Dictator Game',
+        num_demo_participants = 6,
+        first_moving_dictator = False,
+        timeout_seconds = None,
+        app_sequence = [
+            'move_exogenous',
+            'payment_info'
+        ]
     )
 ]
 
