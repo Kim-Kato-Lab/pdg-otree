@@ -5,7 +5,7 @@ function pi() {
   const multiply = input.value;
 
   // for debug
-  console.log(multiply);
+  // console.log(multiply);
 
   const alert_msg = "0から200の整数で入力してください";
 
