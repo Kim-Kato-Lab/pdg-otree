@@ -2,48 +2,40 @@
 {% load otree static %}
 
 {% block title %}
-    最終的な結果
+  最終的な結果
 {% endblock %}
 
 {% block content %}
-<div class="progress" style="height: 20px">
-  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
-</div>
-<br>
-{% if player.role == "Patron" %}
-<div id="choice-summary-patron">
-  このグループでは、
+  <div class="progress" style="height: 20px">
+    <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+  </div>
   <br>
-  あなた（メンバーＰ）が <b>{{ player.group.send }}トークン</b> をメンバーＤに送り、
-  <br>
-  メンバーＤがそれを <b>{{ player.group.allocation }}％</b> にして、メンバーＲに送りました。
-</div>
-{% elif player.role == "Dictator" %}
-<div id="choice-summary-dictator">
-  このグループでは、
-  <br>
-  メンバーＰが <b>{{ player.group.send }}トークン</b> をあなた（メンバーＤ）に送り、
-  <br>
-  あなた（メンバーＤ）がそれを <b>{{ player.group.allocation }}％</b> にして、メンバーＲに送りました。
-</div>
-{% else %}
-<div id="choice-summary-receiver">
-  このグループでは、
-  <br>
-  メンバーＰが <b>{{ player.group.send }}トークン</b> をメンバーＤに送り、
-  <br>
-  メンバーＤがそれを <b>{{ player.group.allocation }}％</b> にして、あなた（メンバーＲ）に送りました。
-</div>
-{% endif %}
-
-<br>
-
-<div id="your-payment">
-    <b>したがって、あなたの最終的なトークンは {{ player.payoff }} でした。</b>
-</div>
-
-<br>
-
-{% next_button %}
-
+  {% if player.role == "Patron" %}
+  <div id="choice-summary-p">
+    <p>
+      このグループでは、あなた（メンバーＰ）が <b>{{ player.group.send }}トークン</b> をメンバーＤに送り、メンバーＤがそれを <b>{{ player.group.allocation }}％</b> にして、メンバーＲに送りました。
+    </p>
+  </div>
+  {% elif player.role == "Dictator" %}
+  <div id="choice-summary-d">
+    <p>
+      このグループでは、メンバーＰが <b>{{ player.group.send }}トークン</b> をあなた（メンバーＤ）に送り、あなた（メンバーＤ）がそれを <b>{{ player.group.allocation }}％</b> にして、メンバーＲに送りました。
+    </p>
+  </div>
+  {% else %}
+  <div id="choice-summary-r">
+    <p>
+      このグループでは、メンバーＰが <b>{{ player.group.send }}トークン</b> をメンバーＤに送り、メンバーＤがそれを <b>{{ player.group.allocation }}％</b> にして、あなた（メンバーＲ）に送りました。
+    </p>
+  </div>
+  {% endif %}
+  <div id="your-payment">
+    <p>
+      <b>したがって、あなたの最終的なトークンは {{ player.payoff }} でした。</b>
+    </p>
+    <p>
+      確認したら、「次へ」のボタンを押してください。
+    </p>
+  </div>
+  {% next_button %}
 {% endblock %}
