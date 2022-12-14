@@ -262,6 +262,10 @@ class Results(Page):
     def get_timeout_seconds(player: Player):
         session = player.session
         return session.config['timeout_seconds']
+    
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(allocation = player.group.allocation / 100)
 
     @staticmethod
     def js_vars(player: Player):
