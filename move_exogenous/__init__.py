@@ -3,13 +3,19 @@ from otree.api import *
 
 author = 'Hiroki Kato'
 doc = """
-Strategic Relationship between Donors and Charities: Patron-Dictator Game (PDG in short).
-This game is the PDG with first-moving dictator treatment.
+This is the patron-dictator game,
+which reflects an asymmetric information in that 
+it is difficult for donors to know in advance
+the extent to which their donations improve recipients' welfare.
+
+Registration citation:
+Kato, Hiroki and Youngrok Kim. 2022. "Patron-Dictator Game: Strategic Interaction between Charities and Donors."
+AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 """
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'patron_dictator_game_fd'
+    NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
     NUM_ROUNDS = 10
     ENDOWMENT = cu(100)
@@ -26,45 +32,9 @@ class Subsession(BaseSubsession):
 def creating_session(subsession: Subsession):
     subsession.group_randomly()
 
-    if 'first_moving_dictator' in subsession.session.config:
-        for g in subsession.get_groups():
-            g.dictator_first = subsession.session.config['first_moving_dictator']
-            print('First-Moving Dictator: ', g.dictator_first)
-    else:
-        if 'first_half_FD' in subsession.session.config:
-            if subsession.session.config['first_half_FD']:
-                if subsession.round_number <= C.NUM_ROUNDS // 2:
-                    for g in subsession.get_groups():
-                        g.dictator_first = True
-                else:
-                    for g in subsession.get_groups():
-                        g.dictator_first = False
-            else:
-                if subsession.round_number <= C.NUM_ROUNDS // 2:
-                    for g in subsession.get_groups():
-                        g.dictator_first = False
-                else:
-                    for g in subsession.get_groups():
-                        g.dictator_first = True
-        else:
-            # Case A: numbers of groups = even & numbers of rounds = even or odd
-            #   To equally random assignment, remove flow in False condition
-            #   run flow in True condition every rounds (remove if condition)
-            # Case B: numbers of groups = odd & numbers of rounds = even or odd
-            #   To equally random assignment, keep flow in False condition
-            #   If numbers of rounds = odd, not perfect equal random but best approximation
-            if subsession.round_number == 1:
-                import itertools as it
-                first = it.cycle([True, False])
-                for g in subsession.get_groups():
-                    g.dictator_first = next(first)
-            else:
-                for g in subsession.get_groups():
-                    previous_round = g.in_round(subsession.round_number - 1)
-                    previous_first = previous_round.dictator_first
-                    g.dictator_first = not previous_first
-
-
+    for g in subsession.get_groups():
+        g.dictator_first = subsession.session.config['first_moving_dictator']
+        print('First-Moving Dictator: ', g.dictator_first)
 
 class Group(BaseGroup):
     send = models.IntegerField(min=0, max=C.ENDOWMENT)
