@@ -7,19 +7,9 @@ function pi() {
   // for debug
   // console.log(multiply);
 
-  const alert_msg = "0から200の整数で入力してください";
+  const alert_msg = "選択してください";
 
   if (!multiply) {
-    return alert(alert_msg);
-  }
-
-  if (multiply < 0 | 200 < multiply) {
-    input.value = '';
-    return alert(alert_msg);
-  }
-
-  if (multiply % 1 != 0) {
-    input.value = '';
     return alert(alert_msg);
   }
 

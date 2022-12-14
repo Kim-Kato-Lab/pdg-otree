@@ -68,7 +68,7 @@ SESSION_CONFIGS = [
         display_name = '[DEMO] Patron-Dictator Game',
         num_demo_participants = 6,
         first_moving_dictator = False,
-        timeout_seconds = 2,
+        timeout_seconds = None,
         app_sequence = [
             'move_exogenous',
             'payment_info'
