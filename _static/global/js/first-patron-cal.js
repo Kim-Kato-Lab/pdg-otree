@@ -25,13 +25,13 @@ function pi() {
 
   let p = document.getElementById("sd-calculator-result-p");
   const cal_p = Math.round(100 - send);
-  p.innerText = cal_p
+  p.innerText = cal_p;
 
   let d = document.getElementById("sd-calculator-result-d");
   const cal_minD = Math.round(100 - (min_multiply / 100 - 1) * send);
   const cal_maxD = Math.round(100 - (max_multiply / 100 - 1) * send);
   
-  if (cal_maxD == cal_maxD) {
+  if (cal_minD == cal_maxD) {
     d.innerHTML = cal_minD;
   } else if (cal_minD > cal_maxD) {
     d.innerHTML =
