@@ -14,25 +14,25 @@
 <div id="choice-summary-patron">
   このグループでは、
   <br>
-  あなた（メンバーP）が <b>{{ player.group.send }}トークン</b> をメンバーDに送り、
+  あなた（メンバーＰ）が <b>{{ player.group.send }}トークン</b> をメンバーＤに送り、
   <br>
-  メンバーDがそれを <b>{{ player.group.allocation }}％</b> にして、メンバーRに送りました。
+  メンバーＤがそれを <b>{{ player.group.allocation }}％</b> にして、メンバーＲに送りました。
 </div>
 {% elif player.role == "Dictator" %}
 <div id="choice-summary-dictator">
   このグループでは、
   <br>
-  メンバーPが <b>{{ player.group.send }}トークン</b> をあなた（メンバーD）に送り、
+  メンバーＰが <b>{{ player.group.send }}トークン</b> をあなた（メンバーＤ）に送り、
   <br>
-  あなた（メンバーD）がそれを <b>{{ player.group.allocation }}％</b> にして、メンバーRに送りました。
+  あなた（メンバーＤ）がそれを <b>{{ player.group.allocation }}％</b> にして、メンバーＲに送りました。
 </div>
 {% else %}
 <div id="choice-summary-receiver">
   このグループでは、
   <br>
-  メンバーPが <b>{{ player.group.send }}トークン</b> をメンバーDに送り、
+  メンバーＰが <b>{{ player.group.send }}トークン</b> をメンバーＤに送り、
   <br>
-  メンバーDがそれを <b>{{ player.group.allocation }}％</b> にして、あなた（メンバーR）に送りました。
+  メンバーＤがそれを <b>{{ player.group.allocation }}％</b> にして、あなた（メンバーＲ）に送りました。
 </div>
 {% endif %}
 

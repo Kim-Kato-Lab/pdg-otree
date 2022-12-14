@@ -15,12 +15,12 @@
 <div class="alert alert-warning" role="alert">
   <p><b>あなたの状況と選択について</b></p>
   <p>現在、あなたは{{ C.ENDOWMENT }}を保有しています。</p>
-  <p>あなたは{{ C.ENDOWMENT }}のうち何トークンを同じグループのメンバーDに渡すか決めてください。</p>
+  <p>あなたは{{ C.ENDOWMENT }}のうち何トークンを同じグループのメンバーＤに渡すか決めてください。</p>
 </div>
 <div class="alert alert-info" role="alert">
   <p><b>前の順番の人の選択について</b></p>
-  <p>メンバーDはあなたから受け取ったトークンのうち <b>{{ allocation }}％</b> をメンバーRに渡することを決めました。</p>
-  <p>また、メンバーDも{{ C.ENDOWMENT }}を保有しています。</p>
+  <p>メンバーＤはあなたから受け取ったトークンのうち <b>{{ allocation }}％</b> をメンバーＲに渡することを決めました。</p>
+  <p>また、メンバーＤも{{ C.ENDOWMENT }}を保有しています。</p>
 </div>
 <p>下部にある「計算機」を使うと、三人の最終的なトークンを予測できます。</p>
 <p>「計算機」などを活用してあなたの選択を決めた後に、0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。</p>
@@ -28,14 +28,14 @@
 <div class="alert alert-info" role="alert">
   <p><b>あなたの状況と選択について</b></p>
   <p>現在、あなたは{{ C.ENDOWMENT }}を持っています。</p>
-  <p>同じグループのメンバーPは{{ C.ENDOWMENT }}のうち、 <b>{{ send }}トークン</b> をあなたに渡しました。</p>
-  <p>あなたはメンバーPから受け取った <b>{{ send }}トークン</b> のうち何％（0～200％）をメンバーRに渡すかを決めてください。</p>
+  <p>同じグループのメンバーＰは{{ C.ENDOWMENT }}のうち、 <b>{{ send }}トークン</b> をあなたに渡しました。</p>
+  <p>あなたはメンバーＰから受け取った <b>{{ send }}トークン</b> のうち何％（0～200％）をメンバーＲに渡すかを決めてください。</p>
   <ul>
     <li>
-      100％より低い数字：メンバーPから受け取ったトークンの一部をメンバーRに渡します。残ったトークンはあなたのものになります。
+      100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
     </li>
     <li>
-      100％より大きい数字：メンバーPから受け取ったトークンに自身が保有するトークンを上乗せして、メンバーRに渡します。
+      100％より大きい数字：メンバーＰから受け取ったトークンに自身が保有するトークンを上乗せして、メンバーＲに渡します。
     </li>
   </ul>
 </div>
@@ -58,7 +58,7 @@
     <div class="alert alert-secondary" role="alert">
     あなたの選択：
     <input maxlength="3" style="width: 50px;" type="text" id="send">
-    トークン（半角数字）をメンバーDに渡す
+    トークン（半角数字）をメンバーＤに渡す
     <input type="button" value="計算する" onclick="pi()">
     </div>
     <table border="1" style="border-collapse: collapse" width="500">
@@ -67,15 +67,15 @@
         <th>トークン</th>
       </tr>
       <tr>
-        <td>メンバーP（<b>あなた</b>）</td>
+        <td>メンバーＰ（<b>あなた</b>）</td>
         <th><span id="piP">？？</span></th>
       </tr>
       <tr>
-        <td>メンバーD</td>
+        <td>メンバーＤ</td>
         <th><span id="piD">？？</span></th>
       </tr>
       <tr>
-        <td>メンバーR</td>
+        <td>メンバーＲ</td>
         <th><span id="piR">？？</span></th>
       </tr>
     </table>
@@ -88,9 +88,9 @@
     あなたと他２人の最終的なトークンの予測を確認できます。
   </p>
   <div class="alert alert-secondary" role="alert">
-  あなたの選択：メンバーPから受け取った{{ send }}トークンのうち
+  あなたの選択：メンバーＰから受け取った{{ send }}トークンのうち
   <input maxlength="3" style="width: 50px;" type="text" id="multiply">
-  ％（半角数字）をメンバーRに渡す
+  ％（半角数字）をメンバーＲに渡す
   <input type="button" value="計算する" onclick="pi()">
   </div>
   <table border="1" style="border-collapse: collapse" width="500">
@@ -99,15 +99,15 @@
       <th>トークン</th>
     </tr>
     <tr>
-      <td>メンバーP</td>
+      <td>メンバーＰ</td>
       <th><span id="piP">？？</span></th>
     </tr>
     <tr>
-      <td>メンバーD（<b>あなた</b>）</td>
+      <td>メンバーＤ（<b>あなた</b>）</td>
       <th><span id="piD">？？</span></th>
     </tr>
     <tr>
-      <td>メンバーR</td>
+      <td>メンバーＲ</td>
       <th><span id="piR">？？</span></th>
     </tr>
   </table>
