@@ -2,123 +2,143 @@
 {% load otree static %}
 
 {% block title %}
-    選択：あなたは{{ role }}です
+  選択：あなたは{{ role }}です
 {% endblock %}
 
 {% block content %}
-
-<div class="progress" style="height: 20px">
-  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
-</div>
-<br>
-{% if group.dictator_first %}
-<div class="alert alert-warning" role="alert">
-  <p><b>あなたの状況と選択について</b></p>
-  <p>現在、あなたは{{ C.ENDOWMENT }}を保有しています。</p>
-  <p>あなたは{{ C.ENDOWMENT }}のうち何トークンを同じグループのメンバーＤに渡すか決めてください。</p>
-</div>
-<div class="alert alert-info" role="alert">
-  <p><b>前の順番の人の選択について</b></p>
-  <p>メンバーＤはあなたから受け取ったトークンのうち <b>{{ allocation }}％</b> をメンバーＲに渡することを決めました。</p>
-  <p>また、メンバーＤも{{ C.ENDOWMENT }}を保有しています。</p>
-</div>
-<p>下部にある「計算機」を使うと、三人の最終的なトークンを予測できます。</p>
-<p>「計算機」などを活用してあなたの選択を決めた後に、0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。</p>
-{% else %}
-<div class="alert alert-info" role="alert">
-  <p><b>あなたの状況と選択について</b></p>
-  <p>現在、あなたは{{ C.ENDOWMENT }}を持っています。</p>
-  <p>同じグループのメンバーＰは{{ C.ENDOWMENT }}のうち、 <b>{{ send }}トークン</b> をあなたに渡しました。</p>
-  <p>あなたはメンバーＰから受け取った <b>{{ send }}トークン</b> のうち何％（0～200％）をメンバーＲに渡すかを決めてください。</p>
-  <ul>
-    <li>
-      100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
-    </li>
-    <li>
-      100％より大きい数字：メンバーＰから受け取ったトークンに自身が保有するトークンを上乗せして、メンバーＲに渡します。
-    </li>
-  </ul>
-</div>
-<p>下部にある「計算機」を使うと、三人の最終的なトークンを予測できます。</p>
-<p>「計算機」などを活用してあなたの選択を決めた後に、0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。</p>
-{% endif %}
-
-{% formfields %}
-{% next_button %}
-
-<hr>
-
-{% if group.dictator_first %}
-<div id="second-patron-calculator">
+  <div class="progress" style="height: 20px">
+    <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+  </div>
+  <br>
+  {% if group.dictator_first %}
+    <div id="fd-your-situation" class="alert alert-warning" role="alert">
+      <p>
+        <b>あなたの状況と選択について</b>
+      </p>
+      <p>
+        現在、あなたは{{ C.ENDOWMENT }}を保有しています。
+      </p>
+      <p>
+        あなたは{{ C.ENDOWMENT }}のうち何トークンを同じグループのメンバーＤに渡すか決めてください。
+      </p>
+      <p>
+        メンバーＤはあなたから受け取ったトークンのうち <b>{{ allocation }}％</b> をメンバーＲに渡すことを事前に決めました。
+      </p>
+    </div>
+    <div id="fd-form">
+      <p>
+        下部にある「計算機」を使うと、三人の最終的なトークンを予測できます。
+      </p>
+      <p>
+        「計算機」などを活用してあなたの選択を決めた後に、0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+      </p>
+    </div>
+  {% else %}
+    <div id="sd-your-situation" class="alert alert-info" role="alert">
+      <p>
+        <b>あなたの状況と選択について</b>
+      </p>
+      <p>
+        現在、あなたは{{ C.ENDOWMENT }}を持っています。
+      </p>
+      <p>
+        同じグループのメンバーＰは{{ C.ENDOWMENT }}のうち、 <b>{{ send }}トークン</b> をあなたに渡しました。
+      </p>
+      <p>
+        あなたはメンバーＰから受け取った <b>{{ send }}トークン</b> のうち何％（0～200％）をメンバーＲに渡すかを決めてください。
+      </p>
+      <ul>
+        <li>
+          100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
+        </li>
+        <li>
+          100％より大きい数字：メンバーＰから受け取ったトークンに自身が保有するトークンを上乗せして、メンバーＲに渡します。
+        </li>
+      </ul>
+    </div>
+    <div id="sd-form">
+      <p>
+        下部にある「計算機」を使うと、三人の最終的なトークンを予測できます。
+      </p>
+      <p>
+        「計算機」などを活用してあなたの選択を決めた後に、0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+      </p>
+    </div>
+  {% endif %}
+  {% formfields %}
+  {% next_button %}
+  <hr>
+  <div id="about-calculator">
     <h4>計算機</h4>
     <p>
-      あなたの選択を以下の入力し、「計算する」ボタンを押すと、
-      あなたと他２人の最終的なトークンを確認できます。
+      あなたの選択を以下の入力し、「計算する」ボタンを押すと、あなたと他２人の最終的なトークンを確認できます。
     </p>
-    <div class="alert alert-secondary" role="alert">
-    あなたの選択：
-    <input maxlength="3" style="width: 50px;" type="text" id="send">
-    トークン（半角数字）をメンバーＤに渡す
-    <input type="button" value="計算する" onclick="pi()">
-    </div>
-    <table border="1" style="border-collapse: collapse" width="500">
-      <tr>
-        <th>グループメンバー</th>
-        <th>トークン</th>
-      </tr>
-      <tr>
-        <td>メンバーＰ（<b>あなた</b>）</td>
-        <th><span id="piP">？？</span></th>
-      </tr>
-      <tr>
-        <td>メンバーＤ</td>
-        <th><span id="piD">？？</span></th>
-      </tr>
-      <tr>
-        <td>メンバーＲ</td>
-        <th><span id="piR">？？</span></th>
-      </tr>
-    </table>
-</div>
-{% else %}
-<div id="second-dictator-calculator">
-  <h4>計算機</h4>
-  <p>
-    あなたの選択を以下の入力し、「計算する」ボタンを押すと、
-    あなたと他２人の最終的なトークンの予測を確認できます。
-  </p>
-  <div class="alert alert-secondary" role="alert">
-  あなたの選択：メンバーＰから受け取った{{ send }}トークンのうち
-  <input maxlength="3" style="width: 50px;" type="text" id="multiply">
-  ％（半角数字）をメンバーＲに渡す
-  <input type="button" value="計算する" onclick="pi()">
   </div>
-  <table border="1" style="border-collapse: collapse" width="500">
-    <tr>
-      <th>グループメンバー</th>
-      <th>トークン</th>
-    </tr>
-    <tr>
-      <td>メンバーＰ</td>
-      <th><span id="piP">？？</span></th>
-    </tr>
-    <tr>
-      <td>メンバーＤ（<b>あなた</b>）</td>
-      <th><span id="piD">？？</span></th>
-    </tr>
-    <tr>
-      <td>メンバーＲ</td>
-      <th><span id="piR">？？</span></th>
-    </tr>
-  </table>
-</div>
+  {% if group.dictator_first %}
+  <div id="fd-calculator">
+    <div id="fd-calculator-form" class="alert alert-secondary" role="alert">
+      あなたの選択：
+      <input style="width: 50px;" type="number" min="0" max="100" id="send">
+      トークン（半角数字）をメンバーＤに渡す
+      <input type="button" value="計算する" onclick="pi()">
+    </div>
+    <div id="fd-calculator-result">
+      <table border="1" style="border-collapse: collapse" width="500">
+        <tr>
+          <th>グループメンバー</th>
+          <th>トークン</th>
+        </tr>
+        <tr>
+          <td>メンバーＰ（<b>あなた</b>）</td>
+          <th><span id="fd-calculator-result-p">？？</span></th>
+        </tr>
+        <tr>
+          <td>メンバーＤ</td>
+          <th><span id="fd-calculator-result-d">？？</span></th>
+        </tr>
+        <tr>
+          <td>メンバーＲ</td>
+          <th><span id="fd-calculator-result-r">？？</span></th>
+        </tr>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div id="sd-calculator">
+    <div id="sd-calculator-form" class="alert alert-secondary" role="alert">
+      あなたの選択：メンバーＰから受け取った{{ send }}トークンのうち
+      <input style="width: 50px;" type="number" min="0" max="200" id="multiply">
+      ％（半角数字）をメンバーＲに渡す
+      <input type="button" value="計算する" onclick="pi()">
+    </div>
+    <div id="sd-calculator-result">
+      <table border="1" style="border-collapse: collapse" width="500">
+        <tr>
+          <th>グループメンバー</th>
+          <th>トークン</th>
+        </tr>
+        <tr>
+          <td>メンバーＰ</td>
+          <th><span id="sd-calculator-result-p">？？</span></th>
+        </tr>
+        <tr>
+          <td>メンバーＤ（<b>あなた</b>）</td>
+          <th><span id="sd-calculator-result-d">？？</span></th>
+        </tr>
+        <tr>
+          <td>メンバーＲ</td>
+          <th><span id="sd-calculator-result-r">？？</span></th>
+        </tr>
+      </table>
+    </div>
+  </div>
 {% endif %}
 {% endblock %}
 
 {% block scripts %}
-{% if group.dictator_first %}
-<script type="text/javascript" src="{{ static 'global/js/second-patron-calculator.js' }}"></script>
-{% else %}
-<script type="text/javascript" src="{{ static 'global/js/second-dictator-calculator.js' }}"></script>
-{% endif %}
+  {% if group.dictator_first %}
+  <script src="{{ static 'global/js/second-patron-cal.js' }}"></script>
+  {% else %}
+  <script src="{{ static 'global/js/second-dictator-cal.js' }}"></script>
+  {% endif %}
 {% endblock %}
