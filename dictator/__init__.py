@@ -13,7 +13,7 @@ S285-S300.
 class C(BaseConstants):
     NAME_IN_URL = 'dictator'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 10
     ENDOWMENT = cu(100)
     PATRON_ROLE = "Patron"
     RECEIVER_ROLE = "Receiver"
@@ -128,13 +128,10 @@ class Results(Page):
     def before_next_page(player: Player, timeout_happened):
         import random
         participant = player.participant
+        round_list = list(range(1, C.NUM_ROUNDS + 1))
         
         if player.round_number == C.NUM_ROUNDS:
-            selected_round = []
-            while len(selected_round) < 2:
-                n = random.randint(1, C.NUM_ROUNDS)
-                if not n in selected_round:
-                    selected_round.append(n)
+            selected_round = random.sample(round_list, 2)
             participant.selected_round = selected_round
             each_realized_payoff = [float(player.in_round(n).payoff) for n in selected_round]
             realized_payoff = sum(each_realized_payoff)

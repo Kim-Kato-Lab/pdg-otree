@@ -263,7 +263,6 @@ class Results(Page):
         round_list = list(range(1, C.NUM_ROUNDS + 1))
         
         if player.round_number == C.NUM_ROUNDS:
-            selected_round = []
             selected_round = random.sample(round_list, 2)
             participant.selected_round = selected_round
             each_realized_payoff = [float(player.in_round(n).payoff) for n in selected_round]
