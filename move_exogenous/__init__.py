@@ -95,25 +95,6 @@ class WaitIntroduction(WaitPage):
     def is_displayed(player: Player):
         return player.round_number == 1
 
-class Introduction(Page):
-    @staticmethod
-    def vars_for_template(player: Player):
-        d = dict(first_half_fd = player.session.config['first_half_FD'])
-        if player.round_number == 1: 
-            d['first_half'] = True
-        elif player.round_number == 1 + C.NUM_ROUNDS // 2:
-            d['first_half'] = False
-        return d
-
-    @staticmethod
-    def get_timeout_seconds(player: Player):
-        session = player.session
-        return session.config['timeout_seconds']
-    
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.round_number == 1 or player.round_number == 1 + C.NUM_ROUNDS // 2
-
 class Role(Page):
     @staticmethod
     def get_timeout_seconds(player: Player):
@@ -334,7 +315,6 @@ class ShuffleWaitPage(WaitPage):
 
 page_sequence = [
     WaitIntroduction,
-    Introduction,
     Role,
     WaitRoleCheck,
     FirstMover,
