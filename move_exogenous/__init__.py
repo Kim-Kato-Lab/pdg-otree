@@ -110,7 +110,7 @@ class Role(Page):
 
 class WaitRoleCheck(WaitPage):
     body_text = """
-    あなたのグループのメンバーが役割を確認しています。
+    あなたのグループの他の参加者が役割を確認しています。
     しばらくお待ちください。
     """
 
@@ -142,9 +142,9 @@ class FirstMover(Page):
     def vars_for_template(player: Player):
         group = player.group
         if group.dictator_first == True:
-            return dict(role = 'メンバーD')
+            return dict(role = 'メンバーＤ')
         else:
-            return dict(role = 'メンバーP')
+            return dict(role = 'メンバーＰ')
     
     @staticmethod
     def js_vars(player: Player):
@@ -177,11 +177,11 @@ class WaitFirstMover(WaitPage):
         group = player.group
         if group.dictator_first == True:
             return dict(body_text = """
-            あなたのグループのメンバーDが選択をしています。しばらくお待ちください。
+            あなたのグループのメンバーＤが選択をしています。しばらくお待ちください。
             """)
         else:
             return dict(body_text = """
-            あなたのグループのメンバーPが選択をしています。しばらくお待ちください。
+            あなたのグループのメンバーＰが選択をしています。しばらくお待ちください。
             """)
 
 class SecondMover(Page):
@@ -213,12 +213,12 @@ class SecondMover(Page):
         group = player.group
         if group.dictator_first == True:
             return dict(
-                role = 'メンバーP',
+                role = 'メンバーＰ',
                 allocation = player.group.allocation
             )
         else:
             return dict(
-                role = 'メンバーD',
+                role = 'メンバーＤ',
                 send = player.group.send
             )
     
@@ -262,11 +262,11 @@ class WaitSecondMover(WaitPage):
         group = player.group
         if group.dictator_first == True:
             return dict(body_text = """
-            あなたのグループのメンバーPが選択をしています。しばらくお待ちください。
+            あなたのグループのメンバーＰが選択をしています。しばらくお待ちください。
             """)
         else:
             return dict(body_text = """
-            あなたのグループのメンバーDが選択をしています。しばらくお待ちください。
+            あなたのグループのメンバーＤが選択をしています。しばらくお待ちください。
             """)
 
 class ResultsWaitPage(WaitPage):
