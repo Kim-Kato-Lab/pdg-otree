@@ -13,7 +13,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = 3
     NUM_ROUNDS = 10
     ENDOWMENT = cu(100)
-    MAXIMUM_MULTIPLY = cu(200)
+    MAXIMUM_MULTIPLY = 200
     PATRON_ROLE = "Patron"
     DICTATOR_ROLE = "Dictator"
     RECEIVER_ROLE = "Receiver"
@@ -290,16 +290,11 @@ class Results(Page):
     def before_next_page(player: Player, timeout_happened):
         import random
         participant = player.participant
+        round_list = list(range(1, C.NUM_ROUNDS + 1))
         
         if player.round_number == C.NUM_ROUNDS:
             selected_round = []
-            first_half_end = C.NUM_ROUNDS // 2
-            selected_round.append(random.randint(1, first_half_end))
-            selected_round.append(random.randint(first_half_end + 1, C.NUM_ROUNDS))
-            # while len(selected_round) < 2:
-            #     n = random.randint(1, C.NUM_ROUNDS)
-            #     if not n in selected_round:
-            #         selected_round.append(n)
+            selected_round = random.sample(round_list, 2)
             participant.selected_round = selected_round
             each_realized_payoff = [float(player.in_round(n).payoff) for n in selected_round]
             realized_payoff = sum(each_realized_payoff)
