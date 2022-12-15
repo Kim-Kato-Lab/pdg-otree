@@ -65,7 +65,18 @@ SESSION_CONFIGS = [
     ),
     dict(
         name = 'demo_patron_dictator_game',
-        display_name = '[DEMO] Patron-Dictator Game',
+        display_name = '[DEMO] Patron-Dictator Game with First-Moving Dictator',
+        num_demo_participants = 6,
+        first_moving_dictator = True,
+        timeout_seconds = None,
+        app_sequence = [
+            'move_exogenous',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'demo_patron_dictator_game',
+        display_name = '[DEMO] Patron-Dictator Game with Second-Moving Dictator',
         num_demo_participants = 6,
         first_moving_dictator = False,
         timeout_seconds = None,
