@@ -64,7 +64,7 @@ SESSION_CONFIGS = [
         ]
     ),
     dict(
-        name = 'demo_patron_dictator_game',
+        name = 'demo_patron_dictator_game_fd',
         display_name = '[DEMO] Patron-Dictator Game with First-Moving Dictator',
         num_demo_participants = 6,
         first_moving_dictator = True,
@@ -75,7 +75,7 @@ SESSION_CONFIGS = [
         ]
     ),
     dict(
-        name = 'demo_patron_dictator_game',
+        name = 'demo_patron_dictator_game_sd',
         display_name = '[DEMO] Patron-Dictator Game with Second-Moving Dictator',
         num_demo_participants = 6,
         first_moving_dictator = False,
