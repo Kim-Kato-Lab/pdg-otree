@@ -54,7 +54,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name = 'dictator',
-        display_name = 'Dictator Game DG treatment)',
+        display_name = 'Dictator Game (DG treatment)',
         num_demo_participants = 4,
         timeout_seconds = None, # if you want to run experiments without time-out, then specify `None`
         app_sequence = [
