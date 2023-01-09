@@ -28,7 +28,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 SESSION_CONFIGS = [
     dict(
         name = 'patron_dictator_game_fd',
-        display_name = 'Patron-Dictator Game with First-Moving Dictator',
+        display_name = 'Patron-Dictator Game with First-Moving Dictator (FD treatment)',
         num_demo_participants = 6,
         first_moving_dictator = True,
         timeout_seconds = None,
@@ -41,7 +41,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name = 'patron_dictator_game_sd',
-        display_name = 'Patron-Dictator Game with Second-Moving Dictator',
+        display_name = 'Patron-Dictator Game with Second-Moving Dictator (SD treatment)',
         num_demo_participants = 6,
         first_moving_dictator = False,
         timeout_seconds = None,
@@ -54,33 +54,12 @@ SESSION_CONFIGS = [
     ),
     dict(
         name = 'dictator',
-        display_name = 'Dictator Game',
+        display_name = 'Dictator Game (DG treatment)',
         num_demo_participants = 4,
-        timeout_seconds = 120, # if you want to run experiments without time-out, then specify `None`
+        timeout_seconds = None, # if you want to run experiments without time-out, then specify `None`
         app_sequence = [
             'dictator',
             'survey',
-            'payment_info'
-        ]
-    ),
-    dict(
-        name = 'demo_patron_dictator_game',
-        display_name = '[DEMO] Patron-Dictator Game',
-        num_demo_participants = 6,
-        first_moving_dictator = False,
-        timeout_seconds = 2,
-        app_sequence = [
-            'move_exogenous',
-            'payment_info'
-        ]
-    ),
-    dict(
-        name = 'demo_dictator',
-        display_name = '[DEMO] Dictator Game',
-        num_demo_participants = 4,
-        timeout_seconds = 2, # if you want to run experiments without time-out, then specify `None`
-        app_sequence = [
-            'dictator',
             'payment_info'
         ]
     )
