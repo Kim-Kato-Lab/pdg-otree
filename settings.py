@@ -27,10 +27,11 @@ SESSION_CONFIG_DEFAULTS = dict(
     
 SESSION_CONFIGS = [
     dict(
-        name = 'patron_dictator_game_fd',
-        display_name = 'Patron-Dictator Game with First-Moving Dictator (FD treatment)',
+        name = 'patron_dictator_game_fd_w_feedback',
+        display_name = '[w/ Feedback] Patron-Dictator Game with First-Moving Dictator (FD treatment)',
         num_demo_participants = 6,
         first_moving_dictator = True,
+        feedback = True,
         timeout_seconds = None,
         app_sequence = [
             'quiz',
@@ -40,15 +41,44 @@ SESSION_CONFIGS = [
         ]
     ),
     dict(
-        name = 'patron_dictator_game_sd',
-        display_name = 'Patron-Dictator Game with Second-Moving Dictator (SD treatment)',
+        name = 'patron_dictator_game_fd_wo_feedback',
+        display_name = '[w/o Feedback] Patron-Dictator Game with First-Moving Dictator (FD treatment)',
+        num_demo_participants = 6,
+        first_moving_dictator = True,
+        feedback = False,
+        timeout_seconds = None,
+        app_sequence = [
+            # 'quiz',
+            'move_exogenous',
+            # 'survey',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'patron_dictator_game_sd_w_feedback',
+        display_name = '[w/ feedback] Patron-Dictator Game with Second-Moving Dictator (SD treatment)',
         num_demo_participants = 6,
         first_moving_dictator = False,
+        feedback = True,
         timeout_seconds = None,
         app_sequence = [
             'quiz',
             'move_exogenous',
             'survey',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'patron_dictator_game_sd_wo_feedback',
+        display_name = '[w/o feedback] Patron-Dictator Game with Second-Moving Dictator (SD treatment)',
+        num_demo_participants = 6,
+        first_moving_dictator = False,
+        feedback = False,
+        timeout_seconds = None,
+        app_sequence = [
+            # 'quiz',
+            'move_exogenous',
+            # 'survey',
             'payment_info'
         ]
     ),

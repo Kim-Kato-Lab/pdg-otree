@@ -10,6 +10,7 @@
     <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
   </div>
   <br>
+  {% if group.feedback %}
   {% if player.role == "Patron" %}
   <div id="choice-summary-p">
     <p>
@@ -29,10 +30,17 @@
     </p>
   </div>
   {% endif %}
+  {% endif %}
   <div id="your-payment">
+    {% if group.feedback %}
     <p>
       <b>したがって、あなたの最終的なトークンは {{ player.payoff }} でした。</b>
     </p>
+    {% else %}
+    <p>
+      <b>メンバーＰとメンバーＤの意思決定の結果、あなたの最終的なトークンは {{ player.payoff }} でした。</b>
+    </p>
+    {% endif %}
     <p>
       確認したら、「次へ」のボタンを押してください。
     </p>

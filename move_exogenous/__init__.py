@@ -34,7 +34,9 @@ def creating_session(subsession: Subsession):
 
     for g in subsession.get_groups():
         g.dictator_first = subsession.session.config['first_moving_dictator']
+        g.feedback = subsession.session.config['feedback']
         print('First-Moving Dictator: ', g.dictator_first)
+        print('Feedback?', g.feedback)
 
 class Group(BaseGroup):
     send = models.IntegerField(min=0, max=C.ENDOWMENT)
@@ -42,6 +44,7 @@ class Group(BaseGroup):
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
     dictator_first = models.BooleanField()
+    feedback = models.BooleanField()
 
 
 class Player(BasePlayer):
