@@ -2,7 +2,11 @@
 {% load otree static %}
 
 {% block title %}
+  {% if group.feedback %}
   最終的な結果
+  {% else %}
+  ラウンド終了
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -34,11 +38,11 @@
   <div id="your-payment">
     {% if group.feedback %}
     <p>
-      <b>したがって、あなたの最終的なトークンは {{ player.payoff }} でした。</b>
+      <b>メンバーＰとメンバーＤの意思決定の結果、あなたの最終的なトークンは {{ player.payoff }} でした。</b>
     </p>
     {% else %}
     <p>
-      <b>メンバーＰとメンバーＤの意思決定の結果、あなたの最終的なトークンは {{ player.payoff }} でした。</b>
+      <b>これでこのラウンドは終了します。すべてのグループが終わり次第、次のラウンドに移ります。</b>
     </p>
     {% endif %}
     <p>
