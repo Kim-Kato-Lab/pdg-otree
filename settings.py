@@ -27,6 +27,12 @@ SESSION_CONFIG_DEFAULTS = dict(
     
 SESSION_CONFIGS = [
     dict(
+        name = 'quiz',
+        display_name = 'PDG: Quiz',
+        num_demo_participants = 1,
+        app_sequence = ['quiz']
+    ),
+    dict(
         name = 'patron_dictator_game_fd_w_feedback',
         display_name = '[w/ Feedback] Patron-Dictator Game with First-Moving Dictator (FD treatment)',
         num_demo_participants = 6,
