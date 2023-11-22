@@ -13,7 +13,7 @@ S285-S300.
 class C(BaseConstants):
     NAME_IN_URL = 'dictator'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 10
+    NUM_ROUNDS = 3
     ENDOWMENT = cu(100)
     PATRON_ROLE = "Patron"
     RECEIVER_ROLE = "Receiver"

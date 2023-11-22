@@ -92,6 +92,15 @@ SESSION_CONFIGS = [
             'survey',
             'payment_info'
         ]
+    ),
+    dict(
+        name = 'demo_dictator',
+        display_name = 'Demo: Dictator Game',
+        num_demo_participants = 4,
+        timeout_seconds = 4, # if you want to run experiments without time-out, then specify `None`
+        app_sequence = [
+            'dictator'
+        ]
     )
 ]
 
