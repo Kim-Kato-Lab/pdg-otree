@@ -1,16 +1,16 @@
-{% extends "global/Experiment.html" %}
-{% load otree static %}
+{{ extends "global/Experiment.html" }}
+{{ load otree static }}
 
-{% block title %}
+{{ block title }}
   選択：あなたは{{ role }}です
-{% endblock %}
+{{ endblock }}
 
-{% block content %}
+{{ block content }}
   <div class="progress" style="height: 20px">
     <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
   </div>
   <br>
-  {% if group.dictator_first %}
+  {{ if group.dictator_first }}
     <div id="fd-your-situation" class="alert alert-info" role="alert">
       <p>
         <b>あなたの状況と選択について</b>
@@ -49,7 +49,7 @@
         「計算機」などを活用してあなたの選択を決めた後に、0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
       </p>
     </div>
-  {% else %}
+  {{ else }}
     <div id="sd-your-situation" class="alert alert-warning" role="alert">
       <p>
         <b>あなたの状況と選択について</b>
@@ -88,9 +88,9 @@
         「計算機」などを活用してあなたの選択を決めた後に、0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
       </p>
     </div>
-  {% endif %}
-  {% formfields %}
-  {% next_button %}
+  {{ endif }}
+  {{ formfields }}
+  {{ next_button }}
   <hr>
   <div id="about-calculator">
     <h4>計算機</h4>
@@ -98,7 +98,7 @@
       あなたの選択を以下の入力し、「計算する」ボタンを押すと、あなたと他２人の最終的なトークンの予測を確認できます。
     </p>
   </div>
-  {% if group.dictator_first %}
+  {{ if group.dictator_first }}
     <div id="fd-calculator">
       <div id="fd-calculator-form" class="alert alert-secondary" role="alert">
         あなたの選択：メンバーＰから受け取ったトークンのうち
@@ -127,7 +127,7 @@
         </table>
       </div>
     </div>
-  {% else %}
+  {{ else }}
     <div id="sd-calculator">
       <div id="sd-calculator-form" class="alert alert-secondary" role="alert">
         あなたの選択：
@@ -156,13 +156,13 @@
         </table>
       </div>
     </div>
-  {% endif %}
-{% endblock %}
+  {{ endif }}
+{{ endblock }}
 
-{% block scripts %}
-  {% if group.dictator_first %}
+{{ block scripts }}
+  {{ if group.dictator_first }}
     <script src="{{ static 'global/js/first-dictator-cal.js' }}"></script>
-  {% else %}
+  {{ else }}
     <script src="{{ static 'global/js/first-patron-cal.js' }}"></script>
-  {% endif %}
-{% endblock %}
+  {{ endif }}
+{{ endblock }}

@@ -1,17 +1,17 @@
-{% extends "global/Experiment.html" %}
-{% load otree static %}
+{{ extends "global/Experiment.html" }}
+{{ load otree static }}
 
-{% block title %}
+{{ block title }}
   このグループでのあなたの役割
-{% endblock %}
+{{ endblock }}
 
-{% block content %}
+{{ block content }}
   <div class="progress" style="height: 20px">
     <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
   </div>
   <br>
-  {% if group.dictator_first %}
-    {% if player.role == "Patron" %}
+  {{ if group.dictator_first }}
+    {{ if player.role == "Patron" }}
       <div id="fd-role-p" class="alert alert-warning" role="alert">
         <p>
           あなたは <b>メンバーＰ</b> です
@@ -30,7 +30,7 @@
           </p>
         </div>
       </div>
-    {% elif player.role == "Dictator" %}
+    {{ elif player.role == "Dictator" }}
       <div id="fd-role-d" class="alert alert-info" role="alert">
         <p>
           あなたは <b>メンバーＤ</b> です
@@ -49,7 +49,7 @@
           </p>
         </div>
       </div>
-    {% else %}
+    {{ else }}
       <div id="fd-role-r" class="alert alert-success" role="alert">
         <p>
           あなたは <b>メンバーＲ</b> です
@@ -68,9 +68,9 @@
           </p>
         </div>
       </div>
-    {% endif %}
-  {% else %}
-    {% if player.role == "Patron" %}
+    {{ endif }}
+  {{ else }}
+    {{ if player.role == "Patron" }}
       <div id="sd-role-p" class="alert alert-warning" role="alert">
         <p>
           あなたは <b>メンバーＰ</b> です
@@ -89,7 +89,7 @@
           </p>
         </div>
       </div>
-    {% elif player.role == "Dictator" %}
+    {{ elif player.role == "Dictator" }}
       <div id="sd-role-d" class="alert alert-info" role="alert">
         <p>
           あなたは <b>メンバーＤ</b> です
@@ -108,7 +108,7 @@
           </p>
         </div>
       </div>
-    {% else %}
+    {{ else }}
       <div id="sd-role-r" class="alert alert-success" role="alert">
         <p>
           あなたは <b>メンバーＲ</b> です
@@ -127,19 +127,19 @@
           </p>
         </div>
       </div>
-    {% endif %}
-  {% endif %}
-  {% if player.role == "Receiver" %}
+    {{ endif }}
+  {{ endif }}
+  {{ if player.role == "Receiver" }}
     <div id="please-wait">
       <p>
         メンバーＤとメンバーＰの役割を持った参加者の選択が終わるまで、しばらくお待ちください。
       </p>
     </div>
-  {% endif %}
+  {{ endif }}
   <div id="confirm">
     <p>
       あなたの役割を確認したら、下のボタンを押してください。
     </p>
   </div>
-  {% next_button %}
-{% endblock %}
+  {{ next_button }}
+{{ endblock }}

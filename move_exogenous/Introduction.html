@@ -1,16 +1,15 @@
-{% extends "global/Survey.html" %}
-{% load otree %}
+{{ extends "global/Survey.html" }}
+{{ load otree }}
 
-{% block title %}
+{{ block title }}
   これから実験を始めます
-{% endblock %}
+{{ endblock }}
 
-{% block content %}
+{{ block content }}
   <div id="confirm">
     <p>
       以下の「次へ」ボタンを押して、第1ラウンドの実験を始めてください。
     </p>
   </div>
-
-  {% next_button %}
-{% endblock %}
+  {{ next_button }}
+{{ endblock }}

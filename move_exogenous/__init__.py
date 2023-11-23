@@ -17,7 +17,7 @@ AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 10
+    NUM_ROUNDS = 2
     ENDOWMENT = cu(100)
     MAXIMUM_MULTIPLY = 200
     PATRON_ROLE = "Patron"
@@ -34,9 +34,7 @@ def creating_session(subsession: Subsession):
 
     for g in subsession.get_groups():
         g.dictator_first = subsession.session.config['first_moving_dictator']
-        g.feedback = subsession.session.config['feedback']
         print('First-Moving Dictator: ', g.dictator_first)
-        print('Feedback?', g.feedback)
 
 class Group(BaseGroup):
     send = models.IntegerField(min=0, max=C.ENDOWMENT)
@@ -44,21 +42,32 @@ class Group(BaseGroup):
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
     dictator_first = models.BooleanField()
-    feedback = models.BooleanField()
 
 
 class Player(BasePlayer):
     pass
 
-
 # FUNCTIONS
-def set_payoffs(group: Group):
-    patron = group.get_player_by_role(C.PATRON_ROLE)
-    dictator = group.get_player_by_role(C.DICTATOR_ROLE)
-    receiver = group.get_player_by_role(C.RECEIVER_ROLE)
-    patron.payoff = C.ENDOWMENT - group.send
-    dictator.payoff = C.ENDOWMENT - (group.allocation / 100 - 1) * group.send
-    receiver.payoff = (group.allocation / 100) * group.send
+def set_payoffs(subsession: Subsession):
+    for g in subsession.get_groups():
+        p = g.get_player_by_role(C.PATRON_ROLE)
+        d = g.get_player_by_role(C.DICTATOR_ROLE)
+        r = g.get_player_by_role(C.RECEIVER_ROLE)
+        p.payoff = C.ENDOWMENT - g.send
+        d.payoff = C.ENDOWMENT - (g.allocation / 100 - 1) * g.send
+        r.payoff = (g.allocation / 100) * g.send
+
+        # set participant field
+        if g.round_number == 1:
+            p.participant.payoff_list = [p.payoff]
+            d.participant.payoff_list = [d.payoff]
+            r.participant.payoff_list = [r.payoff]
+        else:
+            p.participant.payoff_list.append(p.payoff)
+            d.participant.payoff_list.append(d.payoff)
+            r.participant.payoff_list.append(r.payoff)
+        
+        print(p.participant.payoff_list)
 
 # PAGES
 class WaitIntroduction(WaitPage):
@@ -252,37 +261,9 @@ class WaitSecondMover(WaitPage):
             あなたのグループのメンバーＤが選択をしています。しばらくお待ちください。
             """)
 
-class ResultsWaitPage(WaitPage):
+class ShuffleWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
 
-class Results(Page):
-
-    @staticmethod
-    def get_timeout_seconds(player: Player):
-        session = player.session
-        return session.config['timeout_seconds']
-
-    @staticmethod
-    def js_vars(player: Player):
-        return dict(
-            current = player.round_number,
-            max = C.NUM_ROUNDS
-        )
-    
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        import random
-        participant = player.participant
-        round_list = list(range(1, C.NUM_ROUNDS + 1))
-        
-        if player.round_number == C.NUM_ROUNDS:
-            selected_round = random.sample(round_list, 2)
-            participant.selected_round = selected_round
-            each_realized_payoff = [float(player.in_round(n).payoff) for n in selected_round]
-            realized_payoff = sum(each_realized_payoff)
-            participant.payoff = realized_payoff
-
-class ShuffleWaitPage(WaitPage):
     body_text = """
     他のグループのゲームの終了を待っています。
     しばらくお待ちください。
@@ -299,7 +280,5 @@ page_sequence = [
     WaitFirstMover,
     SecondMover,
     WaitSecondMover,
-    ResultsWaitPage,
-    Results,
     ShuffleWaitPage
 ]
