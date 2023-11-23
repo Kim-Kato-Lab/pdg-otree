@@ -1,0 +1,16 @@
+{{ extends "global/Survey.html" }}
+{{ load otree }}
+
+{{ block title }}
+  お疲れさまでした
+{{ endblock }}
+
+{{ block content }}
+  <div id="confirm">
+    <p>
+      本日の実験は以上となります。
+      以下の「次へ」ボタンを押して、本日の報酬をご確認ください。
+    </p>
+  </div>
+  {{ next_button }}
+{{ endblock }}

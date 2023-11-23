@@ -2,14 +2,32 @@
 {% load otree %}
 
 {% block title %}
-    実験のご協力ありがとうございます
+  実験報酬
 {% endblock %}
 
 {% block content %}
 
+<div id="feedback">
+  <p>各ラウンドの獲得トークンは以下の通りです。</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ラウンド</th>
+        <th scope="col">獲得トークン</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ for pi, color in table_item }}
+      <tr class="{{ color }}">
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ pi }}</td>
+      </tr>
+      {{ endfor }}
+    </tbody>
+  </table>
+</div>
 <div id="payment-information">
-  これで実験は終了となります。
-  報酬は<b>参加費</b>と<b>成果報酬</b>の合計です。
+  <p>報酬は<b>参加費</b>と<b>成果報酬</b>の合計です。</p>
   <ul>
     <li>
       参加費：{{ participation_fee }}
@@ -18,12 +36,13 @@
       成果報酬：10ラウンドの実験のうち、ランダムに2つのラウンドを選びます。
       各ラウンドで獲得したあなたのトークンを合計し、それを成果報酬とします。
       1トークン＝5円で成果報酬が円に換算されます。
+      選ばれたラウンドは上の表に赤色でハイライトされています。
     </li>
   </ul>
 </div>
 <br>
 <div id="realized-payment">
-  あなたの報酬は以下の通りです。
+  <p>あなたの報酬は以下の通りです。</p>
   <ul>
     <li>参加費：{{ participation_fee }}</li>
     <li>成果報酬：{{ realized_payoff }}（{{ p4p }}）</li>
@@ -32,8 +51,10 @@
 </div>
 <br>
 <div id="please-wait">
-  このあと、お一人ずつ呼んで、実験報酬をお支払いします。
-  今しばらくお待ちください。
+  <p>
+    このあと、お一人ずつ呼んで、実験報酬をお支払いします。
+    <b>この画面を消さずに、</b>今しばらくお待ちください。
+  </p>
 </div>
 
 {% endblock %}

@@ -1,5 +1,5 @@
 from otree.api import *
-
+import random
 
 author = 'Hiroki Kato'
 doc = """
@@ -17,8 +17,8 @@ AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 2
-    ENDOWMENT = cu(100)
+    NUM_ROUNDS = 3
+    ENDOWMENT = 100
     MAXIMUM_MULTIPLY = 200
     PATRON_ROLE = "Patron"
     DICTATOR_ROLE = "Dictator"
@@ -147,7 +147,6 @@ class FirstMover(Page):
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        import random
         if player.group.dictator_first == True:
             if timeout_happened:
                 player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
@@ -232,7 +231,6 @@ class SecondMover(Page):
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        import random
         if player.group.dictator_first == True:
             if timeout_happened:
                 player.group.send = random.randint(0, C.ENDOWMENT)
