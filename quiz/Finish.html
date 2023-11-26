@@ -1,19 +1,16 @@
-{% extends "global/Survey.html" %}
-{% load otree %}
-{% block title %}
+{{ extends "global/Survey.html" }}
+{{ load otree }}
+{{ block title }}
 確認問題は終了です
-{% endblock %}
+{{ endblock }}
 
-{% block content %}
+{{ block content }}
 
-<p>
-  すべての質問に対して正解したので、これで確認問題は終了です。
-</p>
 <p>
   全員の確認問題が終了したら、実際の実験に入ります。
   「次へ」ボタンを押して、しばらくお待ちください。
 </p>
 
-{% next_button %}
+{{ next_button }}
 
-{% endblock %}
+{{ endblock }}

@@ -1,18 +1,21 @@
-{% extends "global/Survey.html" %}
-{% load otree %}
-{% block title %}
+{{ extends "global/Survey.html" }}
+{{ load otree }}
+{{ block title }}
 解答解説：問題{{ num }}
-{% endblock %}
+{{ endblock }}
 
-{% block content %}
+{{ block content }}
 <div class="progress">
   <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="{{ C.NUMBER_Q }}" id="progressbar"></div>
 </div>
 <br>
 
-<p>以下の状況を想像してください。</p>
+<div id="note">
+  <p>以下の状況を想像してください。</p>
+</div>
 
-<div class="round">
+<div id="situation" class="alert alert-info" role="alert">
+  <p><b>状況設定</b></p>
   <p>
     メンバーPが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
     メンバーDが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
@@ -24,13 +27,15 @@
   </p>
 </div>
 
-<p>以下の設問について解答してください。</p>
+<div id="question">
+  <p>以下の設問について解答してください。</p>
+</div>
 
 <div class="your answer 1">
   <p class="oneline">
-    {% if error_patron %}
+    {{ if error_patron }}
     <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
-    {% endif %}
+    {{ endif }}
     <span>メンバーPの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
   </p>
   <ul>
@@ -41,9 +46,9 @@
 
 <div class="your answer 2">
   <p class="oneline">
-    {% if error_dictator %}
+    {{ if error_dictator }}
     <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
-    {% endif %}
+    {{ endif }}
     <span>メンバーDの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
   </p>
   <ul>
@@ -54,9 +59,9 @@
 
 <div class="your answer 3">
   <p class="oneline">
-    {% if error_receiver %}
+    {{ if error_receiver }}
     <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
-    {% endif %}
+    {{ endif }}
     <span>メンバーRの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
   </p>
   <ul>
@@ -66,9 +71,8 @@
 </div>
 
 <hr>
-
-<div class = "commentary">
-  <h3>解説</h3>
+<h3>解説</h3>
+<div id="comment" class="alert alert-secondary" role="alert">
   <p>{{ commentary }}</p>
 </div>
 
@@ -76,6 +80,6 @@
 
 <p>確認出来たら、「次へ」のボタンを押してください。</p>
 
-{% next_button %}
+{{ next_button }}
 
-{% endblock %}
+{{ endblock }}

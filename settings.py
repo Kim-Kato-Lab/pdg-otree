@@ -28,6 +28,12 @@ SESSION_CONFIG_DEFAULTS = dict(
     
 SESSION_CONFIGS = [
     dict(
+        name = 'quiz',
+        display_name = 'PDG: Quiz',
+        num_demo_participants = 1,
+        app_sequence = ['quiz']
+    ),
+    dict(
         name = 'fd',
         display_name = 'PDG-FD treatment',
         num_demo_participants = 6,
