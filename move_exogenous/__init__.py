@@ -141,6 +141,8 @@ class FirstMover(Page):
         group = player.group
         if group.dictator_first == True:
             return ['allocation']
+        elif group.contractible_s:
+            return ['send', 'allocation']
         else:
             return ['send']
 
@@ -179,8 +181,13 @@ class FirstMover(Page):
             if timeout_happened:
                 player.group.send = random.randint(0, C.ENDOWMENT)
                 player.group.send_timeout = 1
+                if player.group.contractible_s:
+                    player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
+                    player.group.allocation_timeout = 1
             else:
                 player.group.send_timeout = 0
+                if player.group.contractible_s:
+                    player.group.allocation_timeout = 0
 
 class WaitFirstMover(WaitPage):
     template_name = 'move_exogenous/ChoiceWait.html'
@@ -212,6 +219,13 @@ class SecondMover(Page):
             return ['send']
         else:
             return ['allocation']
+    
+    @staticmethod
+    def error_message(player, values):
+        group = player.group
+        if not group.dictator_first and group.contractible_s:
+            if values['allocation'] != group.allocation:
+                return '<b>入力エラー</b> メンバーＰが選択した値を指定してください'
     
     @staticmethod
     def is_displayed(player: Player):
@@ -261,8 +275,9 @@ class SecondMover(Page):
                 player.group.send_timeout = 0
         else:
             if timeout_happened:
-                player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
                 player.group.allocation_timeout = 1
+                if not player.group.contractible_s:
+                    player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
             else:
                 player.group.allocation_timeout = 0
 
