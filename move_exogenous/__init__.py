@@ -33,30 +33,27 @@ def creating_session(subsession: Subsession):
     subsession.group_randomly()
     config = subsession.session.config
 
-    if not config['first_moving_dictator'] and config['allocation_contractible_even']:
-        if subsession.round_number % 2 == 0:
-            for g in subsession.get_groups():
-                g.dictator_first = config['first_moving_dictator']
-                g.contractible_s = True
-        else:
-            for g in subsession.get_groups():
-                g.dictator_first = config['first_moving_dictator']
+    for g in subsession.get_groups():
+        g.dictator_first = config['dictator_first']
+        if not g.dictator_first:
+            if config['allocation_contractible_even']:
+                g.dictator_promise = False
+                if subsession.round_number % 2 == 0:
+                    g.contractible_s = True
+                else:
+                    g.contractible_s = False
+            elif config['allocation_contractible_odd']:
+                g.dictator_promise = False
+                if subsession.round_number % 2 == 0:
+                    g.contractible_s = False
+                else:
+                    g.contractible_s = True
+            else:
                 g.contractible_s = False
-    elif not config['first_moving_dictator'] and config['allocation_contractible_odd']:
-        if subsession.round_number % 2 == 0:
-            for g in subsession.get_groups():
-                g.dictator_first = config['first_moving_dictator']
-                g.contractible_s = False
+                g.dictator_promise = config['dictator_promise']
         else:
-            for g in subsession.get_groups():
-                g.dictator_first = config['first_moving_dictator']
-                g.contractible_s = True
-    else:
-        for g in subsession.get_groups():
-            g.dictator_first = config['dictator_first']
-            g.dictator_promise = subsession.session.config['dictator_promise']
             g.contractible_s = False
-
+            g.dictator_promise = False
 
 class Group(BaseGroup):
     send = models.IntegerField(
@@ -150,6 +147,11 @@ class WaitRoleCheck(WaitPage):
 class Promise(Page):
     form_model = 'group'
     form_fields = ['promise']
+
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
 
     @staticmethod
     def is_displayed(player: Player):
