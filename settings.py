@@ -73,7 +73,7 @@ SESSION_CONFIGS = [
         dictator_first = False,
         allocation_contractible_odd = True,
         allocation_contractible_even = False,
-        timeout_seconds = 5,
+        timeout_seconds = None,
         app_sequence = [
             'move_exogenous',
             'payment_info'

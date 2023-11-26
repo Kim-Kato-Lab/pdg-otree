@@ -279,7 +279,7 @@ class SecondMover(Page):
         group = player.group
         if not group.dictator_first and group.contractible_s:
             if values['allocation'] != group.allocation:
-                return '<b>入力エラー</b> メンバーＰが選択した値を指定してください'
+                return '<b>入力エラー!!!</b> メンバーＰが選択した値を指定してください'
     
     @staticmethod
     def is_displayed(player: Player):
