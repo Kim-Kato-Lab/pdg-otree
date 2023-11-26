@@ -35,10 +35,9 @@ SESSION_CONFIGS = [
     ),
     dict(
         name = 'fd',
-        display_name = 'PDG-FD treatment',
+        display_name = 'PDG-FD',
         num_demo_participants = 6,
         dictator_first = True,
-        dictator_promise = False,
         timeout_seconds = 5,
         app_sequence = [
             'move_exogenous',
@@ -47,10 +46,12 @@ SESSION_CONFIGS = [
     ),
     dict(
         name = 'sd',
-        display_name = 'PDG-SD treatment',
-        num_demo_participants = 6,
+        display_name = 'PDG-SD',
+        num_demo_participants = 3,
         dictator_first = False,
         dictator_promise = False,
+        allocation_contractible_odd = False,
+        allocation_contractible_even = False,
         timeout_seconds = 5,
         app_sequence = [
             'move_exogenous',
@@ -59,10 +60,25 @@ SESSION_CONFIGS = [
     ),
     dict(
         name = 'sd_promise',
-        display_name = 'PDG-SD (Promise) treatment',
+        display_name = 'PDG-SD (promise)',
         num_demo_participants = 3,
         dictator_first = False,
         dictator_promise = True,
+        allocation_contractible_odd = False,
+        allocation_contractible_even = False,
+        timeout_seconds = 5,
+        app_sequence = [
+            'move_exogenous',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'sd_contractible_odd',
+        display_name = 'PDG-SD (contractible; odd rounds)',
+        num_demo_participants = 3,
+        dictator_first = False,
+        allocation_contractible_odd = True,
+        allocation_contractible_even = False,
         timeout_seconds = None,
         app_sequence = [
             'move_exogenous',
@@ -70,23 +86,26 @@ SESSION_CONFIGS = [
         ]
     ),
     dict(
-        name = 'dictator',
-        display_name = 'Dictator Game (DG treatment)',
-        num_demo_participants = 4,
-        timeout_seconds = None, # if you want to run experiments without time-out, then specify `None`
+        name = 'sd_contractible_even',
+        display_name = 'PDG-SD (contractible; even rounds)',
+        num_demo_participants = 3,
+        dictator_first = False,
+        allocation_contractible_odd = False,
+        allocation_contractible_even = True,
+        timeout_seconds = 5,
         app_sequence = [
-            'dictator',
-            'survey',
+            'move_exogenous',
             'payment_info'
         ]
     ),
     dict(
-        name = 'demo_dictator',
-        display_name = 'Demo: Dictator Game',
+        name = 'dictator',
+        display_name = 'DG treatment',
         num_demo_participants = 4,
-        timeout_seconds = 4, # if you want to run experiments without time-out, then specify `None`
+        timeout_seconds = None, # if you want to run experiments without time-out, then specify `None`
         app_sequence = [
-            'dictator'
+            'dictator',
+            'payment_info'
         ]
     )
 ]
