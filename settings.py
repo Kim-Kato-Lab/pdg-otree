@@ -29,9 +29,10 @@ SESSION_CONFIG_DEFAULTS = dict(
 SESSION_CONFIGS = [
     dict(
         name = 'fd',
-        display_name = 'PDG: FD treatment',
+        display_name = 'PDG-FD treatment',
         num_demo_participants = 6,
-        first_moving_dictator = True,
+        dictator_first = True,
+        dictator_promise = False,
         timeout_seconds = 5,
         app_sequence = [
             'move_exogenous',
@@ -71,6 +72,18 @@ SESSION_CONFIGS = [
         first_moving_dictator = False,
         allocation_contractible_odd = False,
         allocation_contractible_even = True,
+        timeout_seconds = 5,
+        app_sequence = [
+            'move_exogenous',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'sd_promise',
+        display_name = 'PDG-SD (Promise) treatment',
+        num_demo_participants = 3,
+        dictator_first = False,
+        dictator_promise = True,
         timeout_seconds = None,
         app_sequence = [
             'move_exogenous',

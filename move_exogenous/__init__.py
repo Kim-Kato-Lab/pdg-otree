@@ -53,16 +53,35 @@ def creating_session(subsession: Subsession):
                 g.contractible_s = True
     else:
         for g in subsession.get_groups():
-            g.dictator_first = config['first_moving_dictator']
+            g.dictator_first = config['dictator_first']
+            g.dictator_promise = subsession.session.config['dictator_promise']
             g.contractible_s = False
 
 
 class Group(BaseGroup):
-    send = models.IntegerField(min=0, max=C.ENDOWMENT)
-    allocation = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
+    send = models.IntegerField(
+        min=0, max=C.ENDOWMENT,
+        label = """
+        0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        """
+    )
+    allocation = models.IntegerField(
+        min=0, max=C.MAXIMUM_MULTIPLY,
+        label = """
+        0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        """
+    )
+    promise = models.IntegerField(
+        min=0, max=C.MAXIMUM_MULTIPLY,
+        label = """
+        0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        """
+    )
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
+    promise_timeout = models.IntegerField()
     dictator_first = models.BooleanField()
+    dictator_promise = models.BooleanField()
     contractible_s = models.BooleanField()
 
 
@@ -125,6 +144,39 @@ class Role(Page):
 class WaitRoleCheck(WaitPage):
     body_text = """
     あなたのグループの他の参加者が役割を確認しています。
+    しばらくお待ちください。
+    """
+
+class Promise(Page):
+    form_model = 'group'
+    form_fields = ['promise']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        group = player.group
+        if not group.dictator_first and group.dictator_promise:
+            return player.role == C.DICTATOR_ROLE
+        else:
+            return False
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if timeout_happened:
+            player.group.promise = random.randint(0, C.MAXIMUM_MULTIPLY)
+            player.group.promise_timeout = 1
+        else:
+            player.group.promise_timeout = 0
+
+class WaitPromise(WaitPage):
+    body_test = """
+    あなたのグループのメンバーＤが選択をしています。
     しばらくお待ちください。
     """
 
@@ -311,6 +363,8 @@ page_sequence = [
     Introduction,
     Role,
     WaitRoleCheck,
+    Promise,
+    WaitPromise,
     FirstMover,
     WaitFirstMover,
     SecondMover,

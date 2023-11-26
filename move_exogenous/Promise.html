@@ -1,0 +1,34 @@
+{{ extends "global/Experiment.html" }}
+{{ load otree static }}
+{{ block title }}
+  あなたの選択
+{{ endblock }}
+{{ block content }}
+  <div class="progress" style="height: 20px">
+    <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+  </div>
+  <br>
+  <div id="promise-your-situation">
+    <p>
+      あなたは{{ C.ENDOWMENT }}トークンを持っています。
+      あなたはメンバーＰから受け取ったトークンのうち何％をメンバーＲに渡しますか？
+    </p>
+    <ul>
+      <li>
+        100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
+      </li>
+      <li>
+        100％より大きい数字：メンバーＰから受け取ったトークンに、あなたが保有するトークンの一部を上乗せして、メンバーＲに渡します。
+      </li>
+    </ul>
+    <div class="alert alert-danger">
+      <h4>注意</h4>
+      <ul>
+        <li>あなたの選択の次に、メンバーＰが{{ C.ENDOWMENT }}トークンのうち、いくらをあなたに渡すかを決めます。<b>そのとき、メンバーＰはこの画面であなたがどのような選択をしたのかを知っています</b>。</li>
+        <li>メンバーＰが選択をした後に、あなたは<b>この画面での選択を修正することができます</b>。</li>
+      </ul>
+    </div>
+  </div>
+  {{ formfields }}
+  {{ next_button }}
+{{ endblock }}

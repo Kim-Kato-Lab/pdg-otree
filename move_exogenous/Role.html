@@ -2,7 +2,7 @@
 {{ load otree static }}
 
 {{ block title }}
-  このグループでのあなたの役割
+  あなたの役割
 {{ endblock }}
 
 {{ block content }}
@@ -10,132 +10,43 @@
     <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
   </div>
   <br>
-  {{ if group.dictator_first }}
-    {{ if player.role == "Patron" }}
-      <div id="fd-role-p" class="alert alert-warning" role="alert">
-        <p>
-          あなたは <b>メンバーＰ</b> です
-        </p>
-      </div>
-      <div id="fd-decision-sequence-p">
-        <p>
-          意思決定の順番は以下の通りです。
-        </p>
-        <div class="alert alert-secondary" role="alert">
-          <p>
-            ①<b>メンバーＤ</b>：あなた（メンバーＰ）から受け取ったトークンの何％をメンバーＲに渡すかを事前に決めます。
-          </p>
-          <p>
-            ②<b>あなた（メンバーＰ）</b>：メンバーＤに渡すトークンを決めます。
-          </p>
-        </div>
-      </div>
-    {{ elif player.role == "Dictator" }}
-      <div id="fd-role-d" class="alert alert-info" role="alert">
-        <p>
-          あなたは <b>メンバーＤ</b> です
-        </p>
-      </div>
-      <div id="fd-decision-sequence-d">
-        <p>
-          意思決定の順番は以下の通りです。
-        </p>
-        <div class="alert alert-secondary" role="alert">
-          <p>
-            ①<b>あなた（メンバーＤ）</b>：メンバーＰから受け取ったトークンの何％をメンバーＲに渡すかを事前に決めます。
-          </p>
-          <p>
-            ②<b>メンバーＰ</b>：あなた（メンバーＤ）に渡すトークンを決めます。
-          </p>
-        </div>
-      </div>
-    {{ else }}
-      <div id="fd-role-r" class="alert alert-success" role="alert">
-        <p>
-          あなたは <b>メンバーＲ</b> です
-        </p>
-      </div>
-      <div id="fd-decision-sequence-r">
-        <p>
-          意思決定の順番は以下の通りです。
-        </p>
-        <div class="alert alert-secondary" role="alert">
-          <p>
-            ①<b>メンバーＤ</b>：メンバーＰから受け取ったトークンの何％をあなた（メンバーＲ）に渡すかを事前に決めます。
-          </p>
-          <p>
-            ②<b>メンバーＰ</b>：メンバーＤに渡すトークンを決めます。
-          </p>
-        </div>
-      </div>
-    {{ endif }}
-  {{ else }}
-    {{ if player.role == "Patron" }}
-      <div id="sd-role-p" class="alert alert-warning" role="alert">
-        <p>
-          あなたは <b>メンバーＰ</b> です
-        </p>
-      </div>
-      <div id="sd-decision-sequence-p">
-        <p>
-          意思決定の順番は以下の通りです。
-        </p>
-        <div class="alert alert-secondary" role="alert">
-          <p>
-            ①<b>あなた（メンバーＰ）</b>：メンバーＤに渡すトークンを決めます。
-          </p>
-          <p>
-            ②<b>メンバーＤ</b>：あなた（メンバーＰ）から受け取ったトークンの何％をメンバーＲに渡すかを決めます。
-          </p>
-        </div>
-      </div>
-    {{ elif player.role == "Dictator" }}
-      <div id="sd-role-d" class="alert alert-info" role="alert">
-        <p>
-          あなたは <b>メンバーＤ</b> です
-        </p>
-      </div>
-      <div id="sd-decision-sequence-d">
-        <p>
-          意思決定の順番は以下の通りです。
-        </p>
-        <div class="alert alert-secondary" role="alert">
-          <p>
-            ①<b>メンバーＰ</b>：あなた（メンバーＤ）に渡すトークンを決めます。
-          </p>
-          <p>
-            ②<b>あなた（メンバーＤ）</b>：メンバーＰから受け取ったトークンの何％をメンバーＲに渡すかを決めます。
-          </p>
-        </div>
-      </div>
-    {{ else }}
-      <div id="sd-role-r" class="alert alert-success" role="alert">
-        <p>
-          あなたは <b>メンバーＲ</b> です
-        </p>
-      </div>
-      <div id="sd-decision-sequence-r">
-        <p>
-          意思決定の順番は以下の通りです。
-        </p>
-        <div class="alert alert-secondary" role="alert">
-          <p>
-            ①<b>メンバーＰ</b>：メンバーＤに渡すトークンを決めます。
-          </p>
-          <p>
-            ②<b>メンバーＤ</b>：メンバーＰから受け取ったトークンの何％をあなた（メンバーＲ）に渡すかを決めます。
-          </p>
-        </div>
-      </div>
-    {{ endif }}
-  {{ endif }}
-  {{ if player.role == "Receiver" }}
-    <div id="please-wait">
-      <p>
-        メンバーＤとメンバーＰの役割を持った参加者の選択が終わるまで、しばらくお待ちください。
-      </p>
+  <div id="role">
+    <p>あなたの役割は</p>
+    <h1 style="text-align: center;">
+      {{ if player.role == "Patron" }}
+        <b>メンバーＰ</b>
+      {{ elif player.role == "Dictator" }}
+        <b>メンバーＤ</b>
+      {{ else }}
+        <b>メンバーＲ</b>
+      {{ endif }}
+    </h1>
+    <p>です。</p>
+  </div>
+  <div id="decision-flow">
+    意思決定の順番は以下の通りです。
+    <div class="alert alert-secondary">
+      {{ if group.dictator_first }}
+        <ol>
+          <li>メンバーＤ：メンバーＰから受け取ったトークンの何％をメンバーＲに渡すかを決めます。</li>
+          <li>メンバーＰ：メンバーＤに渡すトークンを決めます。</li>
+        </ol>
+      {{ else }}
+        {{ if group.dictator_promise }}
+          <ol>
+            <li>メンバーＤ：メンバーＰから受け取ったトークンの何％をメンバーＲに渡すかを決めます。</li>
+            <li>メンバーＰ：メンバーＤに渡すトークンを決めます。</li>
+            <li>メンバーＤ：１番目で決めた意思決定を修正できます。</li>
+          </ol>
+        {{ else }}
+          <ol>
+            <li>メンバーＰ：メンバーＤに渡すトークンを決めます。</li>
+            <li>メンバーＤ：メンバーＰから受け取ったトークンの何％をメンバーＲに渡すかを決めます。</li>
+          </ol>
+        {{ endif }}
+      {{ endif }}
     </div>
-  {{ endif }}
+  </div>
   <div id="confirm">
     <p>
       あなたの役割を確認したら、下のボタンを押してください。
