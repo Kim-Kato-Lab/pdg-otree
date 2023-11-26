@@ -38,9 +38,24 @@ def creating_session(subsession: Subsession):
         print('First-Moving Dictator: ', g.dictator_first)
 
 class Group(BaseGroup):
-    send = models.IntegerField(min=0, max=C.ENDOWMENT)
-    allocation = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
-    promise = models.IntegerField(min=0, max=C.MAXIMUM_MULTIPLY)
+    send = models.IntegerField(
+        min=0, max=C.ENDOWMENT,
+        label = """
+        0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        """
+    )
+    allocation = models.IntegerField(
+        min=0, max=C.MAXIMUM_MULTIPLY,
+        label = """
+        0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        """
+    )
+    promise = models.IntegerField(
+        min=0, max=C.MAXIMUM_MULTIPLY,
+        label = """
+        0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        """
+    )
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
     promise_timeout = models.IntegerField()
