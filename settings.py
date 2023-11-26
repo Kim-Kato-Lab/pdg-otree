@@ -39,6 +39,45 @@ SESSION_CONFIGS = [
         ]
     ),
     dict(
+        name = 'sd',
+        display_name = 'PDG-SD treatment',
+        num_demo_participants = 3,
+        first_moving_dictator = False,
+        allocation_contractible_odd = False,
+        allocation_contractible_even = False,
+        timeout_seconds = None,
+        app_sequence = [
+            'move_exogenous',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'sd_contractible_odd',
+        display_name = 'PDG-SD treatment (Contractible s in odd rounds)',
+        num_demo_participants = 3,
+        first_moving_dictator = False,
+        allocation_contractible_odd = True,
+        allocation_contractible_even = False,
+        timeout_seconds = None,
+        app_sequence = [
+            'move_exogenous',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'sd_contractible_even',
+        display_name = 'PDG-SD treatment (Contractible s in even rounds)',
+        num_demo_participants = 3,
+        first_moving_dictator = False,
+        allocation_contractible_odd = False,
+        allocation_contractible_even = True,
+        timeout_seconds = None,
+        app_sequence = [
+            'move_exogenous',
+            'payment_info'
+        ]
+    ),
+    dict(
         name = 'dictator',
         display_name = 'Dictator Game (DG treatment)',
         num_demo_participants = 4,

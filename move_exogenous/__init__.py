@@ -31,10 +31,31 @@ class Subsession(BaseSubsession):
 
 def creating_session(subsession: Subsession):
     subsession.group_randomly()
+    config = subsession.session.config
 
-    for g in subsession.get_groups():
-        g.dictator_first = subsession.session.config['first_moving_dictator']
-        print('First-Moving Dictator: ', g.dictator_first)
+    if not config['first_moving_dictator'] and config['allocation_contractible_even']:
+        if subsession.round_number % 2 == 0:
+            for g in subsession.get_groups():
+                g.dictator_first = config['first_moving_dictator']
+                g.contractible_s = True
+        else:
+            for g in subsession.get_groups():
+                g.dictator_first = config['first_moving_dictator']
+                g.contractible_s = False
+    elif not config['first_moving_dictator'] and config['allocation_contractible_odd']:
+        if subsession.round_number % 2 == 0:
+            for g in subsession.get_groups():
+                g.dictator_first = config['first_moving_dictator']
+                g.contractible_s = False
+        else:
+            for g in subsession.get_groups():
+                g.dictator_first = config['first_moving_dictator']
+                g.contractible_s = True
+    else:
+        for g in subsession.get_groups():
+            g.dictator_first = config['first_moving_dictator']
+            g.contractible_s = False
+
 
 class Group(BaseGroup):
     send = models.IntegerField(min=0, max=C.ENDOWMENT)
@@ -42,6 +63,7 @@ class Group(BaseGroup):
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
     dictator_first = models.BooleanField()
+    contractible_s = models.BooleanField()
 
 
 class Player(BasePlayer):
