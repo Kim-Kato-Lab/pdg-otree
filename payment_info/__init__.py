@@ -37,8 +37,8 @@ class Introduction(Page):
         round_list = list(range(len(payoff_list)))
         selected_round = random.sample(round_list, 2)
         participant.selected_round = selected_round
-        player.pickup_round1 = selected_round[0]
-        player.pickup_round2 = selected_round[1]
+        player.pickup_round1 = selected_round[0] + 1
+        player.pickup_round2 = selected_round[1] + 1
 
         # realized payoff
         each_realized_payoff = [float(payoff_list[n]) for n in selected_round]
