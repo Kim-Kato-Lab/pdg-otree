@@ -1,7 +1,7 @@
 {{ extends "global/Experiment.html" }}
 {{ load otree static }}
 {{ block title }}
-  あなたの選択
+  あなたのターン
 {{ endblock }}
 {{ block content }}
   <div class="progress" style="height: 20px">
@@ -9,10 +9,10 @@
   </div>
   <br>
   <div id="promise-your-situation">
-    <p>
+    <h5>
       あなたは{{ C.ENDOWMENT }}トークンを持っています。
       あなたはメンバーＰから受け取ったトークンのうち何％をメンバーＲに渡しますか？
-    </p>
+    </h5>
     <ul>
       <li>
         100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
@@ -30,5 +30,59 @@
     </div>
   </div>
   {{ formfields }}
+  <hr>
+  <div id="calculator">
+    <p>
+      <b>
+        あなたの選択を決めるとき、以下の計算機をご活用ください。
+        フォームの入力が終わりましたら、計算機の下にある「次へ」のボタンを押してください。
+      </b>
+    </p>
+    <h5>計算機</h5>
+    <p>
+      メンバーＰとメンバーＤの選択を入力する（半角数字）ことで、あなたのグループのメンバーが獲得するトークンを確認できます。他のメンバーの行動はご自身で予測して入力してください。
+    </p>
+    <ul>
+      <li>
+        メンバーＰ：
+        <input style="width: 50px;" type="number" min="0" max="100" id="send">
+        トークンをメンバーＤに渡す
+      </li>
+      <li>
+        メンバーＤ：
+        メンバーＰから受け取ったトークンの
+        <input style="width: 50px;" type="number" min="0" max="200" id="multiply">
+        ％をメンバーＲに渡す
+      </li>
+    </ul>
+    <button type="button" class="btn btn-outline-secondary" onclick="payoff()">計算する</button>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">獲得トークン</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">メンバーＰ</th>
+          <td><span id="result-p">100トークン</span></td>
+        </tr>
+        <tr>
+          <th scope="row">メンバーＤ</th>
+          <td><span id="result-d">100トークン</span></td>
+        </tr>
+        <tr>
+          <th scope="row">メンバーＲ</th>
+          <td><span id="result-r">0トークン</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr>
   {{ next_button }}
+{{ endblock }}
+
+{{ block scripts }}
+  <script src="{{ static 'global/js/first-mover.js' }}"></script>
 {{ endblock }}
