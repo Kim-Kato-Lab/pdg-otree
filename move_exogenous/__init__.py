@@ -85,6 +85,13 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     pass
 
+class Calculator(ExtraModel):
+    group = models.Link(Group)
+    player = models.Link(Player)
+    decision = models.StringField()
+    send = models.IntegerField()
+    allocation = models.IntegerField()
+
 # FUNCTIONS
 def set_payoffs(subsession: Subsession):
     for g in subsession.get_groups():
@@ -199,6 +206,18 @@ class FirstMover(Page):
             return ['send', 'allocation']
         else:
             return ['send']
+    
+    @staticmethod
+    def live_method(player: Player, data):
+        print("Received data: ", data["x"], data["s"])
+        group = player.group
+        Calculator.create(
+            group=group,
+            player=player,
+            decision="first mover",
+            send=data["x"],
+            allocation=data["s"]
+        )
 
     @staticmethod
     def is_displayed(player: Player):

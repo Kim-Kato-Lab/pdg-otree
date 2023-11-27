@@ -35,6 +35,8 @@ function payoff() {
     return alert(alert_msg_s);
   }
 
+  liveSend({'x': x, 's': s})
+
   let p = document.getElementById("result-p");
   let d = document.getElementById("result-d");
   let r = document.getElementById("result-r");
