@@ -88,7 +88,7 @@ class Player(BasePlayer):
 class Calculator(ExtraModel):
     group = models.Link(Group)
     player = models.Link(Player)
-    decision = models.StringField()
+    stage = models.StringField()
     send = models.IntegerField()
     allocation = models.IntegerField()
 
@@ -156,6 +156,17 @@ class Promise(Page):
     form_fields = ['promise']
 
     @staticmethod
+    def live_method(player: Player, data):
+        group = player.group
+        Calculator.create(
+            group=group,
+            player=player,
+            stage="promise",
+            send=data["x"],
+            allocation=data["s"]
+        )
+
+    @staticmethod
     def get_timeout_seconds(player: Player):
         session = player.session
         return session.config['timeout_seconds']
@@ -209,12 +220,11 @@ class FirstMover(Page):
     
     @staticmethod
     def live_method(player: Player, data):
-        print("Received data: ", data["x"], data["s"])
         group = player.group
         Calculator.create(
             group=group,
             player=player,
-            decision="first mover",
+            stage="first mover",
             send=data["x"],
             allocation=data["s"]
         )
