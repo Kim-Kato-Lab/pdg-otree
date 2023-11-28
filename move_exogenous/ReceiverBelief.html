@@ -8,10 +8,23 @@
     <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
   </div>
   <br>
+  <div id="current-situation">
+    {{ if group.dictator_first }}
+      <p>
+        現在、メンバーＤが意思決定をしています。
+        次に意思決定をするメンバーＰに関する予想についてお尋ねします。
+      </p>
+    {{ else }}
+      <p>
+        現在、メンバーＰが意思決定をしています。
+        次に意思決定をするメンバーＤに関する予想についてお尋ねします。
+      </p>
+    {{ endif }}
+  </div>
   <div id="your-expectation">
     {{ if group.dictator_first }}
       <p>
-        あなたは、メンバーＰがあなたに何トークンを送るだろうと予想していますか？0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        あなたは、メンバーＰがメンバーＤに何トークンを送ると予想していますか？0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
       </p>
     {{ else }}
       <p>
