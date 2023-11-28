@@ -18,7 +18,8 @@ class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
     NUM_ROUNDS = 3
-    ENDOWMENT = 100
+    GAME_ENDOWMENT = cu(100)
+    BELIEF_ENDOWMENT = cu(120)
     MAXIMUM_MULTIPLY = 200
     PATRON_ROLE = "Patron"
     DICTATOR_ROLE = "Dictator"
@@ -57,7 +58,7 @@ def creating_session(subsession: Subsession):
 
 class Group(BaseGroup):
     send = models.IntegerField(
-        min=0, max=C.ENDOWMENT,
+        min=0, max=C.GAME_ENDOWMENT,
         label = """
         0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
         """
@@ -89,19 +90,19 @@ class Group(BaseGroup):
 
 def belief_1_max(group: Group):
     if group.dictator_first:
-        return C.ENDOWMENT
+        return C.GAME_ENDOWMENT
     else:
         return C.MAXIMUM_MULTIPLY
 
 def belief_2_max(group: Group):
     if group.dictator_first:
-        return C.ENDOWMENT
+        return C.GAME_ENDOWMENT
     else:
         return C.MAXIMUM_MULTIPLY
 
 def belief_r_max(group: Group):
     if group.dictator_first:
-        return C.ENDOWMENT
+        return C.GAME_ENDOWMENT
     else:
         return C.MAXIMUM_MULTIPLY
 
@@ -114,8 +115,8 @@ def set_payoffs(subsession: Subsession):
         p = g.get_player_by_role(C.PATRON_ROLE)
         d = g.get_player_by_role(C.DICTATOR_ROLE)
         r = g.get_player_by_role(C.RECEIVER_ROLE)
-        p.payoff = C.ENDOWMENT - g.send
-        d.payoff = C.ENDOWMENT - (g.allocation / 100 - 1) * g.send
+        p.payoff = C.GAME_ENDOWMENT - g.send
+        d.payoff = C.GAME_ENDOWMENT - (g.allocation / 100 - 1) * g.send
         r.payoff = (g.allocation / 100) * g.send
 
         # set participant field
@@ -256,7 +257,7 @@ class FirstMover(Page):
                 player.group.allocation_timeout = 0
         else:
             if timeout_happened:
-                player.group.send = random.randint(0, C.ENDOWMENT)
+                player.group.send = random.randint(0, C.GAME_ENDOWMENT)
                 player.group.send_timeout = 1
                 if player.group.contractible_s:
                     player.group.allocation = random.randint(0, C.MAXIMUM_MULTIPLY)
@@ -297,7 +298,7 @@ class FirstBelief(Page):
         if timeout_happened:
             g.belief_1_timeout = 1
             if g.dictator_first:
-                g.belief_1 = random.randint(0, C.ENDOWMENT)
+                g.belief_1 = random.randint(0, C.GAME_ENDOWMENT)
             else:
                 g.belief_1 = random.randint(0, C.MAXIMUM_MULTIPLY)
         else:
@@ -383,7 +384,7 @@ class SecondMover(Page):
     def before_next_page(player: Player, timeout_happened):
         if player.group.dictator_first == True:
             if timeout_happened:
-                player.group.send = random.randint(0, C.ENDOWMENT)
+                player.group.send = random.randint(0, C.GAME_ENDOWMENT)
                 player.group.send_timeout = 1
             else:
                 player.group.send_timeout = 0
@@ -426,7 +427,7 @@ class SecondBelief(Page):
         if timeout_happened:
             g.belief_2_timeout = 1
             if g.dictator_first:
-                g.belief_2 = random.randint(0, C.ENDOWMENT)
+                g.belief_2 = random.randint(0, C.GAME_ENDOWMENT)
             else:
                 g.belief_2 = random.randint(0, C.MAXIMUM_MULTIPLY)
         else:

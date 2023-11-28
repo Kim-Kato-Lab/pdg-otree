@@ -10,7 +10,7 @@
   <br>
   <div id="your-situation">
     {{ if group.dictator_first }}
-      <p>あなたは{{ C.ENDOWMENT }}トークンを持っています。あなたはメンバーＰから受け取ったトークンのうち何％をメンバーＲに渡しますか？</p>
+      <p>あなたは{{ C.GAME_ENDOWMENT }}を持っています。あなたはメンバーＰから受け取ったトークンのうち何％をメンバーＲに渡しますか？</p>
       <ul>
         <li>
           100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
@@ -20,14 +20,14 @@
         </li>
       </ul>
     {{ else }}
-      <p>あなたは{{ C.ENDOWMENT }}トークンを持っています。あなたは{{ C.ENDOWMENT }}トークンのうち何トークンを同じグループのメンバーＤに渡しますか？</p>
+      <p>あなたは{{ C.GAME_ENDOWMENT }}を持っています。あなたは{{ C.GAME_ENDOWMENT }}のうち何トークンを同じグループのメンバーＤに渡しますか？</p>
     {{ endif }}
   </div>
   {{ if group.dictator_first }}
     <div id="fd-another-situation" class="alert alert-primary" role="alert">
       <h4>注意</h4>
       <ul>
-        <li>あなたの選択の後に、メンバーＰが{{ C.ENDOWMENT }}からいくらをあなたに自身のトークンを渡すか決めます。このとき、<b>メンバーＰはあなたがこの画面でどのような選択をしたのかを知っていること</b>に注意してください。</li>
+        <li>あなたの選択の後に、メンバーＰが{{ C.GAME_ENDOWMENT }}からいくらをあなたに自身のトークンを渡すか決めます。このとき、<b>メンバーＰはあなたがこの画面でどのような選択をしたのかを知っていること</b>に注意してください。</li>
       </ul>
     </div>
     {{ formfield "allocation" }}
