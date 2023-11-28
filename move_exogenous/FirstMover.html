@@ -72,50 +72,72 @@
   {{ endif }}
   <p>
     <b>
-      あなたの選択を決めるとき、以下の計算機をご活用ください。
-      フォームの入力が終わりましたら、計算機の下にある「次へ」のボタンを押してください。
+      あなたの選択を決めるとき、計算機を是非ご活用ください。
     </b>
   </p>
-  <hr>
-  <h5>計算機</h5>
-  <p>メンバーＰとメンバーＤの選択を入力する（半角数字）ことで、あなたのグループのメンバーが獲得するトークンを確認できます。他のメンバーの行動はご自身で予測して入力してください。</p>
-  <ul>
-    <li>
-      メンバーＰ：
-      <input style="width: 50px;" type="number" min="0" max="100" id="send">
-      トークンをメンバーＤに渡す
-    </li>
-    <li>
-      メンバーＤ：
-      メンバーＰから受け取ったトークンの
-      <input style="width: 50px;" type="number" min="0" max="200" id="multiply">
-      ％をメンバーＲに渡す
-    </li>
-  </ul>
-  <button type="button" class="btn btn-outline-secondary" onclick="payoff()">計算する</button>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">獲得トークン</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">メンバーＰ</th>
-        <td><span id="result-p">100トークン</span></td>
-      </tr>
-      <tr>
-        <th scope="row">メンバーＤ</th>
-        <td><span id="result-d">100トークン</span></td>
-      </tr>
-      <tr>
-        <th scope="row">メンバーＲ</th>
-        <td><span id="result-r">0トークン</span></td>
-      </tr>
-    </tbody>
-  </table>
-  <hr>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#calculator">
+    計算機
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="calculator" tabindex="-1" aria-labelledby="calculator" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="calculator-title">計算機</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>メンバーＰとメンバーＤの選択を入力する（半角数字）ことで、あなたのグループのメンバーが獲得するトークンを確認できます。他のメンバーの行動はご自身で予測して入力してください。</p>
+          <ul>
+            <li>
+              メンバーＰ：
+              <input style="width: 50px;" type="number" min="0" max="100" id="send">
+              トークンをメンバーＤに渡す
+            </li>
+            <li>
+              メンバーＤ：
+              メンバーＰから受け取ったトークンの
+              <input style="width: 50px;" type="number" min="0" max="200" id="multiply">
+              ％をメンバーＲに渡す
+            </li>
+          </ul>
+          <button type="button" class="btn btn-outline-secondary" onclick="payoff()">計算する</button>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">獲得トークン</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">メンバーＰ</th>
+                <td><span id="result-p">100トークン</span></td>
+              </tr>
+              <tr>
+                <th scope="row">メンバーＤ</th>
+                <td><span id="result-d">100トークン</span></td>
+              </tr>
+              <tr>
+                <th scope="row">メンバーＲ</th>
+                <td><span id="result-r">0トークン</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <p>
+    フォームの入力が終わりましたら、「次へ」のボタンを押してください。
+  </p>
+
   {{ next_button }}
 {{ endblock }}
 
