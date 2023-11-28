@@ -1,95 +1,75 @@
 {{ extends "global/Experiment.html" }}
 {{ load otree static }}
-
 {{ block title }}
-  選択：あなたは{{ role }}です
+  あなたの選択
 {{ endblock }}
-
 {{ block content }}
   <div class="progress" style="height: 20px">
     <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
   </div>
   <br>
+  <div id="your-situation">
+    {{ if group.dictator_first }}
+      <p>あなたは{{ C.ENDOWMENT }}トークンを持っています。あなたはメンバーＰから受け取ったトークンのうち何％をメンバーＲに渡しますか？</p>
+      <ul>
+        <li>
+          100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
+        </li>
+        <li>
+          100％より大きい数字：メンバーＰから受け取ったトークンに自身が保有するトークンを上乗せして、メンバーＲに渡します。
+        </li>
+      </ul>
+    {{ else }}
+      <p>あなたは{{ C.ENDOWMENT }}トークンを持っています。あなたは{{ C.ENDOWMENT }}トークンのうち何トークンを同じグループのメンバーＤに渡しますか？</p>
+    {{ endif }}
+  </div>
   {{ if group.dictator_first }}
-    <div id="fd-your-situation" class="alert alert-info" role="alert">
-      <p>
-        <b>あなたの状況と選択について</b>
-      </p>
-      <p>
-        現在、あなたは {{ C.ENDOWMENT }} をもっています。
-      </p>
-      <p>
-        あなたはメンバーＰから受け取ったトークンのうち何％をメンバーＲに渡すかを決めてください。
-      </p>
+    <div id="fd-another-situation" class="alert alert-primary" role="alert">
+      <h4>注意</h4>
       <ul>
-        <li>
-          100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
-        </li>
-        <li>
-          100％より大きい数字：メンバーＰから受け取ったトークンに自身が保有するトークンを上乗せして、メンバーＲに渡します。
-        </li>
+        <li>あなたの選択の後に、メンバーＰが{{ C.ENDOWMENT }}からいくらをあなたに自身のトークンを渡すか決めます。このとき、<b>メンバーＰはあなたがこの画面でどのような選択をしたのかを知っていること</b>に注意してください。</li>
       </ul>
     </div>
-    <div id="fd-another-situation" class="alert alert-warning" role="alert">
-      <p>
-        <b>次の人の選択について</b>
-      </p>
-      <p>
-        あなたの選択の後に、メンバーＰが{{ C.ENDOWMENT }}からいくらをあなたに自身のトークンを渡すか決めます。
-      </p>
-      <p>
-        このとき、<b>メンバーＰはあなたがこの画面でどのような選択をしたのかを知っていること</b>に注意してください。
-      </p>
-    </div>
-    <div id="fd-form">
-      <p>
-        下部にある「計算機」を使うと、三人の最終的なトークンを予測できます。
-      </p>
-      <p>
-        「計算機」などを活用してあなたの選択を決めた後に、0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
-      </p>
-    </div>
+    {{ formfield "allocation" }}
   {{ else }}
-    <div id="sd-your-situation" class="alert alert-warning" role="alert">
-      <p>
-        <b>あなたの状況と選択について</b>
-      </p>
-      <p>
-        現在、あなたは{{ C.ENDOWMENT }}を保有しています。
-      </p>
-      <p>
-        あなたは{{ C.ENDOWMENT }}のうち何トークンを同じグループのメンバーＤに渡すか決めてください。
-      </p>
-    </div>
-    <div id="sd-another-situation" class="alert alert-info" role="alert">
-      <p>
-        <b>次の人の選択について</b>
-      </p>
-      <p>
-        この後、メンバーＤがあなたから受け取ったトークン0～200％にしてメンバーＲに渡す意思決定をします。
-      </p>
-      <ul>
-        <li>
-          100％より低い数字：メンバーＰから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはあなたのものになります。
-        </li>
-        <li>
-          100％より大きい数字：メンバーＰから受け取ったトークンに自身が保有するトークンを上乗せして、メンバーＲに渡します。
-        </li>
-      </ul>
-      <p>
-        ただし、メンバーＤも{{ C.ENDOWMENT }}を保有しています。
-      </p>
-    </div>
-    <div id="sd-form">
-      <p>
-        下部にある「計算機」を使うと、三人の最終的なトークンを予測できます。
-      </p>
-      <p>
-        「計算機」などを活用してあなたの選択を決めた後に、0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
-      </p>
-    </div>
+    {{ if not group.contractible_s }}
+      <div id="sd-another-situation" class="alert alert-primary" role="alert">
+        <h4>注意</h4>
+        <ul>
+          <li>
+            この後、メンバーＤがあなたから受け取ったトークンの0～200％をメンバーＲに渡す意思決定をします。
+            <ul>
+              <li>100％より低い数字：あなたから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはメンバーＤのものになります。</li>
+              <li>100％より大きい数字：あなたから受け取ったトークンに、メンバーＤが保有するトークンを上乗せして、メンバーＲに渡します。</li>
+            </ul>
+          </li>
+          {{ if group.dictator_promise }}
+            <li>
+              メンバーＤは現在、<b>あなたから受け取ったトークンの{{ group.promise }}％</b>をメンバーＲに渡す予定です。あなたの選択の後に、メンバーＤがこの計画を修正する可能性があります。
+            </li>
+          {{ endif }}
+        </ul>
+      </div>
+    {{ endif }}
+  {{ formfield "send" }}
   {{ endif }}
-  {{ formfields }}
+  {{ if group.contractible_s }}
+    <hr>
+    <div id="your-situation-contractible">
+      <p>また、あなたは、メンバーＤに渡したトークンの何％をメンバーＲに渡しますか？</p>
+      <ul>
+        <li>100％より低い数字：あなたから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはメンバーＤのものになります。</li>
+        <li>100％より大きい数字：あなたから受け取ったトークンに、メンバーＤが保有するトークンを上乗せして、メンバーＲに渡します。</li>
+      </ul>
+    </div>
+    <div id="another-situation-contractible" class="alert alert-primary" role="alert">
+      <h4>注意</h4>
+      <ul>
+        <li>メンバーＤはこの画面でのあなたの選択に従います。</li>
+      </ul>
+    </div>
+    {{ formfield "allocation" }}
+  {{ endif }}
   {{ next_button }}
   <hr>
   <div id="about-calculator">

@@ -4,8 +4,7 @@ from otree.api import *
 class C(BaseConstants):
     NAME_IN_URL = 'quiz'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 10
-
+    NUM_ROUNDS = 1
     NUMBER_Q = 3
     SETUP = {
         1: {
@@ -38,7 +37,7 @@ class Player(BasePlayer):
 for k in C.SETUP.keys():
     setattr(
         Player,
-        'quiz' + str(k) +'_patron',
+        'q' + str(k) +'_p',
         models.IntegerField(
             label = '''
             メンバーPの最終的な獲得トークンはいくらですか？
@@ -48,7 +47,7 @@ for k in C.SETUP.keys():
     )
     setattr(
         Player,
-        'quiz' + str(k) +'_dictator',
+        'q' + str(k) +'_d',
         models.IntegerField(
             label = '''
             メンバーDの最終的な獲得トークンはいくらですか？
@@ -58,7 +57,7 @@ for k in C.SETUP.keys():
     )
     setattr(
         Player,
-        'quiz' + str(k) +'_receiver',
+        'q' + str(k) +'_r',
         models.IntegerField(
             label = '''
             メンバーRの最終的な獲得トークンはいくらですか？
@@ -68,17 +67,17 @@ for k in C.SETUP.keys():
     )
     setattr(
         Player,
-        'error' + str(k) + '_patron',
+        'err' + str(k) + '_p',
         models.IntegerField()
     )
     setattr(
         Player,
-        'error' + str(k) + '_dictator',
+        'err' + str(k) + '_d',
         models.IntegerField()
     )
     setattr(
         Player,
-        'error' + str(k) + '_receiver',
+        'err' + str(k) + '_r',
         models.IntegerField()
     )
 
@@ -93,33 +92,13 @@ def correct_cal(endowment, send, allocation):
 
 # PAGES
 class Introduction(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.round_number == 1
+    pass
 
 class Quiz1(Page):
     template_name = 'quiz/Quiz.html'
 
     form_model = 'player'
-    form_fields = ['quiz1_patron', 'quiz1_dictator', 'quiz1_receiver']
-
-    @staticmethod
-    def is_displayed(player: Player):
-        if player.round_number == 1:
-            return True
-        else:
-            previous = player.in_round(player.round_number - 1)
-            check = [
-                previous.field_maybe_none('error1_patron'),
-                previous.field_maybe_none('error1_dictator'),
-                previous.field_maybe_none('error1_receiver')
-            ]
-
-            count = 0
-            for x in check:
-                if x == 0 or x is None:
-                    count += 1
-            return count != 3
+    form_fields = ['q1_p', 'q1_d', 'q1_r']
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -134,9 +113,9 @@ class Quiz1(Page):
     def before_next_page(player: Player, timeout_happened):
         setup = C.SETUP[1]
         correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
-        player.error1_patron = correct["patron"] - player.quiz1_patron
-        player.error1_dictator = correct["dictator"] - player.quiz1_dictator
-        player.error1_receiver = correct["receiver"] - player.quiz1_receiver
+        player.err1_p = correct["patron"] - player.q1_p
+        player.err1_d = correct["dictator"] - player.q1_d
+        player.err1_r = correct["receiver"] - player.q1_r
     
     @staticmethod
     def js_vars(player: Player):
@@ -147,25 +126,7 @@ class Quiz2(Page):
     template_name = 'quiz/Quiz.html'
     
     form_model = 'player'
-    form_fields = ['quiz2_patron', 'quiz2_dictator', 'quiz2_receiver']
-
-    @staticmethod
-    def is_displayed(player: Player):
-        if player.round_number == 1:
-            return True
-        else:
-            previous = player.in_round(player.round_number - 1)
-            check = [
-                previous.field_maybe_none('error2_patron'),
-                previous.field_maybe_none('error2_dictator'),
-                previous.field_maybe_none('error2_receiver')
-            ]
-
-            count = 0
-            for x in check:
-                if x == 0 or x is None:
-                    count += 1
-            return count != 3
+    form_fields = ['q2_p', 'q2_d', 'q2_r']
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -180,9 +141,9 @@ class Quiz2(Page):
     def before_next_page(player: Player, timeout_happened):
         setup = C.SETUP[2]
         correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
-        player.error2_patron = correct["patron"] - player.quiz2_patron
-        player.error2_dictator = correct["dictator"] - player.quiz2_dictator
-        player.error2_receiver = correct["receiver"] - player.quiz2_receiver
+        player.err2_p = correct["patron"] - player.q2_p
+        player.err2_d = correct["dictator"] - player.q2_d
+        player.err2_r = correct["receiver"] - player.q2_r
     
     @staticmethod
     def js_vars(player: Player):
@@ -192,25 +153,7 @@ class Quiz3(Page):
     template_name = 'quiz/Quiz.html'
 
     form_model = 'player'
-    form_fields = ['quiz3_patron', 'quiz3_dictator', 'quiz3_receiver']
-
-    @staticmethod
-    def is_displayed(player: Player):
-        if player.round_number == 1:
-            return True
-        else:
-            previous = player.in_round(player.round_number - 1)
-            check = [
-                previous.field_maybe_none('error3_patron'),
-                previous.field_maybe_none('error3_dictator'),
-                previous.field_maybe_none('error3_receiver')
-            ]
-
-            count = 0
-            for x in check:
-                if x == 0 or x is None:
-                    count += 1
-            return count != 3
+    form_fields = ['q3_p', 'q3_d', 'q3_r']
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -225,9 +168,9 @@ class Quiz3(Page):
     def before_next_page(player: Player, timeout_happened):
         setup = C.SETUP[3]
         correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
-        player.error3_patron = correct["patron"] - player.quiz3_patron
-        player.error3_dictator = correct["dictator"] - player.quiz3_dictator
-        player.error3_receiver = correct["receiver"] - player.quiz3_receiver
+        player.err3_p = correct["patron"] - player.q3_p
+        player.err3_d = correct["dictator"] - player.q3_d
+        player.err3_r = correct["receiver"] - player.q3_r
     
     @staticmethod
     def js_vars(player: Player):
@@ -235,24 +178,6 @@ class Quiz3(Page):
 
 class Answer1(Page):
     template_name = 'quiz/Answer.html'
-
-    @staticmethod
-    def is_displayed(player: Player):
-        if player.round_number == 1:
-            return True
-        else:
-            previous = player.in_round(player.round_number - 1)
-            check = [
-                previous.field_maybe_none('error1_patron'),
-                previous.field_maybe_none('error1_dictator'),
-                previous.field_maybe_none('error1_receiver')
-            ]
-
-            count = 0
-            for x in check:
-                if x == 0 or x is None:
-                    count += 1
-            return count != 3
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -263,15 +188,15 @@ class Answer1(Page):
             endowment = C.SETUP[1]["endowment"],
             send = C.SETUP[1]["send"],
             allocation = C.SETUP[1]["allocation"],
-            answer_patron = player.quiz1_patron,
-            answer_dictator = player.quiz1_dictator,
-            answer_receiver = player.quiz1_receiver,
+            answer_patron = player.q1_p,
+            answer_dictator = player.q1_d,
+            answer_receiver = player.q1_r,
             correct_patron = correct["patron"],
             correct_dictator = correct["dictator"],
             correct_receiver = correct["receiver"],
-            error_patron = player.error1_patron != 0,
-            error_dictator = player.error1_dictator != 0,
-            error_receiver = player.error1_receiver != 0,
+            error_patron = player.err1_p != 0,
+            error_dictator = player.err1_d != 0,
+            error_receiver = player.err1_r != 0,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
                 + str(C.SETUP[1]["send"])
@@ -299,24 +224,6 @@ class Answer2(Page):
     template_name = 'quiz/Answer.html'
 
     @staticmethod
-    def is_displayed(player: Player):
-        if player.round_number == 1:
-            return True
-        else:
-            previous = player.in_round(player.round_number - 1)
-            check = [
-                previous.field_maybe_none('error2_patron'),
-                previous.field_maybe_none('error2_dictator'),
-                previous.field_maybe_none('error2_receiver')
-            ]
-
-            count = 0
-            for x in check:
-                if x == 0 or x is None:
-                    count += 1
-            return count != 3
-
-    @staticmethod
     def vars_for_template(player: Player):
         setup = C.SETUP[2]
         correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
@@ -325,15 +232,15 @@ class Answer2(Page):
             endowment = C.SETUP[2]["endowment"],
             send = C.SETUP[2]["send"],
             allocation = C.SETUP[2]["allocation"],
-            answer_patron = player.quiz2_patron,
-            answer_dictator = player.quiz2_dictator,
-            answer_receiver = player.quiz2_receiver,
+            answer_patron = player.q2_p,
+            answer_dictator = player.q2_d,
+            answer_receiver = player.q2_r,
             correct_patron = correct["patron"],
             correct_dictator = correct["dictator"],
             correct_receiver = correct["receiver"],
-            error_patron = player.error2_patron != 0,
-            error_dictator = player.error2_dictator != 0,
-            error_receiver = player.error2_receiver != 0,
+            error_patron = player.err2_p != 0,
+            error_dictator = player.err2_d != 0,
+            error_receiver = player.err2_r != 0,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
                 + str(C.SETUP[2]["send"])
@@ -361,24 +268,6 @@ class Answer3(Page):
     template_name = 'quiz/Answer.html'
 
     @staticmethod
-    def is_displayed(player: Player):
-        if player.round_number == 1:
-            return True
-        else:
-            previous = player.in_round(player.round_number - 1)
-            check = [
-                previous.field_maybe_none('error3_patron'),
-                previous.field_maybe_none('error3_dictator'),
-                previous.field_maybe_none('error3_receiver')
-            ]
-
-            count = 0
-            for x in check:
-                if x == 0 or x is None:
-                    count += 1
-            return count != 3
-
-    @staticmethod
     def vars_for_template(player: Player):
         setup = C.SETUP[3]
         correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
@@ -387,15 +276,15 @@ class Answer3(Page):
             endowment = C.SETUP[3]["endowment"],
             send = C.SETUP[3]["send"],
             allocation = C.SETUP[3]["allocation"],
-            answer_patron = player.quiz3_patron,
-            answer_dictator = player.quiz3_dictator,
-            answer_receiver = player.quiz3_receiver,
+            answer_patron = player.q3_p,
+            answer_dictator = player.q3_d,
+            answer_receiver = player.q3_r,
             correct_patron = correct["patron"],
             correct_dictator = correct["dictator"],
             correct_receiver = correct["receiver"],
-            error_patron = player.error3_patron != 0,
-            error_dictator = player.error3_dictator != 0,
-            error_receiver = player.error3_receiver != 0,
+            error_patron = player.err3_p != 0,
+            error_dictator = player.err3_d != 0,
+            error_receiver = player.err3_r != 0,
             commentary = (
                 'メンバーPはメンバーDの選択に関わらず、メンバーDに'
                 + str(C.SETUP[3]["send"])
@@ -420,30 +309,10 @@ class Answer3(Page):
         return dict(page = 3)
 
 class Finish(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        check = [
-            player.field_maybe_none('error1_patron'),
-            player.field_maybe_none('error2_patron'),
-            player.field_maybe_none('error3_patron'),
-            player.field_maybe_none('error1_dictator'),
-            player.field_maybe_none('error2_dictator'),
-            player.field_maybe_none('error3_dictator'),
-            player.field_maybe_none('error1_receiver'),
-            player.field_maybe_none('error2_receiver'),
-            player.field_maybe_none('error3_receiver')
-        ]
-
-        count = 0
-        for x in check:
-            if x == 0 or x is None:
-                count += 1
-        
-        return count == C.NUMBER_Q * 3
-    
-    @staticmethod
-    def app_after_this_page(player: Player, upcoming_apps):
-        return upcoming_apps[0]
+    pass
+    # @staticmethod
+    # def app_after_this_page(player: Player, upcoming_apps):
+    #     return upcoming_apps[0]
 
 
 page_sequence = [

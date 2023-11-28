@@ -1,18 +1,21 @@
-{% extends "global/Survey.html" %}
-{% load otree %}
-{% block title %}
+{{ extends "global/Survey.html" }}
+{{ load otree }}
+{{ block title }}
 問題{{ num }}
-{% endblock %}
+{{ endblock }}
 
-{% block content %}
+{{ block content }}
 <div class="progress">
   <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="{{ C.NUMBER_Q }}" id="progressbar"></div>
 </div>
 <br>
 
-<p><b>問題{{ num }}</b>：以下の状況を想像してください。</p>
+<div id="note">
+  <p>以下の状況を想像してください。</p>
+</div>
 
-<div class="round">
+<div id="situation" class="alert alert-info" role="alert">
+  <p><b>状況設定</b></p>
   <p>
     メンバーPが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
     メンバーDが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
@@ -24,10 +27,12 @@
   </p>
 </div>
 
-<p>以下の設問について解答してください。</p>
+<div id="question">
+  <p>以下の設問について解答してください。</p>
+</div>
 
-{% formfields %}
+{{ formfields }}
 
-{% next_button %}
+{{ next_button }}
 
-{% endblock %}
+{{ endblock }}
