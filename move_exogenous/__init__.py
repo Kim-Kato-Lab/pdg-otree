@@ -78,12 +78,19 @@ class Group(BaseGroup):
     belief_1 = models.IntegerField(min=0, label="")
     belief_2 = models.IntegerField(min=0, label="")
     belief_r = models.IntegerField(min=0, label="")
+    hope_r = models.IntegerField(
+        min=0,
+        label = """
+        0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+        """
+    )
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
     promise_timeout = models.IntegerField()
     belief_1_timeout = models.IntegerField()
     belief_2_timeout = models.IntegerField()
     belief_r_timeout = models.IntegerField()
+    hope_r_timeout = models.IntegerField()
     dictator_first = models.BooleanField()
     dictator_promise = models.BooleanField()
     contractible_s = models.BooleanField()
@@ -105,6 +112,9 @@ def belief_r_max(group: Group):
         return C.GAME_ENDOWMENT
     else:
         return C.MAXIMUM_MULTIPLY
+
+def hope_r_max(group: Group):
+    return (C.MAXIMUM_MULTIPLY / 100) * C.ENDOWMENT
 
 class Player(BasePlayer):
     game_payoff = models.CurrencyField()
@@ -319,20 +329,46 @@ class FirstBelief(Page):
         else:
             g.belief_1_timeout = 0
 
-class WaitFirstMover(WaitPage):
-    template_name = 'move_exogenous/ChoiceWait.html'
+class ReceiverBelief(Page):
+    form_model = 'group'
+    form_fields = ['belief_r']
 
     @staticmethod
-    def vars_for_template(player: Player):
-        group = player.group
-        if group.dictator_first == True:
-            return dict(body_text = """
-            あなたのグループのメンバーＤが選択をしています。しばらくお待ちください。
-            """)
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        g = player.group
+        if not g.contractible_s:
+            return player.role == C.RECEIVER_ROLE
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        g = player.group
+        if timeout_happened:
+            g.belief_r_timeout = 1
+            if g.dictator_first:
+                g.belief_r = random.randint(0, C.ENDOWMENT)
+            else:
+                g.belief_r = random.randint(0, C.MAXIMUM_MULTIPLY)
         else:
-            return dict(body_text = """
-            あなたのグループのメンバーＰが選択をしています。しばらくお待ちください。
-            """)
+            g.belief_r_timeout = 0
+
+class WaitFirstMover(WaitPage):
+    template_name = 'move_exogenous/ChoiceWait.html'
+    body_text = """
+    他のグループのメンバーが意思決定をしています。
+    しばらくお待ちください。
+    """
 
 class SecondMover(Page):
     form_model = 'group'
@@ -448,20 +484,41 @@ class SecondBelief(Page):
         else:
             g.belief_2_timeout = 0
 
-class WaitSecondMover(WaitPage):
-    template_name = 'move_exogenous/ChoiceWait.html'
+class ReceiverHope(Page):
+    form_model = 'group'
+    form_fields = ['hope_r']
 
     @staticmethod
-    def vars_for_template(player: Player):
-        group = player.group
-        if group.dictator_first == True:
-            return dict(body_text = """
-            あなたのグループのメンバーＰが選択をしています。しばらくお待ちください。
-            """)
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.role == C.RECEIVER_ROLE
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        g = player.group
+        if timeout_happened:
+            g.hope_r_timeout = 1
+            g.hope_r = random.randint(0, (C.MAXIMUM_MULTIPLY / 100) * C.ENDOWMENT)
         else:
-            return dict(body_text = """
-            あなたのグループのメンバーＤが選択をしています。しばらくお待ちください。
-            """)
+            g.hope_r_timeout = 0
+
+class WaitSecondMover(WaitPage):
+    template_name = 'move_exogenous/ChoiceWait.html'
+    body_text = """
+    他のグループのメンバーが意思決定をしています。
+    しばらくお待ちください。
+    """
 
 class ShuffleWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
@@ -482,9 +539,11 @@ page_sequence = [
     WaitPromise,
     FirstMover,
     FirstBelief,
+    ReceiverBelief,
     WaitFirstMover,
     SecondMover,
     SecondBelief,
+    ReceiverHope,
     WaitSecondMover,
     ShuffleWaitPage
 ]
