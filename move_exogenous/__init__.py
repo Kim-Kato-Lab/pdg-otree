@@ -114,7 +114,7 @@ def belief_r_max(group: Group):
         return C.MAXIMUM_MULTIPLY
 
 def hope_r_max(group: Group):
-    return (C.MAXIMUM_MULTIPLY / 100) * C.ENDOWMENT
+    return (C.MAXIMUM_MULTIPLY / 100) * C.GAME_ENDOWMENT
 
 class Player(BasePlayer):
     game_payoff = models.CurrencyField()
@@ -135,13 +135,15 @@ def set_payoffs(subsession: Subsession):
             if g.dictator_first:
                 d.belief_payoff = C.BELIEF_ENDOWMENT - 120 * ((g.send - g.belief_1)/100) ** 2
                 p.belief_payoff = C.BELIEF_ENDOWMENT - 120 * ((g.belief_1 - g.belief_2)/100) ** 2
+                r.belief_payoff = C.BELIEF_ENDOWMENT - 120 * ((g.send - g.belief_r)/100) ** 2
             else:
                 p.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.allocation - g.belief_1)/100) ** 2
                 d.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.belief_1 - g.belief_2)/100) ** 2
+                r.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.allocation - g.belief_r)/100) ** 2
         
         p.payoff = p.game_payoff + (p.field_maybe_none('belief_payoff') or 0)
         d.payoff = d.game_payoff + (d.field_maybe_none('belief_payoff') or 0)
-        r.payoff = r.game_payoff
+        r.payoff = r.game_payoff + (r.field_maybe_none('belief_payoff') or 0)
 
     # set participant field
     if subsession.round_number == C.NUM_ROUNDS:
@@ -151,10 +153,6 @@ def set_payoffs(subsession: Subsession):
             pp.payoff_list = [p.in_round(i).payoff for i in rounds]
             pp.game_payoff_list = [p.in_round(i).game_payoff for i in rounds]
             pp.belief_payoff_list = [p.in_round(i).field_maybe_none('belief_payoff') for i in rounds]
-            
-            print(pp.payoff_list)
-            print(pp.game_payoff_list)
-            print(pp.belief_payoff_list)
 
 # PAGES
 class WaitIntroduction(WaitPage):
@@ -357,7 +355,7 @@ class ReceiverBelief(Page):
         if timeout_happened:
             g.belief_r_timeout = 1
             if g.dictator_first:
-                g.belief_r = random.randint(0, C.ENDOWMENT)
+                g.belief_r = random.randint(0, C.GAME_ENDOWMENT)
             else:
                 g.belief_r = random.randint(0, C.MAXIMUM_MULTIPLY)
         else:
@@ -509,7 +507,7 @@ class ReceiverHope(Page):
         g = player.group
         if timeout_happened:
             g.hope_r_timeout = 1
-            g.hope_r = random.randint(0, (C.MAXIMUM_MULTIPLY / 100) * C.ENDOWMENT)
+            g.hope_r = random.randint(0, (C.MAXIMUM_MULTIPLY / 100) * C.GAME_ENDOWMENT)
         else:
             g.hope_r_timeout = 0
 
