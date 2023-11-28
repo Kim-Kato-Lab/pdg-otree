@@ -16,6 +16,8 @@ POINTS_CUSTOM_NAME = 'トークン'
 
 PARTICIPANT_FIELDS = [
     'payoff_list',
+    'game_payoff_list',
+    'belief_payoff_list',
     'selected_round',
     'first_dictator'
 ]

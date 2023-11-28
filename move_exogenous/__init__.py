@@ -107,7 +107,8 @@ def belief_r_max(group: Group):
         return C.MAXIMUM_MULTIPLY
 
 class Player(BasePlayer):
-    pass
+    game_payoff = models.CurrencyField()
+    belief_payoff = models.CurrencyField()
 
 # FUNCTIONS
 def set_payoffs(subsession: Subsession):
@@ -115,21 +116,35 @@ def set_payoffs(subsession: Subsession):
         p = g.get_player_by_role(C.PATRON_ROLE)
         d = g.get_player_by_role(C.DICTATOR_ROLE)
         r = g.get_player_by_role(C.RECEIVER_ROLE)
-        p.payoff = C.GAME_ENDOWMENT - g.send
-        d.payoff = C.GAME_ENDOWMENT - (g.allocation / 100 - 1) * g.send
-        r.payoff = (g.allocation / 100) * g.send
-
-        # set participant field
-        if g.round_number == 1:
-            p.participant.payoff_list = [p.payoff]
-            d.participant.payoff_list = [d.payoff]
-            r.participant.payoff_list = [r.payoff]
-        else:
-            p.participant.payoff_list.append(p.payoff)
-            d.participant.payoff_list.append(d.payoff)
-            r.participant.payoff_list.append(r.payoff)
         
-        print(p.participant.payoff_list)
+        p.game_payoff = C.GAME_ENDOWMENT - g.send
+        d.game_payoff = C.GAME_ENDOWMENT - (g.allocation / 100 - 1) * g.send
+        r.game_payoff = (g.allocation / 100) * g.send
+
+        if g.field_maybe_none('belief_1') is not None:
+            if g.dictator_first:
+                d.belief_payoff = C.BELIEF_ENDOWMENT - 120 * ((g.send - g.belief_1)/100) ** 2
+                p.belief_payoff = C.BELIEF_ENDOWMENT - 120 * ((g.belief_1 - g.belief_2)/100) ** 2
+            else:
+                p.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.allocation - g.belief_1)/100) ** 2
+                d.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.belief_1 - g.belief_2)/100) ** 2
+        
+        p.payoff = p.game_payoff + (p.field_maybe_none('belief_payoff') or 0)
+        d.payoff = d.game_payoff + (d.field_maybe_none('belief_payoff') or 0)
+        r.payoff = r.game_payoff
+
+    # set participant field
+    if subsession.round_number == C.NUM_ROUNDS:
+        rounds = range(1, C.NUM_ROUNDS + 1)
+        for p in subsession.get_players():
+            pp = p.participant
+            pp.payoff_list = [p.in_round(i).payoff for i in rounds]
+            pp.game_payoff_list = [p.in_round(i).game_payoff for i in rounds]
+            pp.belief_payoff_list = [p.in_round(i).field_maybe_none('belief_payoff') for i in rounds]
+            
+            print(pp.payoff_list)
+            print(pp.game_payoff_list)
+            print(pp.belief_payoff_list)
 
 # PAGES
 class WaitIntroduction(WaitPage):

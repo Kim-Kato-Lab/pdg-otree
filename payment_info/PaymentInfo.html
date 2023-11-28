@@ -13,14 +13,22 @@
     <thead>
       <tr>
         <th scope="col">ラウンド</th>
-        <th scope="col">獲得トークン</th>
+        <th scope="col">ゲームでの獲得トークン</th>
+        <th scope="col">予想での獲得トークン</th>
+        <th scope="col">合計獲得トークン</th>
       </tr>
     </thead>
     <tbody>
-      {{ for pi, color in table_item }}
+      {{ for game_pi, belief_pi, total_pi, color in table_item }}
       <tr class="{{ color }}">
         <th scope="row">{{ forloop.counter }}</th>
-        <td>{{ pi }}</td>
+        <td>{{ game_pi }}</td>
+        <td>
+          {{ if belief_pi != None }}
+            {{ belief_pi }}
+          {{ endif }}
+        </td>
+        <td>{{ total_pi }}</td>
       </tr>
       {{ endfor }}
     </tbody>
