@@ -36,7 +36,7 @@ SESSION_CONFIGS = [
     dict(
         name = 'fd',
         display_name = 'PDG-FD',
-        num_demo_participants = 6,
+        num_demo_participants = 3,
         dictator_first = True,
         timeout_seconds = 5,
         app_sequence = [

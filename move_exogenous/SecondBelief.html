@@ -1,0 +1,176 @@
+{{ extends "global/Experiment.html" }}
+{{ load otree static }}
+{{ block title }}
+  あなたの予想
+{{ endblock }}
+{{ block content }}
+  <div class="progress" style="height: 20px">
+    <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+  </div>
+  <br>
+  <div id="your-expectation">
+    {{ if group.dictator_first }}
+      <p>
+        あなたの前に意思決定をしたメンバーＤはあなたの行動（メンバーＤに送るトークン数）を予想しました。
+      </p>
+      <p>
+        あなたは、メンバーＤがあなたから何トークンを受け取ると予想していたと思いますか？0から100の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+      </p>
+    {{ else }}
+      <p>
+        あなたの前に意思決定をしたメンバーＰはあなたの行動（メンバーＰから受け取ったトークンの何％をメンバーＲに送るか）を予想しました。
+      </p>
+      <p>
+        あなたは、メンバーＰがあなたに送ったトークンの何％をメンバーＲに送ると予想していたと思いますか？0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
+      </p>
+    {{ endif }}
+    <p>
+      このラウンドがあなたの報酬の計算に選ばれた場合、あなたの予想についてもトークンを獲得できます。
+      あなたの予想が正しいほど、獲得できるトークンが多くなります（最大120トークン）。
+      獲得トークンの決まり方に関心のある方は下の「獲得トークンの計算方法」をクリックしてください。
+    </p>
+    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#score" aria-expanded="false" aria-controls="score">獲得トークンの計算方法</button>
+  </div>
+  <div class="collapse" id="score">
+    <div class="card card-body">
+      {{ if group.dictator_first }}
+        <p>
+          あなたの予想とメンバーＰの予想の差（予想誤差）を100分の1にして、二乗します。
+          その値に120を掛けた値を120から差し引いたものが獲得トークンです。
+          小数点は四捨五入されます。
+        </p>
+      {{ else }}
+        <p>
+          あなたの予想とメンバーＤの予想の差（予想誤差）を100分の1にして、二乗します。
+          その値に30を掛けた値を120から差し引いたものが獲得トークンです。
+          小数点は四捨五入されます。
+        </p>
+      {{ endif }}
+      <p>
+        予想誤差がゼロであると、獲得トークンは120です。
+        差が大きければ大きいほど、獲得トークンの減少幅が大きくなります。
+        以下の表に獲得トークンの例を示します。
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">予想誤差</th>
+            <th scope="col">獲得トークン</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">±0</th>
+            <th>120</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±10
+              {{ else }}
+                ±20
+              {{ endif }}
+            </th>
+            <th>119</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±20
+              {{ else }}
+                ±40
+              {{ endif }}
+            </th>
+            <th>115</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±30
+              {{ else }}
+                ±60
+              {{ endif }}
+            </th>
+            <th>109</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±40
+              {{ else }}
+                ±80
+              {{ endif }}
+            </th>
+            <th>101</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±50
+              {{ else }}
+                ±100
+              {{ endif }}
+            </th>
+            <th>90</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±60
+              {{ else }}
+                ±120
+              {{ endif }}
+            </th>
+            <th>77</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±70
+              {{ else }}
+                ±140
+              {{ endif }}
+            </th>
+            <th>61</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±80
+              {{ else }}
+                ±160
+              {{ endif }}
+            </th>
+            <th>43</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±90
+              {{ else }}
+                ±180
+              {{ endif }}
+            </th>
+            <th>23</th>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{ if group.dictator_first }}
+                ±100
+              {{ else }}
+                ±200
+              {{ endif }}
+            </th>
+            <th>0</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  <p>
+    あなたの予想を正直に報告することがあなたにとって最善です。
+  </p>
+  {{ formfields }}
+  {{ next_button }}
+{{ endblock }}

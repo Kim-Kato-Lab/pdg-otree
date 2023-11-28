@@ -74,13 +74,36 @@ class Group(BaseGroup):
         0から200の間の<b>整数（半角数字）</b>で以下のフォームに入力してください。
         """
     )
+    belief_1 = models.IntegerField(min=0, label="")
+    belief_2 = models.IntegerField(min=0, label="")
+    belief_r = models.IntegerField(min=0, label="")
     send_timeout = models.IntegerField()
     allocation_timeout = models.IntegerField()
     promise_timeout = models.IntegerField()
+    belief_1_timeout = models.IntegerField()
+    belief_2_timeout = models.IntegerField()
+    belief_r_timeout = models.IntegerField()
     dictator_first = models.BooleanField()
     dictator_promise = models.BooleanField()
     contractible_s = models.BooleanField()
 
+def belief_1_max(group: Group):
+    if group.dictator_first:
+        return C.ENDOWMENT
+    else:
+        return C.MAXIMUM_MULTIPLY
+
+def belief_2_max(group: Group):
+    if group.dictator_first:
+        return C.ENDOWMENT
+    else:
+        return C.MAXIMUM_MULTIPLY
+
+def belief_r_max(group: Group):
+    if group.dictator_first:
+        return C.ENDOWMENT
+    else:
+        return C.MAXIMUM_MULTIPLY
 
 class Player(BasePlayer):
     pass
@@ -243,6 +266,43 @@ class FirstMover(Page):
                 if player.group.contractible_s:
                     player.group.allocation_timeout = 0
 
+class FirstBelief(Page):
+    form_model = 'group'
+    form_fields = ['belief_1']
+
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        group = player.group
+        if group.dictator_first == True:
+            return player.role == C.DICTATOR_ROLE
+        else:
+            if not group.contractible_s:
+                return player.role == C.PATRON_ROLE
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        g = player.group
+        if timeout_happened:
+            g.belief_1_timeout = 1
+            if g.dictator_first:
+                g.belief_1 = random.randint(0, C.ENDOWMENT)
+            else:
+                g.belief_1 = random.randint(0, C.MAXIMUM_MULTIPLY)
+        else:
+            g.belief_1_timeout = 0
+
 class WaitFirstMover(WaitPage):
     template_name = 'move_exogenous/ChoiceWait.html'
 
@@ -335,6 +395,43 @@ class SecondMover(Page):
             else:
                 player.group.allocation_timeout = 0
 
+class SecondBelief(Page):
+    form_model='group'
+    form_fields=['belief_2']
+
+    @staticmethod
+    def get_timeout_seconds(player: Player):
+        session = player.session
+        return session.config['timeout_seconds']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        group = player.group
+        if group.dictator_first == True:
+            return player.role == C.PATRON_ROLE
+        else:
+            if not group.contractible_s:
+                return player.role == C.DICTATOR_ROLE
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        g = player.group
+        if timeout_happened:
+            g.belief_2_timeout = 1
+            if g.dictator_first:
+                g.belief_2 = random.randint(0, C.ENDOWMENT)
+            else:
+                g.belief_2 = random.randint(0, C.MAXIMUM_MULTIPLY)
+        else:
+            g.belief_2_timeout = 0
+
 class WaitSecondMover(WaitPage):
     template_name = 'move_exogenous/ChoiceWait.html'
 
@@ -368,8 +465,10 @@ page_sequence = [
     Promise,
     WaitPromise,
     FirstMover,
+    FirstBelief,
     WaitFirstMover,
     SecondMover,
+    SecondBelief,
     WaitSecondMover,
     ShuffleWaitPage
 ]
