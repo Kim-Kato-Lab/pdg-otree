@@ -1,7 +1,7 @@
 {{ extends "global/Experiment.html" }}
 {{ load otree static }}
 {{ block title }}
-  あなたの選択
+  あなたのターン
 {{ endblock }}
 {{ block content }}
   <div class="progress" style="height: 20px">
@@ -25,7 +25,7 @@
   </div>
   {{ if group.dictator_first }}
     <div id="fd-another-situation" class="alert alert-primary" role="alert">
-      <h4>注意</h4>
+      <h6>注意</h6>
       <ul>
         <li>あなたの選択の後に、メンバーＰが{{ C.GAME_ENDOWMENT }}からいくらをあなたに自身のトークンを渡すか決めます。このとき、<b>メンバーＰはあなたがこの画面でどのような選択をしたのかを知っていること</b>に注意してください。</li>
       </ul>
@@ -34,7 +34,7 @@
   {{ else }}
     {{ if not group.contractible_s }}
       <div id="sd-another-situation" class="alert alert-primary" role="alert">
-        <h4>注意</h4>
+        <h6>注意</h6>
         <ul>
           <li>
             この後、メンバーＤがあなたから受け取ったトークンの0～200％をメンバーＲに渡す意思決定をします。
@@ -54,95 +54,93 @@
   {{ formfield "send" }}
   {{ endif }}
   {{ if group.contractible_s }}
-    <hr>
+    <br>
     <div id="your-situation-contractible">
-      <p>また、あなたは、メンバーＤに渡したトークンの何％をメンバーＲに渡しますか？</p>
+      <h5>また、あなたは、メンバーＤに渡したトークンの何％をメンバーＲに渡しますか？</h5>
       <ul>
         <li>100％より低い数字：あなたから受け取ったトークンの一部をメンバーＲに渡します。残ったトークンはメンバーＤのものになります。</li>
         <li>100％より大きい数字：あなたから受け取ったトークンに、メンバーＤが保有するトークンを上乗せして、メンバーＲに渡します。</li>
       </ul>
     </div>
     <div id="another-situation-contractible" class="alert alert-primary" role="alert">
-      <h4>注意</h4>
+      <h6>注意</h6>
       <ul>
         <li>メンバーＤはこの画面でのあなたの選択に従います。</li>
       </ul>
     </div>
     {{ formfield "allocation" }}
   {{ endif }}
-  {{ next_button }}
-  <hr>
-  <div id="about-calculator">
-    <h4>計算機</h4>
-    <p>
-      あなたの選択を以下の入力し、「計算する」ボタンを押すと、あなたと他２人の最終的なトークンの予測を確認できます。
-    </p>
+  <p>
+    <b>
+      あなたの選択を決めるとき、計算機を是非ご活用ください。
+    </b>
+  </p>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#calculator">
+    計算機
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="calculator" tabindex="-1" aria-labelledby="calculator" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="calculator-title">計算機</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>メンバーＰとメンバーＤの選択を入力する（半角数字）ことで、あなたのグループのメンバーが獲得するトークンを確認できます。他のメンバーの行動はご自身で予測して入力してください。</p>
+          <ul>
+            <li>
+              メンバーＰ：
+              <input style="width: 50px;" type="number" min="0" max="100" id="send">
+              トークンをメンバーＤに渡す
+            </li>
+            <li>
+              メンバーＤ：
+              メンバーＰから受け取ったトークンの
+              <input style="width: 50px;" type="number" min="0" max="200" id="multiply">
+              ％をメンバーＲに渡す
+            </li>
+          </ul>
+          <button type="button" class="btn btn-outline-secondary" onclick="payoff()">計算する</button>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">獲得トークン</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">メンバーＰ</th>
+                <td><span id="result-p">100トークン</span></td>
+              </tr>
+              <tr>
+                <th scope="row">メンバーＤ</th>
+                <td><span id="result-d">100トークン</span></td>
+              </tr>
+              <tr>
+                <th scope="row">メンバーＲ</th>
+                <td><span id="result-r">0トークン</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-  {{ if group.dictator_first }}
-    <div id="fd-calculator">
-      <div id="fd-calculator-form" class="alert alert-secondary" role="alert">
-        あなたの選択：メンバーＰから受け取ったトークンのうち
-        <input style="width: 50px;" type="number" min="0" max="200" id="multiply">
-        ％（半角数字）をメンバーＲに渡す
-        <input type="button" value="計算する" onclick="pi()">
-      </div>
-      <div id="fd-calculator-result">
-        <table border="1" style="border-collapse: collapse;" width="500">
-          <tr>
-            <th>グループメンバー</th>
-            <th>トークン</th>
-          </tr>
-          <tr>
-            <td>メンバーＰ</td>
-            <td><span id="fd-calculator-result-p">？？</span></td>
-          </tr>
-          <tr>
-            <td>メンバーＤ（<b>あなた</b>）</td>
-            <td><span id="fd-calculator-result-d">？？</span></td>
-          </tr>
-          <tr>
-            <td>メンバーＲ</td>
-            <td><span id="fd-calculator-result-r">？？</span></td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  {{ else }}
-    <div id="sd-calculator">
-      <div id="sd-calculator-form" class="alert alert-secondary" role="alert">
-        あなたの選択：
-        <input style="width: 50px;" type="number" min="0" max="100" id="send">
-        トークン（半角数字）をメンバーＤに渡す
-        <input type="button" value="計算する" onclick="pi()">
-      </div>
-      <div id="sd-calculator-result">
-        <table border="1" style="border-collapse: collapse" width="500">
-          <tr>
-            <th>グループメンバー</th>
-            <th>トークン</th>
-          </tr>
-          <tr>
-            <th>メンバーＰ（<b>あなた</b>）</th>
-            <th><span id="sd-calculator-result-p">？？</span></th>
-          </tr>
-          <tr>
-            <th>メンバーＤ</th>
-            <th><span id="sd-calculator-result-d">？？</span></th>
-          </tr>
-          <tr>
-            <th>メンバーＲ</th>
-            <th><span id="sd-calculator-result-r">？？</span></th>
-          </tr>
-        </table>
-      </div>
-    </div>
-  {{ endif }}
+
+  <br>
+  <br>
+
+  <p>
+    フォームの入力が終わりましたら、「次へ」のボタンを押してください。
+  </p>
+
+  {{ next_button }}
 {{ endblock }}
 
 {{ block scripts }}
-  {{ if group.dictator_first }}
-    <script src="{{ static 'global/js/first-dictator-cal.js' }}"></script>
-  {{ else }}
-    <script src="{{ static 'global/js/first-patron-cal.js' }}"></script>
-  {{ endif }}
+  <script src="{{ static 'global/js/first-mover.js' }}"></script>
 {{ endblock }}

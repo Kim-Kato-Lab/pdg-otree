@@ -1,4 +1,4 @@
-function pi() {
+function follower_patron_payoff() {
   const multiply = js_vars.x;
   const input = document.getElementById("send");
   const send = input.value;
@@ -22,15 +22,15 @@ function pi() {
     return alert(alert_msg);
   }
 
-  let p = document.getElementById("fd-calculator-result-p");
+  let p = document.getElementById("result-p");
   const cal_p = Math.round(100 - send);
-  p.innerText = cal_p;
+  p.innerText = cal_p + "トークン";
 
-  let d = document.getElementById("fd-calculator-result-d");
+  let d = document.getElementById("result-d");
   const cal_d = Math.round(100 - (multiply / 100 - 1) * send);
-  d.innerText = cal_d;
+  d.innerText = cal_d + "トークン";
 
-  var r = document.getElementById("fd-calculator-result-r");
+  var r = document.getElementById("result-r");
   const cal_r = Math.round((send * multiply) / 100);
-  r.innerText = cal_r;
+  r.innerText = cal_r + "トークン";
 }

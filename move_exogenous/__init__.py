@@ -120,6 +120,13 @@ class Player(BasePlayer):
     game_payoff = models.CurrencyField()
     belief_payoff = models.CurrencyField()
 
+class Calculator(ExtraModel):
+    group = models.Link(Group)
+    player = models.Link(Player)
+    stage = models.StringField()
+    send = models.IntegerField()
+    allocation = models.IntegerField()
+
 # FUNCTIONS
 def set_payoffs(subsession: Subsession):
     for g in subsession.get_groups():
@@ -196,6 +203,17 @@ class Promise(Page):
     form_fields = ['promise']
 
     @staticmethod
+    def live_method(player: Player, data):
+        group = player.group
+        Calculator.create(
+            group=group,
+            player=player,
+            stage="promise",
+            send=data["x"],
+            allocation=data["s"]
+        )
+
+    @staticmethod
     def get_timeout_seconds(player: Player):
         session = player.session
         return session.config['timeout_seconds']
@@ -246,6 +264,17 @@ class FirstMover(Page):
             return ['send', 'allocation']
         else:
             return ['send']
+    
+    @staticmethod
+    def live_method(player: Player, data):
+        group = player.group
+        Calculator.create(
+            group=group,
+            player=player,
+            stage="first mover",
+            send=data["x"],
+            allocation=data["s"]
+        )
 
     @staticmethod
     def is_displayed(player: Player):

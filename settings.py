@@ -40,7 +40,7 @@ SESSION_CONFIGS = [
         display_name = 'PDG-FD',
         num_demo_participants = 3,
         dictator_first = True,
-        timeout_seconds = 5,
+        timeout_seconds = None,
         app_sequence = [
             'move_exogenous',
             'payment_info'
@@ -54,7 +54,7 @@ SESSION_CONFIGS = [
         dictator_promise = False,
         allocation_contractible_odd = False,
         allocation_contractible_even = False,
-        timeout_seconds = 5,
+        timeout_seconds = None,
         app_sequence = [
             'move_exogenous',
             'payment_info'
@@ -68,7 +68,7 @@ SESSION_CONFIGS = [
         dictator_promise = True,
         allocation_contractible_odd = False,
         allocation_contractible_even = False,
-        timeout_seconds = 5,
+        timeout_seconds = None,
         app_sequence = [
             'move_exogenous',
             'payment_info'
