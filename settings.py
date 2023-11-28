@@ -107,6 +107,14 @@ SESSION_CONFIGS = [
             'dictator',
             'payment_info'
         ]
+    ),
+    dict(
+        name = 'survey',
+        display_name = 'Survey',
+        num_demo_participants = 1,
+        app_sequence = [
+            'survey'
+        ]
     )
 ]
 

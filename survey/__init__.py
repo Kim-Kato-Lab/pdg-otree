@@ -31,10 +31,21 @@ class C(BaseConstants):
             "donation": {
                 "question": '''
                 あなたは今500円を持っている状況を想像してください。
-                手持ちの500円からいくらまでならその慈善団体に寄付してもよいですか。
+                手持ちの500円からいくらまでなら食料支援をする慈善団体に寄付してもよいですか。
                 <br>
                 寄付する金額を1円刻みで考えて、入力してください。
                 寄付したくない場合は0円を入力してください。''',
+                "min": 0,
+                "max": 500
+            },
+            "matching_donation": {
+                "question": '''
+                あなたは今500円を持っている状況を想像してください。
+                手持ちの500円からいくらまでなら食料支援をする慈善団体に寄付してもよいですか。
+                <br>
+                寄付する金額を1円刻みで考えて、入力してください。
+                寄付したくない場合は0円を入力してください。
+                ''',
                 "min": 0,
                 "max": 500
             }
@@ -104,53 +115,6 @@ class C(BaseConstants):
                     [7, '10,000円～25,000円未満'],
                     [8, '25,000円～50,000円未満'],
                     [9, '50,000円以上']
-                ]
-            },
-            "past_volunteer": {
-                "question": '''
-                あなたは、この1年間に、<b>ボランティア活動</b>をどのくらいしましたか。
-                <br>
-                ※ボランティア活動とは、あなた自身や家族のためではなく、
-                他人や社会のために自発的に労務を提供する行為のことを言います。
-                交通費などの経費が支払われるものも含まれます。
-                また、オンラインやリモートで出来るものも含まれます。''',
-                "choice": [
-                    [1, 'ボランティア活動をしなかった'],
-                    [2, '年に1回'],
-                    [3, '年に数回'],
-                    [4, '月に1回'],
-                    [5, '月に数回'],
-                    [6, '週に1回'],
-                    [7, '週に数回'],
-                    [8, 'ほとんど毎日']
-                ]
-            },
-            "matching_donation": {
-                "question": '''
-                ここで、ある財団の協力を得て、マッチングギフトの仕組みが導入されることになりました。
-                <br>
-                この仕組みは「<b>あなたの選択する寄付額と同じ額を、その財団が上乗せして、2倍の額が寄付先に届けられる</b>」というものです。
-                <br>
-                <b>この仕組みが導入されたとき</b>、あなたは前問で回答した寄付額を変えますか。
-                最も近いものを一つ選んでください。''',
-                "choice": [
-                    [1, '減らす'],
-                    [2, '変えない'],
-                    [3, '増やす']
-                ]
-            },
-            "which_charity1": {
-                "question": 'あなたは慈善団体Aと慈善団体Bのどちらに寄付をしたいと思いますか。',
-                "choice": [
-                    [0, '慈善団体A'],
-                    [1, '慈善団体B']
-                ]
-            },
-            "which_charity2": {
-                "question": 'あなたは慈善団体Aと慈善団体Cのどちらに寄付をしたいと思いますか。',
-                "choice": [
-                    [0, '慈善団体A'],
-                    [1, '慈善団体C']
                 ]
             }
         }
@@ -298,7 +262,6 @@ class Altruist(Page):
     form_model = 'player'
     form_fields = [
         'past_donation',
-        'past_volunteer'
     ]
 
     @staticmethod
@@ -329,22 +292,6 @@ class MatchingDonation2(Page):
     def js_vars(player: Player):
         return dict(page = 6)
 
-class Overhead1(Page):
-    form_model = 'player'
-    form_fields = ['which_charity1']
-
-    @staticmethod
-    def js_vars(player: Player):
-        return dict(page = 7)
-
-class Overhead2(Page):
-    form_model = 'player'
-    form_fields = ['which_charity2']
-
-    @staticmethod
-    def js_vars(player: Player):
-        return dict(page = 8)
-
 class Allocation(Page):
     form_model = 'player'
     form_fields = C.INEQUALITY["question"].keys()
@@ -360,7 +307,5 @@ page_sequence = [
     Likert,
     MatchingDonation1,
     MatchingDonation2,
-    Overhead1,
-    Overhead2,
     Allocation
 ]
