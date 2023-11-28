@@ -1,0 +1,23 @@
+{{ extends "global/Experiment.html" }}
+{{ load otree static }}
+{{ block title }}
+  あなたの希望
+{{ endblock }}
+{{ block content }}
+  <div class="progress" style="height: 20px">
+    <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+  </div>
+  <br>
+  <div id="question">
+    <h5>あなたはこのラウンドで少なくとも何トークンを獲得できれば良いと思っていますか？</h5>
+  </div>
+  <div id="remark" class="alert alert-primary" role="alert">
+    <h6>注意</h6>
+    <ul>
+      <li>この画面での意思決定はこのラウンドの獲得トークンに影響を与えません。</li>
+      <li>この画面での意思決定は他のメンバーに知られることはありません。</li>
+    </ul>
+  </div>
+  {{ formfields }}
+  {{ next_button }}
+{{ endblock }}
