@@ -1,38 +1,31 @@
 {{ extends "global/Survey.html" }}
 {{ load otree }}
 {{ block title }}
-問題{{ num }}
+  クイズ
 {{ endblock }}
 
 {{ block content }}
-<div class="progress">
-  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="{{ C.NUMBER_Q }}" id="progressbar"></div>
-</div>
-<br>
-
-<div id="note">
-  <p>以下の状況を想像してください。</p>
-</div>
-
-<div id="situation" class="alert alert-info" role="alert">
-  <p><b>状況設定</b></p>
-  <p>
-    メンバーPが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
-    メンバーDが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
-    メンバーRが初めに保有しているトークンは <b>0</b> トークンです。
-  </p>
-  <p>
-    ここで、メンバーPは自身のトークンのうち <b>{{ send }}</b> トークンをメンバーDに渡し、
-    メンバーDは受け取ったトークンを <b>{{ allocation }}％</b> にしてメンバーRに渡しました。
-  </p>
-</div>
-
-<div id="question">
-  <p>以下の設問について解答してください。</p>
-</div>
-
-{{ formfields }}
-
-{{ next_button }}
-
+  <div id="case-1">
+    <h6>問題1</h6>
+    <p>以下の状況を想像し、下の設問に解答してください。</p>
+    <p>
+      メンバーＰとメンバーＤは初めに {{ endowment1 }}トークン を持っています。対して、メンバーＲは初めにトークンを保有していません。ここで、メンバーＰは自身のトークンのうち {{ send1 }}トークン をメンバーＤに渡し、メンバーＤは受け取ったトークンの {{ allocation1 }}％ をメンバーＲに渡しました。
+    </p>
+    <ul>
+      <li>{{ formfield "q1" }}</li>
+      <li>{{ formfield "q2" }}</li>
+      <li>{{ formfield "q3" }}</li>
+    </ul>
+  </div>
+  <div id="case2">
+    <h6>問題2</h6>
+    <p>以下の状況を想像し、下の設問に解答してください。</p>
+    <p>
+      メンバーＰとメンバーＤは初めに {{ endowment2 }}トークン を持っています。対して、メンバーＲは初めにトークンを保有していません。ここで、メンバーＰは自身のトークンのうち {{ send2 }}トークン をメンバーＤに渡し、メンバーＤは受け取ったトークンの {{ allocation2 }}％ をメンバーＲに渡しました。
+    </p>
+    <ul>
+      <li>{{ formfield "q4" }}</li>
+    </ul>
+  </div>
+  {{ next_button }}
 {{ endblock }}

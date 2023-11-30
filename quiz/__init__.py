@@ -5,22 +5,16 @@ class C(BaseConstants):
     NAME_IN_URL = 'quiz'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
-    NUMBER_Q = 3
     SETUP = {
-        1: {
-            "endowment": 100,
-            "send": 50,
-            "allocation": 100
-        },
-        2: {
+        "case 1": {
             "endowment": 100,
             "send": 50,
             "allocation": 200
         },
-        3: {
+        "case 2": {
             "endowment": 100,
             "send": 50,
-            "allocation": 0
+            "allocation": 50
         }
     }
 class Subsession(BaseSubsession):
@@ -32,55 +26,34 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    pass
-
-for k in C.SETUP.keys():
-    setattr(
-        Player,
-        'q' + str(k) +'_p',
-        models.IntegerField(
-            label = '''
-            メンバーPの最終的な獲得トークンはいくらですか？
-            0～200の整数（半角数字）で解答してください。''',
-            min = 0, max = 200
-        )
+    q1 = models.IntegerField(
+        min=0, max=200,
+        label = '''
+        メンバーＰの最終的な獲得トークンはいくらですか？
+        0～200の整数（半角数字）で解答してください。'''
     )
-    setattr(
-        Player,
-        'q' + str(k) +'_d',
-        models.IntegerField(
-            label = '''
-            メンバーDの最終的な獲得トークンはいくらですか？
-            0～200の整数（半角数字）で解答してください。''',
-            min = 0, max = 200
-        )
+    q2 = models.IntegerField(
+        min=0, max=200,
+        label = '''
+        メンバーＤの最終的な獲得トークンはいくらですか？
+        0～200の整数（半角数字）で解答してください。'''
     )
-    setattr(
-        Player,
-        'q' + str(k) +'_r',
-        models.IntegerField(
-            label = '''
-            メンバーRの最終的な獲得トークンはいくらですか？
-            0～200の整数（半角数字）で解答してください。''',
-            min = 0, max = 200
-        )
+    q3 = models.IntegerField(
+        min=0, max=200,
+        label = '''
+        メンバーＲの最終的な獲得トークンはいくらですか？
+        0～200の整数（半角数字）で解答してください。'''
     )
-    setattr(
-        Player,
-        'err' + str(k) + '_p',
-        models.IntegerField()
+    q4 = models.IntegerField(
+        min=0, max=200,
+        label = '''
+        メンバーＲの最終的な獲得トークンはいくらですか？
+        0～200の整数（半角数字）で解答してください。'''
     )
-    setattr(
-        Player,
-        'err' + str(k) + '_d',
-        models.IntegerField()
-    )
-    setattr(
-        Player,
-        'err' + str(k) + '_r',
-        models.IntegerField()
-    )
-
+    err1 = models.IntegerField()
+    err2 = models.IntegerField()
+    err3 = models.IntegerField()
+    err4 = models.IntegerField()
 
 # FUNCTIONS
 def correct_cal(endowment, send, allocation):
@@ -94,87 +67,33 @@ def correct_cal(endowment, send, allocation):
 class Introduction(Page):
     pass
 
-class Quiz1(Page):
+class Quiz(Page):
     template_name = 'quiz/Quiz.html'
 
     form_model = 'player'
-    form_fields = ['q1_p', 'q1_d', 'q1_r']
+    form_fields = ['q1', 'q2', 'q3', 'q4']
 
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
-            num = 1,
-            endowment = C.SETUP[1]["endowment"],
-            send = C.SETUP[1]["send"],
-            allocation = C.SETUP[1]["allocation"]
+            endowment1 = C.SETUP['case 1']["endowment"],
+            send1 = C.SETUP['case 1']["send"],
+            allocation1 = C.SETUP['case 1']["allocation"],
+            endowment2 = C.SETUP['case 2']["endowment"],
+            send2 = C.SETUP['case 2']["send"],
+            allocation2 = C.SETUP['case 2']["allocation"]
         )
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        setup = C.SETUP[1]
-        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
-        player.err1_p = correct["patron"] - player.q1_p
-        player.err1_d = correct["dictator"] - player.q1_d
-        player.err1_r = correct["receiver"] - player.q1_r
-    
-    @staticmethod
-    def js_vars(player: Player):
-        return dict(page = 1)
-
-
-class Quiz2(Page):
-    template_name = 'quiz/Quiz.html'
-    
-    form_model = 'player'
-    form_fields = ['q2_p', 'q2_d', 'q2_r']
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(
-            num = 2,
-            endowment = C.SETUP[2]["endowment"],
-            send = C.SETUP[2]["send"],
-            allocation = C.SETUP[2]["allocation"]
-        )
-    
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        setup = C.SETUP[2]
-        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
-        player.err2_p = correct["patron"] - player.q2_p
-        player.err2_d = correct["dictator"] - player.q2_d
-        player.err2_r = correct["receiver"] - player.q2_r
-    
-    @staticmethod
-    def js_vars(player: Player):
-        return dict(page = 2)
-
-class Quiz3(Page):
-    template_name = 'quiz/Quiz.html'
-
-    form_model = 'player'
-    form_fields = ['q3_p', 'q3_d', 'q3_r']
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(
-            num = 3,
-            endowment = C.SETUP[3]["endowment"],
-            send = C.SETUP[3]["send"],
-            allocation = C.SETUP[3]["allocation"]
-        )
-    
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        setup = C.SETUP[3]
-        correct = correct_cal(setup["endowment"], setup["send"], setup["allocation"])
-        player.err3_p = correct["patron"] - player.q3_p
-        player.err3_d = correct["dictator"] - player.q3_d
-        player.err3_r = correct["receiver"] - player.q3_r
-    
-    @staticmethod
-    def js_vars(player: Player):
-        return dict(page = 3)
+        setup1 = C.SETUP['case 1']
+        setup2 = C.SETUP['case 2']
+        correct1 = correct_cal(setup1["endowment"], setup1["send"], setup1["allocation"])
+        correct2 = correct_cal(setup2["endowment"], setup2["send"], setup2["allocation"])
+        player.err1 = correct1["patron"] - player.q1
+        player.err2 = correct1["dictator"] - player.q2
+        player.err3 = correct1["receiver"] - player.q3
+        player.err4 = correct2["receiver"] - player.q4
 
 class Answer1(Page):
     template_name = 'quiz/Answer.html'
@@ -317,9 +236,7 @@ class Finish(Page):
 
 page_sequence = [
     Introduction,
-    Quiz1,
-    Quiz2,
-    Quiz3,
+    Quiz,
     Answer1,
     Answer2,
     Answer3,
