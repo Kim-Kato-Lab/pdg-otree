@@ -1,85 +1,127 @@
 {{ extends "global/Survey.html" }}
 {{ load otree }}
 {{ block title }}
-解答解説：問題{{ num }}
+  解答解説
 {{ endblock }}
 
 {{ block content }}
-<div class="progress">
-  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="{{ C.NUMBER_Q }}" id="progressbar"></div>
-</div>
-<br>
-
-<div id="note">
-  <p>以下の状況を想像してください。</p>
-</div>
-
-<div id="situation" class="alert alert-info" role="alert">
-  <p><b>状況設定</b></p>
-  <p>
-    メンバーPが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
-    メンバーDが初めに保有しているトークンは <b>{{ endowment }}</b> トークンです。
-    メンバーRが初めに保有しているトークンは <b>0</b> トークンです。
-  </p>
-  <p>
-    ここで、メンバーPは自身のトークンのうち <b>{{ send }}</b> トークンをメンバーDに渡し、
-    メンバーDは受け取ったトークンを <b>{{ allocation }}％</b> にしてメンバーRに渡しました。
-  </p>
-</div>
-
-<div id="question">
-  <p>以下の設問について解答してください。</p>
-</div>
-
-<div class="your answer 1">
-  <p class="oneline">
-    {{ if error_patron }}
-    <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
-    {{ endif }}
-    <span>メンバーPの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
-  </p>
-  <ul>
-    <li>あなたの解答：{{ answer_patron }}トークン</li>
-    <li>正解：{{ correct_patron }}トークン</li>
-  </ul>
-</div>
-
-<div class="your answer 2">
-  <p class="oneline">
-    {{ if error_dictator }}
-    <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
-    {{ endif }}
-    <span>メンバーDの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
-  </p>
-  <ul>
-    <li>あなたの解答：{{ answer_dictator }}トークン</li>
-    <li>正解：{{ correct_dictator }}トークン</li>
-  </ul>
-</div>
-
-<div class="your answer 3">
-  <p class="oneline">
-    {{ if error_receiver }}
-    <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
-    {{ endif }}
-    <span>メンバーRの最終的な獲得トークンはいくらですか？ 0～200の整数（半角数字）で解答してください。</span>
-  </p>
-  <ul>
-    <li>あなたの解答：{{ answer_receiver }}トークン</li>
-    <li>正解：{{ correct_receiver }}トークン</li>
-  </ul>
-</div>
-
-<hr>
-<h3>解説</h3>
-<div id="comment" class="alert alert-secondary" role="alert">
-  <p>{{ commentary }}</p>
-</div>
-
-<hr>
-
-<p>確認出来たら、「次へ」のボタンを押してください。</p>
-
-{{ next_button }}
-
+  <div id="case-1">
+    <h6>問題1</h6>
+    <p>以下の状況を想像し、下の設問に解答してください。</p>
+    <p>
+      メンバーＰとメンバーＤは初めに {{ endowment1 }}トークン を持っています。対して、メンバーＲは初めにトークンを保有していません。ここで、メンバーＰは自身のトークンのうち {{ send1 }}トークン をメンバーＤに渡し、メンバーＤは受け取ったトークンの {{ allocation1 }}％ をメンバーＲに渡しました。
+    </p>
+    <ul>
+      <li>
+        {{ if player.err1 != 0 }}
+          <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
+        {{ endif }}
+        <span>
+          メンバーＰの最終的な獲得トークンはいくらですか？0～200の整数（半角数字）で解答してください。
+        </span>
+        <ul>
+          <li>あなたの解答：{{ player.q1 }}トークン</li>
+          <li>正解：{{ correct_q1 }}トークン</li>
+        </ul>
+        <br>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment1" aria-expanded="false" aria-controls="comment1">
+          解説
+        </button>
+        <div class="collapse" id="comment1">
+          <div class="card card-body">
+            メンバーＰは、メンバーＤに {{ send1 }} トークンを渡しています。
+            メンバーＰの獲得トークンは初めに持っていたトークンからメンバーＤに渡したトークンを差し引いたものなので、 {{ correct_q1 }} トークンとなります。
+          </div>
+        </div>
+      </li>
+      <br>
+      <li>
+        {{ if player.err2 != 0 }}
+          <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
+        {{ endif }}
+        <span>
+          メンバーＤの最終的な獲得トークンはいくらですか？0～200の整数（半角数字）で解答してください。
+        </span>
+        <ul>
+          <li>あなたの解答：{{ player.q2 }}トークン</li>
+          <li>正解：{{ correct_q2 }}トークン</li>
+        </ul>
+        <br>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment2" aria-expanded="false" aria-controls="comment2">
+          解説
+        </button>
+        <div class="collapse" id="comment2">
+          <div class="card card-body">
+            メンバーＤは、メンバーＰから受け取った {{ send1 }} トークンの {{ allocation1 }}％ をメンバーＲに渡します。すなわち、メンバーＤは {{ correct_q3 }} トークンをメンバーＲに渡します。足りないトークンはメンバーＤが初めに持っていたトークンで補われます。したがって、メンバーＤは自身のトークンのうち {{ change_d_1 }} トークンをメンバーＲに渡すので、メンバーＤの獲得トークンは {{ correct_q2 }} トークンです。
+          </div>
+        </div>
+      </li>
+      <br>
+      <li>
+        {{ if player.err3 != 0 }}
+          <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
+        {{ endif }}
+        <span>
+          メンバーＲの最終的な獲得トークンはいくらですか？0～200の整数（半角数字）で解答してください。
+        </span>
+        <ul>
+          <li>あなたの解答：{{ player.q3 }}トークン</li>
+          <li>正解：{{ correct_q3 }}トークン</li>
+        </ul>
+        <br>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment3" aria-expanded="false" aria-controls="comment3">
+          解説
+        </button>
+        <div class="collapse" id="comment3">
+          <div class="card card-body">
+            メンバーＲは初めにトークンを持っていないので、獲得トークンはメンバーＤから受け取ったトークンのみです。メンバーＤは、メンバーＰから受け取った {{ send1 }} トークンの {{ allocation1 }}％ をメンバーＲに渡します。したがって、メンバーＤの獲得トークンは {{ correct_q3 }} トークンです。
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="case2">
+    <h6>問題2</h6>
+    <p>以下の状況を想像し、下の設問に解答してください。</p>
+    <p>
+      メンバーＰとメンバーＤは初めに {{ endowment2 }}トークン を持っています。対して、メンバーＲは初めにトークンを保有していません。ここで、メンバーＰは自身のトークンのうち {{ send2 }}トークン をメンバーＤに渡し、メンバーＤは受け取ったトークンの {{ allocation2 }}％ をメンバーＲに渡しました。
+    </p>
+    <ul>
+      <li>
+        {{ if player.err4 != 0 }}
+          <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
+        {{ endif }}
+        <span>
+          メンバーＲの最終的な獲得トークンはいくらですか？0～200の整数（半角数字）で解答してください。
+        </span>
+        <ul>
+          <li>あなたの解答：{{ player.q4 }}トークン</li>
+          <li>正解：{{ correct_q4 }}トークン</li>
+        </ul>
+        <br>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment4" aria-expanded="false" aria-controls="comment4">
+          解説
+        </button>
+        <div class="collapse" id="comment4">
+          <div class="card card-body">
+            <p>
+              メンバーＲは初めにトークンを持っていないので、獲得トークンはメンバーＤから受け取ったトークンのみです。メンバーＤは、メンバーＰから受け取った {{ send2 }} トークンの {{ allocation2 }}％ をメンバーＲに渡します。したがって、メンバーＤの獲得トークンは {{ correct_q4 }} トークンです。
+            </p>
+            <p>
+              <b>重要！！</b>
+              この場合、メンバーＤがメンバーＰから受け取ったトークンをメンバーＲに渡しても、
+              メンバーＰから受け取ったトークンに余り（{{ change_d_2 }} トークン）が生じます。
+              <b>
+                余ったトークンはメンバーＰではなく、メンバーＤのものになります。
+              </b>
+              したがって、メンバーＰの獲得トークンは {{ correct2.patron }} トークン、
+              メンバーＤの獲得トークンは {{ correct2.dictator }} トークンになります。
+            </p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <br>
+  {{ next_button }}
 {{ endblock }}
