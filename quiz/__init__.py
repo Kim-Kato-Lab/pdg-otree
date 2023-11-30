@@ -54,6 +54,10 @@ class Player(BasePlayer):
     err2 = models.IntegerField()
     err3 = models.IntegerField()
     err4 = models.IntegerField()
+    check1 = models.IntegerField(initial=0)
+    check2 = models.IntegerField(initial=0)
+    check3 = models.IntegerField(initial=0)
+    check4 = models.IntegerField(initial=0)
 
 # FUNCTIONS
 def correct_cal(endowment, send, allocation):
@@ -94,6 +98,27 @@ class Quiz(Page):
         player.err4 = correct2["receiver"] - player.q4
 
 class Answer(Page):
+    @staticmethod
+    def live_method(player: Player, data):
+        if data == "q1":
+            if player.check1 == 0:
+                player.check1 = 1
+        elif data == "q2":
+            if player.check2 == 0:
+                player.check2 = 1
+        elif data == "q3":
+            if player.check3 == 0:
+                player.check3 = 1
+        elif data == "q4":
+            if player.check4 == 0:
+                player.check4 = 1
+        
+        check = player.check1 + player.check2 + player.check3 + player.check4
+        if check == 4:
+            return {player.id_in_group: 'go'}
+        else:
+            return {player.id_in_group: 'stop'}
+
     @staticmethod
     def vars_for_template(player: Player):
         setup1 = C.SETUP['case 1']

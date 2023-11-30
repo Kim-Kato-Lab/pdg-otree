@@ -5,6 +5,9 @@
 {{ endblock }}
 
 {{ block content }}
+  <div class="alert alert-danger" role="alert">
+    すべての問題の解説を読まないと、「次へ」のボタンが押せません。
+  </div>
   <div id="case-1">
     <h6>問題1</h6>
     <p>以下の状況を想像し、下の設問に解答してください。</p>
@@ -24,7 +27,7 @@
           <li>正解：{{ correct_q1 }}トークン</li>
         </ul>
         <br>
-        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment1" aria-expanded="false" aria-controls="comment1">
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment1" aria-expanded="false" aria-controls="comment1" onclick="check_q1()">
           解説
         </button>
         <div class="collapse" id="comment1">
@@ -47,7 +50,7 @@
           <li>正解：{{ correct_q2 }}トークン</li>
         </ul>
         <br>
-        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment2" aria-expanded="false" aria-controls="comment2">
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment2" aria-expanded="false" aria-controls="comment2" onclick="check_q2()">
           解説
         </button>
         <div class="collapse" id="comment2">
@@ -69,7 +72,7 @@
           <li>正解：{{ correct_q3 }}トークン</li>
         </ul>
         <br>
-        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment3" aria-expanded="false" aria-controls="comment3">
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment3" aria-expanded="false" aria-controls="comment3" onclick="check_q3()">
           解説
         </button>
         <div class="collapse" id="comment3">
@@ -99,7 +102,7 @@
           <li>正解：{{ correct_q4 }}トークン</li>
         </ul>
         <br>
-        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment4" aria-expanded="false" aria-controls="comment4">
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment4" aria-expanded="false" aria-controls="comment4" onclick="check_q4()">
           解説
         </button>
         <div class="collapse" id="comment4">
@@ -123,5 +126,9 @@
     </ul>
   </div>
   <br>
-  {{ next_button }}
+  <button type="submit" class="btn btn-primary" id="next" disabled>次へ</button>
+{{ endblock }}
+
+{{ block scripts }}
+  <script src="{{ static 'global/js/quiz-checker.js' }}"></script>
 {{ endblock }}

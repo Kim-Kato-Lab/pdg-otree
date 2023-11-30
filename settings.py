@@ -32,7 +32,7 @@ SESSION_CONFIGS = [
     dict(
         name = 'quiz',
         display_name = 'PDG: Quiz',
-        num_demo_participants = 1,
+        num_demo_participants = 2,
         app_sequence = ['quiz']
     ),
     dict(
