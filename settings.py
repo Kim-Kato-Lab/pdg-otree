@@ -30,33 +30,15 @@ SESSION_CONFIG_DEFAULTS = dict(
     
 SESSION_CONFIGS = [
     dict(
-        name = 'quiz',
-        display_name = 'PDG: Quiz',
-        num_demo_participants = 2,
-        app_sequence = ['quiz']
-    ),
-    dict(
         name = 'fd',
         display_name = 'PDG-FD',
         num_demo_participants = 3,
         dictator_first = True,
         timeout_seconds = None,
         app_sequence = [
+            'quiz',
             'move_exogenous',
-            'payment_info'
-        ]
-    ),
-    dict(
-        name = 'sd',
-        display_name = 'PDG-SD',
-        num_demo_participants = 3,
-        dictator_first = False,
-        dictator_promise = False,
-        allocation_contractible_odd = False,
-        allocation_contractible_even = False,
-        timeout_seconds = None,
-        app_sequence = [
-            'move_exogenous',
+            'survey',
             'payment_info'
         ]
     ),
@@ -70,7 +52,9 @@ SESSION_CONFIGS = [
         allocation_contractible_even = False,
         timeout_seconds = None,
         app_sequence = [
+            'quiz',
             'move_exogenous',
+            'survey',
             'payment_info'
         ]
     ),
@@ -83,7 +67,9 @@ SESSION_CONFIGS = [
         allocation_contractible_even = False,
         timeout_seconds = None,
         app_sequence = [
+            'quiz',
             'move_exogenous',
+            'survey',
             'payment_info'
         ]
     ),
@@ -94,28 +80,22 @@ SESSION_CONFIGS = [
         dictator_first = False,
         allocation_contractible_odd = False,
         allocation_contractible_even = True,
-        timeout_seconds = 5,
+        timeout_seconds = None,
         app_sequence = [
+            'quiz',
             'move_exogenous',
+            'survey',
             'payment_info'
         ]
     ),
     dict(
         name = 'dictator',
-        display_name = 'DG treatment',
+        display_name = 'DG',
         num_demo_participants = 4,
         timeout_seconds = None, # if you want to run experiments without time-out, then specify `None`
         app_sequence = [
             'dictator',
             'payment_info'
-        ]
-    ),
-    dict(
-        name = 'survey',
-        display_name = 'Survey',
-        num_demo_participants = 1,
-        app_sequence = [
-            'survey'
         ]
     )
 ]

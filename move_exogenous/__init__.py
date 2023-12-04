@@ -17,7 +17,7 @@ AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 14
     GAME_ENDOWMENT = cu(100)
     BELIEF_ENDOWMENT = cu(120)
     MAXIMUM_MULTIPLY = 200
