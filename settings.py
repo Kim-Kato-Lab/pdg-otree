@@ -27,7 +27,6 @@ SESSION_CONFIG_DEFAULTS = dict(
     participation_fee = 1000
 )
 
-    
 SESSION_CONFIGS = [
     dict(
         name = 'fd',
@@ -50,7 +49,7 @@ SESSION_CONFIGS = [
         dictator_promise = True,
         allocation_contractible_odd = False,
         allocation_contractible_even = False,
-        timeout_seconds = None,
+        timeout_seconds = 3,
         app_sequence = [
             'quiz',
             'move_exogenous',
@@ -59,28 +58,14 @@ SESSION_CONFIGS = [
         ]
     ),
     dict(
-        name = 'sd_contractible_odd',
-        display_name = 'PDG-SD (contractible; odd rounds)',
+        name = 'sd_hidden_action',
+        display_name = 'PDG-SD (hidden action)',
         num_demo_participants = 3,
         dictator_first = False,
-        allocation_contractible_odd = True,
-        allocation_contractible_even = False,
-        timeout_seconds = None,
-        app_sequence = [
-            'quiz',
-            'move_exogenous',
-            'survey',
-            'payment_info'
-        ]
-    ),
-    dict(
-        name = 'sd_contractible_even',
-        display_name = 'PDG-SD (contractible; even rounds)',
-        num_demo_participants = 3,
-        dictator_first = False,
+        dictator_promise = False,
         allocation_contractible_odd = False,
-        allocation_contractible_even = True,
-        timeout_seconds = None,
+        allocation_contractible_even = False,
+        timeout_seconds = 3,
         app_sequence = [
             'quiz',
             'move_exogenous',
