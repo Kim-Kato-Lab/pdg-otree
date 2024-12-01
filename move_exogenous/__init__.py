@@ -31,8 +31,9 @@ class Subsession(BaseSubsession):
 
 
 def creating_session(subsession: Subsession):
-    subsession.group_randomly()
     config = subsession.session.config
+
+    subsession.group_randomly(fixed_id_in_group = config['fixed_role'])
 
     for g in subsession.get_groups():
         g.dictator_first = config['dictator_first']

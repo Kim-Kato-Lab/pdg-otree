@@ -31,9 +31,10 @@ SESSION_CONFIGS = [
     dict(
         name = 'fd',
         display_name = 'PDG-FD',
-        num_demo_participants = 3,
+        num_demo_participants = 6,
         dictator_first = True,
         timeout_seconds = None,
+        fixed_role = False,
         app_sequence = [
             'quiz',
             'move_exogenous',
@@ -44,11 +45,12 @@ SESSION_CONFIGS = [
     dict(
         name = 'sd_promise',
         display_name = 'PDG-SD (promise)',
-        num_demo_participants = 3,
+        num_demo_participants = 6,
         dictator_first = False,
         dictator_promise = True,
         allocation_contractible_odd = False,
         allocation_contractible_even = False,
+        fixed_role = True,
         timeout_seconds = 3,
         app_sequence = [
             'quiz',
@@ -60,11 +62,12 @@ SESSION_CONFIGS = [
     dict(
         name = 'sd_hidden_action',
         display_name = 'PDG-SD (hidden action)',
-        num_demo_participants = 3,
+        num_demo_participants = 6,
         dictator_first = False,
         dictator_promise = False,
         allocation_contractible_odd = False,
         allocation_contractible_even = False,
+        fixed_role = True,
         timeout_seconds = 3,
         app_sequence = [
             'quiz',
