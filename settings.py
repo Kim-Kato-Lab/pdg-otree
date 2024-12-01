@@ -74,7 +74,7 @@ SESSION_CONFIGS = [
         app_sequence = [
             # 'quiz',
             'move_exogenous',
-            'survey',
+            # 'survey',
             'payment_info'
         ]
     ),

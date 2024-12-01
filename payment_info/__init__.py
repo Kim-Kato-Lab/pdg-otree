@@ -34,8 +34,13 @@ class Introduction(Page):
         # select rounds for calculating payoff
         pp = player.participant
         payoff_list = pp.payoff_list
-        round_list = list(range(len(payoff_list)))
-        selected_round = random.sample(round_list, 2)
+        belief_payoff_list = pp.belief_payoff_list
+        round_with_belief = [index for index, value in enumerate(belief_payoff_list) if value is not None]
+        round_without_belief = [index for index, value in enumerate(belief_payoff_list) if value is None]
+        selected_round = [
+            random.sample(round_with_belief, 1)[0],
+            random.sample(round_without_belief, 1)[0]
+        ]
         pp.selected_round = selected_round
         player.pickup_round1 = selected_round[0] + 1
         player.pickup_round2 = selected_round[1] + 1
