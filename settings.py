@@ -19,7 +19,8 @@ PARTICIPANT_FIELDS = [
     'game_payoff_list',
     'belief_payoff_list',
     'selected_round',
-    'first_dictator'
+    'first_dictator',
+    'altruistic_dictator'
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(
@@ -70,7 +71,7 @@ SESSION_CONFIGS = [
         fixed_role = True,
         timeout_seconds = 3,
         app_sequence = [
-            'quiz',
+            # 'quiz',
             'move_exogenous',
             'survey',
             'payment_info'

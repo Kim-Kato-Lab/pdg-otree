@@ -17,7 +17,7 @@ AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 14
+    NUM_ROUNDS = 3
     GAME_ENDOWMENT = cu(100)
     BELIEF_ENDOWMENT = cu(120)
     MAXIMUM_MULTIPLY = 200
@@ -35,7 +35,29 @@ def creating_session(subsession: Subsession):
 
     subsession.group_randomly(fixed_id_in_group = config['fixed_role'])
 
+    if subsession.round_number == 1:
+        if config['fixed_role']:
+            # group_n = len(subsession.get_groups())
+            # altruistic_dictator = random.choices([True, False], k = group_n)
+            altruistic_dictator = [True, False] #for debug
+            print(altruistic_dictator)
+            i = 0
+            for p in subsession.get_players():
+                if p.role == 'Dictator':
+                    participant = p.participant
+                    print(altruistic_dictator[i])
+                    participant.altruistic_dictator = altruistic_dictator[i]
+                    i += 1
+        else:
+            for p in subsession.get_players():
+                if p.role == 'Dictator':
+                    participant = p.participant
+                    participant.altruistic_dictator = False
+
     for g in subsession.get_groups():
+        d = g.get_player_by_role(C.DICTATOR_ROLE)
+        g.dictator_altruistic = d.participant.altruistic_dictator
+
         g.dictator_first = config['dictator_first']
         if not g.dictator_first:
             if config['allocation_contractible_even']:
@@ -95,6 +117,7 @@ class Group(BaseGroup):
     dictator_first = models.BooleanField()
     dictator_promise = models.BooleanField()
     contractible_s = models.BooleanField()
+    dictator_altruistic = models.BooleanField()
 
 def belief_1_max(group: Group):
     if group.dictator_first:
@@ -134,10 +157,13 @@ def set_payoffs(subsession: Subsession):
         p = g.get_player_by_role(C.PATRON_ROLE)
         d = g.get_player_by_role(C.DICTATOR_ROLE)
         r = g.get_player_by_role(C.RECEIVER_ROLE)
-        
+
         p.game_payoff = C.GAME_ENDOWMENT - g.send
-        d.game_payoff = C.GAME_ENDOWMENT - (g.allocation / 100 - 1) * g.send
         r.game_payoff = (g.allocation / 100) * g.send
+        if g.dictator_altruistic:
+            d.game_payoff = r.game_payoff
+        else:
+            d.game_payoff = C.GAME_ENDOWMENT - (g.allocation / 100 - 1) * g.send
 
         if g.field_maybe_none('belief_1') is not None:
             if g.dictator_first:
@@ -148,7 +174,7 @@ def set_payoffs(subsession: Subsession):
                 p.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.allocation - g.belief_1)/100) ** 2
                 d.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.belief_1 - g.belief_2)/100) ** 2
                 r.belief_payoff = C.BELIEF_ENDOWMENT - 30 * ((g.allocation - g.belief_r)/100) ** 2
-        
+
         p.payoff = p.game_payoff + (p.field_maybe_none('belief_payoff') or 0)
         d.payoff = d.game_payoff + (d.field_maybe_none('belief_payoff') or 0)
         r.payoff = r.game_payoff + (r.field_maybe_none('belief_payoff') or 0)
