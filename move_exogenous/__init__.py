@@ -658,7 +658,7 @@ page_sequence = [
     WaitFirstMover,
     SecondMover,
     SecondBelief,
-    ReceiverHope,
+    # ReceiverHope,
     WaitSecondMover,
     Feedback,
     ShuffleWaitPage
