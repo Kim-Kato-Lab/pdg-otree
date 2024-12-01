@@ -1,0 +1,68 @@
+{{ extends "global/Experiment.html" }}
+{{ load otree static }}
+{{ block title }}
+  ここまでのゲーム結果
+{{ endblock }}
+{{ block content }}
+  <div id="feedback">
+    {{ if player.role == "Patron" }}
+      <p>ここまでのあなたの行動とメンバーＤの行動は以下の通りです。</p>
+    {{ else }}
+      <p>ここまでのあなたの行動とメンバーＰの行動は以下の通りです。</p>
+    {{ endif }}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ラウンド</th>
+          <th scope="col">
+            {{ if player.role == "Patron" }}
+              あなたの送金額
+            {{ else }}
+              メンバーＰの送金額
+            {{ endif }}
+          </th>
+          {{ if group.dictator_promise }}
+            <th scope="col">
+            {{ if player.role == "Patron" }}
+              メンバーＤの予定配分比率
+            {{ else }}
+              あなたの予定配分比率
+            {{ endif }}
+            </th>
+          {{ endif }}
+          <th scope="col">
+            {{ if player.role == "Patron" }}
+              メンバーＤの配分比率
+            {{ else }}
+              あなたの配分比率
+            {{ endif }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ for send, allocation, promise in table_item }}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ send }}トークン</td>
+            {{ if group.dictator_promise }}
+              <td>{{ promise }}％</td>
+            {{ endif }}
+            <td>{{ allocation }}％</td>
+          </tr>
+        {{ endfor }}
+      </tbody>
+    </table>
+    <p>※注意※</p>
+    <ul>
+      <li>送金額とは、メンバーＰがメンバーＤに渡したトークンのことです。</li>
+      <li>配分比率とは、メンバーＤがメンバーＰから受け取ったトークンの何％をメンバーＲに渡したかを示しています。</li>
+      {{ if group.dictator_promise }}
+        <li>予定配分比率とは、メンバーＤがメンバーＰの選択の前に決めた配分比率のことです。</li>
+      {{ endif }}
+    </ul>
+  </div>
+  <div id="next">
+    <p>確認が終わりましたら、「次へ」のボタンを押してください。</p>
+  </div>
+  {{ next_button }}
+{{ endblock }}

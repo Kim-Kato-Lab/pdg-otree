@@ -52,11 +52,13 @@ SESSION_CONFIGS = [
         allocation_contractible_odd = False,
         allocation_contractible_even = False,
         fixed_role = True,
+        prob_altruistic_dictator = 0.5,
+        feedback = False,
         timeout_seconds = 3,
         app_sequence = [
-            'quiz',
+            # 'quiz',
             'move_exogenous',
-            'survey',
+            # 'survey',
             'payment_info'
         ]
     ),
@@ -70,6 +72,45 @@ SESSION_CONFIGS = [
         allocation_contractible_even = False,
         fixed_role = True,
         prob_altruistic_dictator = 0.5,
+        feedback = False,
+        timeout_seconds = 3,
+        app_sequence = [
+            # 'quiz',
+            'move_exogenous',
+            # 'survey',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'sd_promise_feedback',
+        display_name = 'PDG-SD (promise) with Feedback',
+        num_demo_participants = 6,
+        dictator_first = False,
+        dictator_promise = True,
+        allocation_contractible_odd = False,
+        allocation_contractible_even = False,
+        fixed_role = True,
+        prob_altruistic_dictator = 0.5,
+        feedback = True,
+        timeout_seconds = 3,
+        app_sequence = [
+            # 'quiz',
+            'move_exogenous',
+            # 'survey',
+            'payment_info'
+        ]
+    ),
+    dict(
+        name = 'sd_hidden_action_feedback',
+        display_name = 'PDG-SD (hidden action) with Feedback',
+        num_demo_participants = 6,
+        dictator_first = False,
+        dictator_promise = False,
+        allocation_contractible_odd = False,
+        allocation_contractible_even = False,
+        fixed_role = True,
+        prob_altruistic_dictator = 0.5,
+        feedback = True,
         timeout_seconds = 3,
         app_sequence = [
             # 'quiz',

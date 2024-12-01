@@ -17,7 +17,9 @@ AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 4
+    NUM_ROUNDS = 6
+    FEEDBACK_ROUND = 3
+    BELIEF_ROUNDS = [1,2,8,9,14,15]
     GAME_ENDOWMENT = cu(100)
     BELIEF_ENDOWMENT = cu(120)
     MAXIMUM_MULTIPLY = 200
@@ -56,6 +58,10 @@ def creating_session(subsession: Subsession):
                     participant.altruistic_dictator = False
 
     for g in subsession.get_groups():
+        g.feedback = config['feedback']
+        if g.feedback:
+            g.feedback_round = C.FEEDBACK_ROUND
+
         d = g.get_player_by_role(C.DICTATOR_ROLE)
         g.dictator_altruistic = d.participant.altruistic_dictator
 
@@ -119,6 +125,8 @@ class Group(BaseGroup):
     dictator_promise = models.BooleanField()
     contractible_s = models.BooleanField()
     dictator_altruistic = models.BooleanField()
+    feedback = models.BooleanField()
+    feedback_round = models.IntegerField()
 
 def belief_1_max(group: Group):
     if group.dictator_first:
@@ -359,7 +367,7 @@ class FirstBelief(Page):
     @staticmethod
     def is_displayed(player: Player):
         group = player.group
-        if group.round_number in [1,2,8,9,14,15]:
+        if group.round_number in C.BELIEF_ROUNDS:
             if group.dictator_first == True:
                 return player.role == C.DICTATOR_ROLE
             else:
@@ -397,7 +405,7 @@ class ReceiverBelief(Page):
     @staticmethod
     def is_displayed(player: Player):
         g = player.group
-        if g.round_number in [1,2,8,9,14,15]:
+        if g.round_number in C.BELIEF_ROUNDS:
             if not g.contractible_s:
                 return player.role == C.RECEIVER_ROLE
 
@@ -516,7 +524,7 @@ class SecondBelief(Page):
     @staticmethod
     def is_displayed(player: Player):
         group = player.group
-        if group.round_number in [1,2,8,9,14,15]:
+        if group.round_number in C.BELIEF_ROUNDS:
             if group.dictator_first == True:
                 return player.role == C.PATRON_ROLE
             else:
@@ -553,7 +561,7 @@ class ReceiverHope(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        if player.round_number in [1,2,8,9,14,15]:
+        if player.round_number in C.BELIEF_ROUNDS:
             return player.role == C.RECEIVER_ROLE
     
     @staticmethod
@@ -578,6 +586,25 @@ class WaitSecondMover(WaitPage):
     他のグループのメンバーが意思決定をしています。
     しばらくお待ちください。
     """
+
+class Feedback(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        g = player.group
+        if g.feedback and g.round_number == C.FEEDBACK_ROUND:
+            return player.role != C.RECEIVER_ROLE
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        p = player
+        rounds = range(1, C.FEEDBACK_ROUND + 1)
+        send = [p.in_round(i).group.send for i in rounds]
+        allocation = [p.in_round(i).group.allocation for i in rounds]
+        promise = [p.in_round(i).group.field_maybe_none('promise') for i in rounds]
+
+        return dict(
+            table_item = zip(send, allocation, promise)
+        )
 
 class ShuffleWaitPage(WaitPage):
     after_all_players_arrive = 'set_payoffs'
@@ -604,5 +631,6 @@ page_sequence = [
     SecondBelief,
     ReceiverHope,
     WaitSecondMover,
+    Feedback,
     ShuffleWaitPage
 ]
