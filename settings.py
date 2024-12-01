@@ -112,7 +112,7 @@ SESSION_CONFIGS = [
         fixed_role = True,
         prob_altruistic_dictator = 0.5,
         feedback = True,
-        timeout_seconds = 3,
+        timeout_seconds = 1,
         app_sequence = [
             # 'quiz',
             'move_exogenous',

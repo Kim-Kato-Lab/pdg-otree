@@ -18,7 +18,8 @@ class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
     NUM_ROUNDS = 6
-    FEEDBACK_ROUND = 3
+    FEEDBACK_ROUND = 2
+    PROB_AUDIT = 0.5
     BELIEF_ROUNDS = [1,2,8,9,14,15]
     GAME_ENDOWMENT = cu(100)
     BELIEF_ENDOWMENT = cu(120)
@@ -70,8 +71,6 @@ def creating_session(subsession: Subsession):
 
     for g in subsession.get_groups():
         g.feedback = config['feedback']
-        if g.feedback:
-            g.feedback_round = C.FEEDBACK_ROUND
 
         p = g.get_player_by_role(C.PATRON_ROLE)
         d = g.get_player_by_role(C.DICTATOR_ROLE)
@@ -102,6 +101,18 @@ def creating_session(subsession: Subsession):
         else:
             g.contractible_s = False
             g.dictator_promise = False
+
+    if config['feedback'] and subsession.round_number == C.FEEDBACK_ROUND:
+        group_n = len(subsession.get_groups())
+        audit = random.choices([True, False], k = group_n, cum_weights=[C.PROB_AUDIT, 1])
+        k = 0
+        for g in subsession.get_groups():
+            g.feedback_occurred = audit[k]
+            k += 1
+    else:
+        for g in subsession.get_groups():
+            g.feedback_occurred = False
+
 
 class Group(BaseGroup):
     send = models.IntegerField(
@@ -143,7 +154,7 @@ class Group(BaseGroup):
     contractible_s = models.BooleanField()
     dictator_altruistic = models.BooleanField()
     feedback = models.BooleanField()
-    feedback_round = models.IntegerField()
+    feedback_occurred = models.BooleanField(initial=False)
     p_label = models.StringField()
     d_label = models.StringField()
     r_label = models.StringField()
@@ -611,8 +622,7 @@ class Feedback(Page):
     @staticmethod
     def is_displayed(player: Player):
         g = player.group
-        if g.feedback and g.round_number == C.FEEDBACK_ROUND:
-            return player.role != C.RECEIVER_ROLE
+        return g.feedback_occurred
 
     @staticmethod
     def vars_for_template(player: Player):
