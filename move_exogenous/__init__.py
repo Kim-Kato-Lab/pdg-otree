@@ -4,22 +4,18 @@ import random
 author = 'Hiroki Kato'
 doc = """
 This is the patron-dictator game,
-which reflects an asymmetric information in that 
+which reflects an asymmetric information in that
 it is difficult for donors to know in advance
 the extent to which their donations improve recipients' welfare.
-
-Registration citation:
-Kato, Hiroki and Youngrok Kim. 2022. "Patron-Dictator Game: Strategic Interaction between Charities and Donors."
-AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 """
 
 
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 6
-    FEEDBACK_ROUND = 2
-    PROB_AUDIT = 0.5
+    NUM_ROUNDS = 15
+    FEEDBACK_ROUND = 7
+    PROB_AUDIT = 0.7
     BELIEF_ROUNDS = [1,2,8,9,14,15]
     GAME_ENDOWMENT = cu(100)
     BELIEF_ENDOWMENT = cu(120)

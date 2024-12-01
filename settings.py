@@ -31,23 +31,9 @@ SESSION_CONFIG_DEFAULTS = dict(
 
 SESSION_CONFIGS = [
     dict(
-        name = 'fd',
-        display_name = 'PDG-FD',
-        num_demo_participants = 6,
-        dictator_first = True,
-        timeout_seconds = None,
-        fixed_role = False,
-        app_sequence = [
-            'quiz',
-            'move_exogenous',
-            'survey',
-            'payment_info'
-        ]
-    ),
-    dict(
         name = 'sd_promise',
         display_name = 'PDG-SD (promise)',
-        num_demo_participants = 6,
+        num_demo_participants = 3,
         dictator_first = False,
         dictator_promise = True,
         allocation_contractible_odd = False,
@@ -55,7 +41,7 @@ SESSION_CONFIGS = [
         fixed_role = True,
         prob_altruistic_dictator = 0.5,
         feedback = False,
-        timeout_seconds = 3,
+        timeout_seconds = None,
         app_sequence = [
             # 'quiz',
             'move_exogenous',
