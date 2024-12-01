@@ -12,7 +12,13 @@
   <br>
   <div id="your-situation">
     {{ if group.dictator_first }}
-      <h5>あなたは{{ C.GAME_ENDOWMENT }}のうち何トークンを同じグループのメンバーＤに渡しますか？</h5>
+      <h5>
+        あなたは{{ C.GAME_ENDOWMENT }}のうち何トークンを同じグループのメンバーＤ
+        {{ if group.feedback }}
+          （ニックネーム：{{ group.d_label }}）
+        {{ endif }}
+        に渡しますか？
+      </h5>
       <br>
       <ul>
         <li>
@@ -24,11 +30,24 @@
       </ul>
     {{ else }}
       {{ if group.contractible_s }}
-        <p>現在、あなたは{{ C.GAME_ENDOWMENT }}を持っています。さらに、同じグループのメンバーＰは{{ C.GAME_ENDOWMENT }}のうち、<b>{{ send }}トークン</b>をあなたに渡しました。</p>
-        <p>メンバーＰは、あなたに渡した{{ send }}トークンの<b>{{ group.allocation }}％</b>をメンバーＲに渡すように指定しました。あなたはこれに従わなくてはなりません。</p>
+        <p>
+          現在、あなたは{{ C.GAME_ENDOWMENT }}を持っています。さらに、同じグループのメンバーＰ
+          {{ if group.feedback }}
+            （ニックネーム：{{ group.p_label }}）
+          {{ endif }}
+          は{{ C.GAME_ENDOWMENT }}のうち、<b>{{ send }}トークン</b>をあなたに渡しました。
+        </p>
+        <p>
+          また、メンバーＰは、あなたに渡した{{ send }}トークンの<b>{{ group.allocation }}％</b>をメンバーＲに渡すように指定しました。
+          あなたはこれに従わなくてはなりません。
+        </p>
       {{ else }}
         <h5>
-          メンバーＰから受け取った{{ send }}トークンの何％（0～200％）をメンバーＲに渡しますか？
+          メンバーＰ
+          {{ if group.feedback }}
+            （ニックネーム：{{ group.p_label }}）
+          {{ endif }}
+          から受け取った{{ send }}トークンの何％（0～200％）をメンバーＲに渡しますか？
         </h5>
         <br>
         <p>

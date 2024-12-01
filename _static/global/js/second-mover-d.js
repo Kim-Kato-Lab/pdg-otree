@@ -1,10 +1,12 @@
 function follower_dictator_payoff() {
   const send = js_vars.x;
+  const type2 = js_vars.type2;
   const input = document.getElementById("multiply");
   const multiply = input.value;
 
   // for debug
   // console.log(multiply);
+  console.log(type2)
 
   const alert_msg = "0から200の整数で入力してください";
 
@@ -28,9 +30,17 @@ function follower_dictator_payoff() {
 
   let d = document.getElementById("result-d");
   const cal_d = Math.round(100 - (multiply / 100 - 1) * send);
-  d.innerText = cal_d + "トークン";
 
   let r = document.getElementById("result-r");
   const cal_r = Math.round((send * multiply) / 100);
   r.innerText = cal_r + "トークン";
+
+  let text_d;
+  if (type2) {
+    text_d = cal_r + "トークン";
+  } else {
+    text_d = cal_d + "トークン";
+  }
+  d.innerText = text_d;
+
 }

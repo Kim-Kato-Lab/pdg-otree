@@ -523,6 +523,7 @@ class SecondMover(Page):
         else:
             return dict(
                 x = player.group.send,
+                type2 = player.group.dictator_altruistic,
                 current = player.round_number,
                 max = C.NUM_ROUNDS
             )

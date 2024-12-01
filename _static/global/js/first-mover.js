@@ -38,7 +38,8 @@ function payoff() {
   liveSend({'x': x, 's': s})
 
   let p = document.getElementById("result-p");
-  let d = document.getElementById("result-d");
+  let d1 = document.getElementById("result-d-type1");
+  let d2 = document.getElementById("result-d-type2");
   let r = document.getElementById("result-r");
 
   const cal_p = Math.round(100 - x);
@@ -46,6 +47,11 @@ function payoff() {
   const cal_r = Math.round((x * s) / 100);
 
   p.innerText = cal_p + 'トークン';
-  d.innerText = cal_d + 'トークン';
+  if (d1 != null) {
+    d1.innerText = cal_d + "トークン";
+  }
+  if (d2 != null) {
+    d2.innerText = cal_r + "トークン";
+  }
   r.innerText = cal_r + 'トークン';
 }

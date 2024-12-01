@@ -66,7 +66,7 @@ SESSION_CONFIGS = [
     dict(
         name = 'sd_hidden_action',
         display_name = 'PDG-SD (hidden action)',
-        num_demo_participants = 6,
+        num_demo_participants = 3,
         dictator_first = False,
         dictator_promise = False,
         allocation_contractible_odd = False,
@@ -74,7 +74,7 @@ SESSION_CONFIGS = [
         fixed_role = True,
         prob_altruistic_dictator = 0.5,
         feedback = False,
-        timeout_seconds = 3,
+        timeout_seconds = None,
         app_sequence = [
             # 'quiz',
             'move_exogenous',
@@ -85,7 +85,7 @@ SESSION_CONFIGS = [
     dict(
         name = 'sd_promise_feedback',
         display_name = 'PDG-SD (promise) with Feedback',
-        num_demo_participants = 6,
+        num_demo_participants = 3,
         dictator_first = False,
         dictator_promise = True,
         allocation_contractible_odd = False,
@@ -93,7 +93,7 @@ SESSION_CONFIGS = [
         fixed_role = True,
         prob_altruistic_dictator = 0.5,
         feedback = True,
-        timeout_seconds = 3,
+        timeout_seconds = None,
         app_sequence = [
             # 'quiz',
             'move_exogenous',
@@ -104,7 +104,7 @@ SESSION_CONFIGS = [
     dict(
         name = 'sd_hidden_action_feedback',
         display_name = 'PDG-SD (hidden action) with Feedback',
-        num_demo_participants = 9,
+        num_demo_participants = 3,
         dictator_first = False,
         dictator_promise = False,
         allocation_contractible_odd = False,
@@ -112,7 +112,7 @@ SESSION_CONFIGS = [
         fixed_role = True,
         prob_altruistic_dictator = 0.5,
         feedback = True,
-        timeout_seconds = 1,
+        timeout_seconds = None,
         app_sequence = [
             # 'quiz',
             'move_exogenous',

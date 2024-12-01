@@ -11,7 +11,13 @@
   <div id="promise-your-situation">
     <h5>
       あなたは{{ C.GAME_ENDOWMENT }}を持っています。
-      あなたはメンバーＰから受け取ったトークンのうち何％をメンバーＲに渡しますか？
+    </h5>
+    <h5>
+      あなたはメンバーＰ
+      {{ if group.feedback }}
+        （ニックネーム：{{ group.p_label }}）
+      {{ endif }}
+      から受け取ったトークンのうち何％をメンバーＲに渡しますか？
     </h5>
     <br>
     <ul>
@@ -81,7 +87,11 @@
               </tr>
               <tr>
                 <th scope="row">メンバーＤ</th>
-                <td><span id="result-d">100トークン</span></td>
+                {{ if group.dictator_altruistic }}
+                  <td><span id="result-d-type2">100トークン</span></td>
+                {{ else }}
+                  <td><span id="result-d-type1">100トークン</span></td>
+                {{ endif }}
               </tr>
               <tr>
                 <th scope="row">メンバーＲ</th>

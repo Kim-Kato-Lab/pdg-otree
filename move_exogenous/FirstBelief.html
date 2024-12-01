@@ -11,11 +11,19 @@
   <div id="your-expectation">
     {{ if group.dictator_first }}
       <h5>
-        メンバーＰはあなたに何トークンを送ると予想していますか？
+        メンバーＰ
+        {{ if group.feedback }}
+          （ニックネーム：{{ group.p_label }}）
+        {{ endif }}
+        はあなたに何トークンを送ると予想していますか？
       </h5>
     {{ else }}
       <h5>
-        あなたは、メンバーＤがあなたから受け取ったトークンの何％をメンバーＲに渡すだろうと予想していますか？
+        あなたは、メンバーＤ
+        {{ if group.feedback }}
+          （ニックネーム：{{ group.d_label }}）
+        {{ endif }}
+        があなたから受け取ったトークンの何％をメンバーＲに渡すだろうと予想していますか？
       </h5>
     {{ endif }}
     <p>

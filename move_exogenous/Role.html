@@ -11,7 +11,7 @@
   </div>
   <br>
   <div id="role">
-    <p>あなたの役割は</p>
+    <h5>あなたの役割は</h5>
     <h1 style="text-align: center;">
       {{ if player.role == "Patron" }}
         <b>メンバーＰ</b>
@@ -23,18 +23,46 @@
     </h1>
     <p>です。</p>
   </div>
+  <hr noshade>
   {{ if player.role == "Dictator" }}
     <div id="dictator-type">
-      <p>あなたの報酬は</p>
+      <h5>あなたの報酬は</h5>
       <h2 style="text-align: center;">
       {{ if player.participant.altruistic_dictator }}
-        <b>タイプ２（プレイヤーＲが獲得したトークン）</b>
+        <b>タイプ２（メンバーＲが獲得したトークン）</b>
       {{ else }}
         <b>タイプ１（あなたが獲得したトークン）</b>
       {{ endif }}
       </h2>
-      <p>で決まります。</p>
+      <p>で決まります。他の参加者はあなたの報酬の決まり方を知りません。</p>
     </div>
+  <hr noshade>
+  {{ endif }}
+  {{ if group.feedback }}
+    {{ if player.role != "Receiver" }}
+      <div id="nickname">
+        <h5>あなたのニックネームは</h5>
+        <h3 style="text-align: center;">{{ player.participant.nickname }}</h3>
+        <p>
+          です。
+          {{ if player.role == "Patron" }}
+            同じグループのメンバーＤはあなたのニックネームを知っています。
+          {{ else }}
+            同じグループのメンバーＰはあなたのニックネームを知っています。
+          {{ endif }}
+        </p>
+        {{ if player.role == "Patron" }}
+          <h5>同じグループのメンバーＤのニックネームは</h5>
+          <h3 style="text-align: center;">{{ group.d_label }}</h3>
+          <p>です。</p>
+        {{ else }}
+          <h5>同じグループのメンバーＰのニックネームは</h5>
+          <h3 style="text-align: center;">{{ group.p_label }}</h3>
+          <p>です。</p>
+        {{ endif }}
+      </div>
+      <hr noshade>
+    {{ endif }}
   {{ endif }}
   <div id="decision-flow">
     意思決定の順番は以下の通りです。
