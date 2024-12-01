@@ -69,7 +69,7 @@ SESSION_CONFIGS = [
         allocation_contractible_odd = False,
         allocation_contractible_even = False,
         fixed_role = True,
-        prob_altruistic_dictator = 0,
+        prob_altruistic_dictator = 0.5,
         timeout_seconds = 3,
         app_sequence = [
             # 'quiz',

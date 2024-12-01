@@ -17,7 +17,7 @@ AEA RCT Registry. December 13. https://doi.org/10.1257/rct.10594-1.0
 class C(BaseConstants):
     NAME_IN_URL = 'patron_dictator_game'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 4
     GAME_ENDOWMENT = cu(100)
     BELIEF_ENDOWMENT = cu(120)
     MAXIMUM_MULTIPLY = 200
@@ -37,13 +37,12 @@ def creating_session(subsession: Subsession):
 
     if subsession.round_number == 1:
         if config['fixed_role']:
-            # group_n = len(subsession.get_groups())
-            # p = 0
-            # if 'prob_altruistic_dictator' in config:
-            #     p = config['prob_altruistic_dictator']
-            # print(p)
-            # altruistic_dictator = random.choices([True, False], k = group_n, cum_weights=[p, 1])
-            altruistic_dictator = [True, False] #for debug
+            group_n = len(subsession.get_groups())
+            p = 0
+            if 'prob_altruistic_dictator' in config:
+                p = config['prob_altruistic_dictator']
+            altruistic_dictator = random.choices([True, False], k = group_n, cum_weights=[p, 1])
+            # altruistic_dictator = [True, False] #for debug
             i = 0
             for p in subsession.get_players():
                 if p.role == 'Dictator':
@@ -360,19 +359,20 @@ class FirstBelief(Page):
     @staticmethod
     def is_displayed(player: Player):
         group = player.group
-        if group.dictator_first == True:
-            return player.role == C.DICTATOR_ROLE
-        else:
-            if not group.contractible_s:
-                return player.role == C.PATRON_ROLE
-    
+        if group.round_number in [1,2,8,9,14,15]:
+            if group.dictator_first == True:
+                return player.role == C.DICTATOR_ROLE
+            else:
+                if not group.contractible_s:
+                    return player.role == C.PATRON_ROLE
+
     @staticmethod
     def js_vars(player: Player):
         return dict(
             current = player.round_number,
             max = C.NUM_ROUNDS
         )
-    
+
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         g = player.group
@@ -397,16 +397,17 @@ class ReceiverBelief(Page):
     @staticmethod
     def is_displayed(player: Player):
         g = player.group
-        if not g.contractible_s:
-            return player.role == C.RECEIVER_ROLE
-    
+        if g.round_number in [1,2,8,9,14,15]:
+            if not g.contractible_s:
+                return player.role == C.RECEIVER_ROLE
+
     @staticmethod
     def js_vars(player: Player):
         return dict(
             current = player.round_number,
             max = C.NUM_ROUNDS
         )
-    
+
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         g = player.group
@@ -515,12 +516,13 @@ class SecondBelief(Page):
     @staticmethod
     def is_displayed(player: Player):
         group = player.group
-        if group.dictator_first == True:
-            return player.role == C.PATRON_ROLE
-        else:
-            if not group.contractible_s:
-                return player.role == C.DICTATOR_ROLE
-    
+        if group.round_number in [1,2,8,9,14,15]:
+            if group.dictator_first == True:
+                return player.role == C.PATRON_ROLE
+            else:
+                if not group.contractible_s:
+                    return player.role == C.DICTATOR_ROLE
+
     @staticmethod
     def js_vars(player: Player):
         return dict(
@@ -551,7 +553,8 @@ class ReceiverHope(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role == C.RECEIVER_ROLE
+        if player.round_number in [1,2,8,9,14,15]:
+            return player.role == C.RECEIVER_ROLE
     
     @staticmethod
     def js_vars(player: Player):
