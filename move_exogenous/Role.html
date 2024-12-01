@@ -23,6 +23,19 @@
     </h1>
     <p>です。</p>
   </div>
+  {{ if player.role == "Dictator" }}
+    <div id="dictator-type">
+      <p>あなたの報酬は</p>
+      <h2 style="text-align: center;">
+      {{ if player.participant.altruistic_dictator }}
+        <b>タイプ２（プレイヤーＲが獲得したトークン）</b>
+      {{ else }}
+        <b>タイプ１（あなたが獲得したトークン）</b>
+      {{ endif }}
+      </h2>
+      <p>で決まります。</p>
+    </div>
+  {{ endif }}
   <div id="decision-flow">
     意思決定の順番は以下の通りです。
     <div class="alert alert-secondary">
