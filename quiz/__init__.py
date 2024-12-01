@@ -35,6 +35,7 @@ class Player(BasePlayer):
     q2 = models.IntegerField(
         min=0, max=200,
         label = '''
+        メンバーＤの報酬がタイプ1（メンバーＤが獲得したトークン）で決まるとき、
         メンバーＤの最終的な獲得トークンはいくらですか？
         0～200の整数（半角数字）で解答してください。'''
     )
@@ -50,14 +51,24 @@ class Player(BasePlayer):
         メンバーＲの最終的な獲得トークンはいくらですか？
         0～200の整数（半角数字）で解答してください。'''
     )
+    q5 = models.IntegerField(
+        min=0, max=200,
+        label = '''
+        メンバーＤの報酬がタイプ2（メンバーＲが獲得したトークン）で決まるとき、
+        メンバーＤの最終的な獲得トークンはいくらですか？
+        0～200の整数（半角数字）で解答してください。
+        '''
+    )
     err1 = models.IntegerField()
     err2 = models.IntegerField()
     err3 = models.IntegerField()
     err4 = models.IntegerField()
+    err5 = models.IntegerField()
     check1 = models.IntegerField(initial=0)
     check2 = models.IntegerField(initial=0)
     check3 = models.IntegerField(initial=0)
     check4 = models.IntegerField(initial=0)
+    check5 = models.IntegerField(initial=0)
 
 # FUNCTIONS
 def correct_cal(endowment, send, allocation):
@@ -73,7 +84,7 @@ class Introduction(Page):
 
 class Quiz(Page):
     form_model = 'player'
-    form_fields = ['q1', 'q2', 'q3', 'q4']
+    form_fields = ['q1', 'q2', 'q3', 'q4', 'q5']
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -96,6 +107,7 @@ class Quiz(Page):
         player.err2 = correct1["dictator"] - player.q2
         player.err3 = correct1["receiver"] - player.q3
         player.err4 = correct2["receiver"] - player.q4
+        player.err5 = correct2["receiver"] - player.q5
 
 class Answer(Page):
     @staticmethod
@@ -112,9 +124,12 @@ class Answer(Page):
         elif data == "q4":
             if player.check4 == 0:
                 player.check4 = 1
-        
-        check = player.check1 + player.check2 + player.check3 + player.check4
-        if check == 4:
+        elif data == "q5":
+            if player.check5 == 0:
+                player.check5 = 1
+
+        check = player.check1 + player.check2 + player.check3 + player.check4 + player.check5
+        if check == 5:
             return {player.id_in_group: 'go'}
         else:
             return {player.id_in_group: 'stop'}
@@ -137,6 +152,7 @@ class Answer(Page):
             correct_q2 = correct1["dictator"],
             correct_q3 = correct1["receiver"],
             correct_q4 = correct2["receiver"],
+            correct_q5 = correct2["receiver"],
             change_d_1 = correct1["receiver"] - setup1["send"],
             change_d_2 = setup2["send"] - correct2["receiver"],
             correct2 = correct2

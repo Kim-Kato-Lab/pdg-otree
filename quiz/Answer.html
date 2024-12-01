@@ -43,6 +43,7 @@
           <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
         {{ endif }}
         <span>
+          メンバーＤの報酬がタイプ1（メンバーＤが獲得したトークン）で決まるとき、
           メンバーＤの最終的な獲得トークンはいくらですか？0～200の整数（半角数字）で解答してください。
         </span>
         <ul>
@@ -55,7 +56,7 @@
         </button>
         <div class="collapse" id="comment2">
           <div class="card card-body">
-            メンバーＤは、メンバーＰから受け取った {{ send1 }} トークンの {{ allocation1 }}％ をメンバーＲに渡します。すなわち、メンバーＤは {{ correct_q3 }} トークンをメンバーＲに渡します。足りないトークンはメンバーＤが初めに持っていたトークンで補われます。したがって、メンバーＤは自身のトークンのうち {{ change_d_1 }} トークンをメンバーＲに渡すので、メンバーＤの獲得トークンは {{ correct_q2 }} トークンです。
+            報酬がタイプ1で決まるとき、メンバーＤの獲得トークンは自身の獲得したトークンで決まります。メンバーＤは、メンバーＰから受け取った {{ send1 }} トークンの {{ allocation1 }}％ をメンバーＲに渡します。すなわち、メンバーＤは {{ correct_q3 }} トークンをメンバーＲに渡します。足りないトークンはメンバーＤが初めに持っていたトークンで補われます。したがって、メンバーＤは自身のトークンのうち {{ change_d_1 }} トークンをメンバーＲに渡すので、メンバーＤの獲得トークンは {{ correct_q2 }} トークンです。
           </div>
         </div>
       </li>
@@ -115,10 +116,36 @@
               この場合、メンバーＤがメンバーＰから受け取ったトークンをメンバーＲに渡しても、
               メンバーＰから受け取ったトークンに余り（{{ change_d_2 }} トークン）が生じます。
               <b>
-                余ったトークンはメンバーＰではなく、メンバーＤのものになります。
+                余ったトークンはメンバーＰものになりません。
               </b>
               したがって、メンバーＰの獲得トークンは {{ correct2.patron }} トークン、
-              メンバーＤの獲得トークンは {{ correct2.dictator }} トークンになります。
+              メンバーＤの獲得トークンは {{ correct2.dictator }} トークンになります（報酬の決まり方がタイプ1の場合）。
+            </p>
+          </div>
+        </div>
+      </li>
+      <br>
+      <li>
+        {{ if player.err5 != 0 }}
+          <img src="{{ static 'global/image/incorrection.png' }}" width="20"/>
+        {{ endif }}
+        <span>
+          メンバーＤの報酬がタイプ2（メンバーＲが獲得したトークン）で決まるとき、
+          メンバーＲの最終的な獲得トークンはいくらですか？0～200の整数（半角数字）で解答してください。
+        </span>
+        <ul>
+          <li>あなたの解答：{{ player.q5 }}トークン</li>
+          <li>正解：{{ correct_q5 }}トークン</li>
+        </ul>
+        <br>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#comment5" aria-expanded="false" aria-controls="comment5" onclick="check_q5()">
+          解説
+        </button>
+        <div class="collapse" id="comment5">
+          <div class="card card-body">
+            <p>
+              報酬がタイプ1で決まるとき、メンバーＤの獲得トークンはメンバーＲの獲得したトークンで決まります。
+              メンバーＲの獲得トークンの決まり方は一つ前の解説にあります。
             </p>
           </div>
         </div>

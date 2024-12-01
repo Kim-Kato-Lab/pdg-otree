@@ -114,7 +114,7 @@ SESSION_CONFIGS = [
         feedback = True,
         timeout_seconds = None,
         app_sequence = [
-            # 'quiz',
+            'quiz',
             'move_exogenous',
             # 'survey',
             'payment_info'
