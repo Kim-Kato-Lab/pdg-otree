@@ -38,14 +38,16 @@ def creating_session(subsession: Subsession):
     if subsession.round_number == 1:
         if config['fixed_role']:
             # group_n = len(subsession.get_groups())
-            # altruistic_dictator = random.choices([True, False], k = group_n)
+            # p = 0
+            # if 'prob_altruistic_dictator' in config:
+            #     p = config['prob_altruistic_dictator']
+            # print(p)
+            # altruistic_dictator = random.choices([True, False], k = group_n, cum_weights=[p, 1])
             altruistic_dictator = [True, False] #for debug
-            print(altruistic_dictator)
             i = 0
             for p in subsession.get_players():
                 if p.role == 'Dictator':
                     participant = p.participant
-                    print(altruistic_dictator[i])
                     participant.altruistic_dictator = altruistic_dictator[i]
                     i += 1
         else:
