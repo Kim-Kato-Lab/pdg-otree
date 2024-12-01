@@ -20,7 +20,8 @@ PARTICIPANT_FIELDS = [
     'belief_payoff_list',
     'selected_round',
     'first_dictator',
-    'altruistic_dictator'
+    'altruistic_dictator',
+    'nickname'
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(
@@ -103,7 +104,7 @@ SESSION_CONFIGS = [
     dict(
         name = 'sd_hidden_action_feedback',
         display_name = 'PDG-SD (hidden action) with Feedback',
-        num_demo_participants = 6,
+        num_demo_participants = 9,
         dictator_first = False,
         dictator_promise = False,
         allocation_contractible_odd = False,

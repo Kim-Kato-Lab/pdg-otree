@@ -16,6 +16,20 @@
           <th scope="col">ラウンド</th>
           <th scope="col">
             {{ if player.role == "Patron" }}
+              あなたのニックネーム
+            {{ else }}
+              メンバーＰのニックネーム
+            {{ endif }}
+          </th>
+          <th scope="col">
+            {{ if player.role == "Patron" }}
+              メンバーＤのニックネーム
+            {{ else }}
+              あなたのニックネーム
+            {{ endif }}
+          </th>
+          <th scope="col">
+            {{ if player.role == "Patron" }}
               あなたの送金額
             {{ else }}
               メンバーＰの送金額
@@ -40,9 +54,11 @@
         </tr>
       </thead>
       <tbody>
-        {{ for send, allocation, promise in table_item }}
+        {{ for p_label, d_label, send, allocation, promise in table_item }}
           <tr>
             <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ p_label }}</td>
+            <td>{{ d_label }}</td>
             <td>{{ send }}トークン</td>
             {{ if group.dictator_promise }}
               <td>{{ promise }}％</td>

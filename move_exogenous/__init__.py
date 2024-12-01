@@ -57,13 +57,30 @@ def creating_session(subsession: Subsession):
                     participant = p.participant
                     participant.altruistic_dictator = False
 
+        j = 1
+        for p in subsession.get_players():
+            pp = p.participant
+            if p.role == 'Patron':
+                pp.nickname = "P-{}".format(j)
+            elif p.role == 'Dictator':
+                pp.nickname = "D-{}".format(j)
+            else:
+                pp.nickname = "R-{}".format(j)
+            j += 1
+
     for g in subsession.get_groups():
         g.feedback = config['feedback']
         if g.feedback:
             g.feedback_round = C.FEEDBACK_ROUND
 
+        p = g.get_player_by_role(C.PATRON_ROLE)
         d = g.get_player_by_role(C.DICTATOR_ROLE)
+        r = g.get_player_by_role(C.RECEIVER_ROLE)
+
         g.dictator_altruistic = d.participant.altruistic_dictator
+        g.p_label = p.participant.nickname
+        g.d_label = d.participant.nickname
+        g.r_label = r.participant.nickname
 
         g.dictator_first = config['dictator_first']
         if not g.dictator_first:
@@ -127,6 +144,9 @@ class Group(BaseGroup):
     dictator_altruistic = models.BooleanField()
     feedback = models.BooleanField()
     feedback_round = models.IntegerField()
+    p_label = models.StringField()
+    d_label = models.StringField()
+    r_label = models.StringField()
 
 def belief_1_max(group: Group):
     if group.dictator_first:
@@ -598,12 +618,14 @@ class Feedback(Page):
     def vars_for_template(player: Player):
         p = player
         rounds = range(1, C.FEEDBACK_ROUND + 1)
+        p_label = [p.in_round(i).group.p_label for i in rounds]
+        d_label = [p.in_round(i).group.d_label for i in rounds]
         send = [p.in_round(i).group.send for i in rounds]
         allocation = [p.in_round(i).group.allocation for i in rounds]
         promise = [p.in_round(i).group.field_maybe_none('promise') for i in rounds]
 
         return dict(
-            table_item = zip(send, allocation, promise)
+            table_item = zip(p_label, d_label, send, allocation, promise)
         )
 
 class ShuffleWaitPage(WaitPage):
