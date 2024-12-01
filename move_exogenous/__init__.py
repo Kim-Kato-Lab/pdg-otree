@@ -242,6 +242,25 @@ class Introduction(Page):
     def is_displayed(player: Player):
         return player.round_number == 1
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        config = player.subsession.session.config
+        all_p = player.subsession.get_players()
+        n = 0
+        n_alt = 0
+        for p in all_p:
+            if p.role == C.DICTATOR_ROLE:
+                n += 1
+                if p.participant.altruistic_dictator:
+                    n_alt += 1
+
+        return dict(
+            n_dictator = n,
+            n_selfish_dictator = n - n_alt,
+            prior = 100 - 100 * config['prob_altruistic_dictator']
+        )
+
+
 class Role(Page):
     @staticmethod
     def get_timeout_seconds(player: Player):
