@@ -638,7 +638,7 @@ class Feedback(Page):
     @staticmethod
     def is_displayed(player: Player):
         g = player.group
-        return g.feedback_occurred
+        return g.feedback_occurred and player.role != C.RECEIVER_ROLE
 
     @staticmethod
     def vars_for_template(player: Player):
